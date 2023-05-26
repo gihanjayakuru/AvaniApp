@@ -1,6 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'list_screen.dart';
+import 'package:intl/intl.dart';
+import 'dart:convert';
+
+class FormData {
+  String location;
+  String indoorModel;
+  String indoorModelNum;
+  String indoorSerialNum;
+  String indoorCapacity;
+  String outdoorModel;
+  String outdoorModelNum;
+  String outdoorSerialNum;
+  String outdoorCapacity;
+  String dateCreated;
+
+  FormData({
+    required this.location,
+    required this.indoorModel,
+    required this.indoorModelNum,
+    required this.indoorSerialNum,
+    required this.indoorCapacity,
+    required this.outdoorModel,
+    required this.outdoorModelNum,
+    required this.outdoorSerialNum,
+    required this.outdoorCapacity,
+    required this.dateCreated,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'location': location,
+      'indoorModel': indoorModel,
+      'indoorModelNum': indoorModelNum,
+      'indoorSerialNum': indoorSerialNum,
+      'indoorCapacity': indoorCapacity,
+      'outdoorModel': outdoorModel,
+      'outdoorModelNum': outdoorModelNum,
+      'outdoorSerialNum': outdoorSerialNum,
+      'outdoorCapacity': outdoorCapacity,
+      'dateCreated': dateCreated,
+    };
+  }
+}
 
 class MyFormScreen extends StatefulWidget {
   @override
@@ -53,85 +96,142 @@ class _MyFormScreenState extends State<MyFormScreen> {
         ),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.all(16.0),
-              child: TextField(
-                controller: locationController,
-                decoration: InputDecoration(labelText: 'Location'),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Text(
-                'Indoor unit',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.all(16.0),
+                child: TextFormField(
+                  controller: locationController,
+                  decoration: InputDecoration(labelText: 'Location'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a location';
+                    }
+                    return null;
+                  },
                 ),
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  TextField(
-                    controller: indoorModelController,
-                    decoration: InputDecoration(labelText: 'Model'),
+              Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Text(
+                  'Indoor unit',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
                   ),
-                  TextField(
-                    controller: indoorModelNumController,
-                    decoration: InputDecoration(labelText: 'Model Number'),
-                  ),
-                  TextField(
-                    controller: indoorSerialNumController,
-                    decoration: InputDecoration(labelText: 'Serial Number'),
-                  ),
-                  TextField(
-                    controller: indoorCapacityController,
-                    decoration: InputDecoration(labelText: 'Capacity'),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Text(
-                'Outdoor unit',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
                 ),
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  TextField(
-                    controller: outdoorModelController,
-                    decoration: InputDecoration(labelText: 'Model'),
-                  ),
-                  TextField(
-                    controller: outdoorModelNumController,
-                    decoration: InputDecoration(labelText: 'Model Number'),
-                  ),
-                  TextField(
-                    controller: outdoorSerialNumController,
-                    decoration: InputDecoration(labelText: 'Serial Number'),
-                  ),
-                  TextField(
-                    controller: outdoorCapacityController,
-                    decoration: InputDecoration(labelText: 'Capacity'),
-                  ),
-                ],
+              Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: indoorModelController,
+                      decoration: InputDecoration(labelText: 'Model'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter the indoor model';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: indoorModelNumController,
+                      decoration: InputDecoration(labelText: 'Model Number'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter the indoor model number';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: indoorSerialNumController,
+                      decoration: InputDecoration(labelText: 'Serial Number'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter the indoor serial number';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: indoorCapacityController,
+                      decoration: InputDecoration(labelText: 'Capacity'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter the indoor capacity';
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+              Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Text(
+                  'Outdoor unit',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: outdoorModelController,
+                      decoration: InputDecoration(labelText: 'Model'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter the outdoor model';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: outdoorModelNumController,
+                      decoration: InputDecoration(labelText: 'Model Number'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter the outdoor model number';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: outdoorSerialNumController,
+                      decoration: InputDecoration(labelText: 'Serial Number'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter the outdoor serial number';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: outdoorCapacityController,
+                      decoration: InputDecoration(labelText: 'Capacity'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter the outdoor capacity';
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              //
+            ],
+          ),
         ),
       ),
-
       /////////
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -151,6 +251,8 @@ class _MyFormScreenState extends State<MyFormScreen> {
   // );
   // }
 // }
+  List<Map<String, dynamic>> savedFormData = [];
+
   void _saveForm() async {
     // Retrieve the form field values using the controllers
     String location = locationController.text;
@@ -163,17 +265,27 @@ class _MyFormScreenState extends State<MyFormScreen> {
     String outdoorSerialNum = outdoorSerialNumController.text;
     String outdoorCapacity = outdoorCapacityController.text;
 
+    // Create a FormData object
+    FormData formData = FormData(
+      location: location,
+      indoorModel: indoorModel,
+      indoorModelNum: indoorModelNum,
+      indoorSerialNum: indoorSerialNum,
+      indoorCapacity: indoorCapacity,
+      outdoorModel: outdoorModel,
+      outdoorModelNum: outdoorModelNum,
+      outdoorSerialNum: outdoorSerialNum,
+      outdoorCapacity: outdoorCapacity,
+      dateCreated: DateTime.now().toString(),
+    );
+
+    // Convert FormData object to JSON
+    Map<String, dynamic> formDataJson = formData.toJson();
+
     // Save the form data to shared_preferences
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('location', location);
-    await prefs.setString('indoorModel', indoorModel);
-    await prefs.setString('indoorModelNum', indoorModelNum);
-    await prefs.setString('indoorSerialNum', indoorSerialNum);
-    await prefs.setString('indoorCapacity', indoorCapacity);
-    await prefs.setString('outdoorModel', outdoorModel);
-    await prefs.setString('outdoorModelNum', outdoorModelNum);
-    await prefs.setString('outdoorSerialNum', outdoorSerialNum);
-    await prefs.setString('outdoorCapacity', outdoorCapacity);
+    savedFormData.add(formDataJson);
+    await prefs.setString('savedFormData', jsonEncode(savedFormData));
 
     // Once the data is saved, you can navigate to the list screen or perform any other actions
     Navigator.push(
