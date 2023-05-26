@@ -14,7 +14,7 @@ class FormData {
   String outdoorModelNum;
   String outdoorSerialNum;
   String outdoorCapacity;
-  String dateCreated;
+  DateTime createdDate;
 
   FormData({
     required this.location,
@@ -26,8 +26,23 @@ class FormData {
     required this.outdoorModelNum,
     required this.outdoorSerialNum,
     required this.outdoorCapacity,
-    required this.dateCreated,
+    required this.createdDate,
   });
+
+  factory FormData.fromJson(Map<String, dynamic> json) {
+    return FormData(
+      location: json['location'],
+      indoorModel: json['indoorModel'],
+      indoorModelNum: json['indoorModelNum'],
+      indoorSerialNum: json['indoorSerialNum'],
+      indoorCapacity: json['indoorCapacity'],
+      outdoorModel: json['outdoorModel'],
+      outdoorModelNum: json['outdoorModelNum'],
+      outdoorSerialNum: json['outdoorSerialNum'],
+      outdoorCapacity: json['outdoorCapacity'],
+      createdDate: DateTime.parse(json['createdDate']),
+    );
+  }
 
   Map<String, dynamic> toJson() {
     return {
@@ -40,7 +55,7 @@ class FormData {
       'outdoorModelNum': outdoorModelNum,
       'outdoorSerialNum': outdoorSerialNum,
       'outdoorCapacity': outdoorCapacity,
-      'dateCreated': dateCreated,
+      'createdDate': createdDate.toIso8601String(),
     };
   }
 }
@@ -265,26 +280,26 @@ class _MyFormScreenState extends State<MyFormScreen> {
     String outdoorSerialNum = outdoorSerialNumController.text;
     String outdoorCapacity = outdoorCapacityController.text;
 
-    // Create a FormData object
-    FormData formData = FormData(
-      location: location,
-      indoorModel: indoorModel,
-      indoorModelNum: indoorModelNum,
-      indoorSerialNum: indoorSerialNum,
-      indoorCapacity: indoorCapacity,
-      outdoorModel: outdoorModel,
-      outdoorModelNum: outdoorModelNum,
-      outdoorSerialNum: outdoorSerialNum,
-      outdoorCapacity: outdoorCapacity,
-      dateCreated: DateTime.now().toString(),
-    );
+    // Get the current date and time
+    DateTime now = DateTime.now();
 
-    // Convert FormData object to JSON
-    Map<String, dynamic> formDataJson = formData.toJson();
+    // Create a map of the form data
+    Map<String, dynamic> formData = {
+      'location': location,
+      'indoorModel': indoorModel,
+      'indoorModelNum': indoorModelNum,
+      'indoorSerialNum': indoorSerialNum,
+      'indoorCapacity': indoorCapacity,
+      'outdoorModel': outdoorModel,
+      'outdoorModelNum': outdoorModelNum,
+      'outdoorSerialNum': outdoorSerialNum,
+      'outdoorCapacity': outdoorCapacity,
+      'createdDate': now.toIso8601String(),
+    };
 
     // Save the form data to shared_preferences
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    savedFormData.add(formDataJson);
+    savedFormData.add(formData);
     await prefs.setString('savedFormData', jsonEncode(savedFormData));
 
     // Once the data is saved, you can navigate to the list screen or perform any other actions
