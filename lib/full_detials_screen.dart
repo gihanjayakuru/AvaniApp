@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'list_screen.dart';
 
 class FullDetailsScreen extends StatelessWidget {
@@ -12,56 +13,70 @@ class FullDetailsScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Full Details'),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            ListTile(
-              title: Text('Location'),
-              subtitle: Text(formData.location),
-            ),
-            ListTile(
-              title: Text('Indoor Model'),
-              subtitle: Text(formData.indoorModel),
-            ),
-            ListTile(
-              title: Text('Indoor Model Number'),
-              subtitle: Text(formData.indoorModelNum),
-            ),
-            ListTile(
-              title: Text('Indoor Serial Number'),
-              subtitle: Text(formData.indoorSerialNum),
-            ),
-            ListTile(
-              title: Text('Indoor Capacity'),
-              subtitle: Text(formData.indoorCapacity),
-            ),
-            ListTile(
-              title: Text('Outdoor Model'),
-              subtitle: Text(formData.outdoorModel),
-            ),
-            ListTile(
-              title: Text('Outdoor Model Number'),
-              subtitle: Text(formData.outdoorModelNum),
-            ),
-            ListTile(
-              title: Text('Outdoor Serial Number'),
-              subtitle: Text(formData.outdoorSerialNum),
-            ),
-            ListTile(
-              title: Text('Outdoor Capacity'),
-              subtitle: Text(formData.outdoorCapacity),
-            ),
-            // Add additional details here
-            ListTile(
-              title: Text('Additional Field 1'),
-              // subtitle: Text(formData.additionalField1),
-            ),
-            ListTile(
-              title: Text('Additional Field 2'),
-              // subtitle: Text(formData.additionalField2),
-            ),
-          ],
-        ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Text('Location: ${formData.location}',
+                style: TextStyle(fontSize: 18)),
+          ),
+          Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Text('Indoor Model: ${formData.indoorModel}',
+                style: TextStyle(fontSize: 18)),
+          ),
+          Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Text('Indoor Model Number: ${formData.indoorModelNum}',
+                style: TextStyle(fontSize: 18)),
+          ),
+          Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Text('Indoor Serial Number: ${formData.indoorSerialNum}',
+                style: TextStyle(fontSize: 18)),
+          ),
+          Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Text('Indoor Capacity: ${formData.indoorCapacity}',
+                style: TextStyle(fontSize: 18)),
+          ),
+          Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Text('Outdoor Model: ${formData.outdoorModel}',
+                style: TextStyle(fontSize: 18)),
+          ),
+          Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Text('Outdoor Model Number: ${formData.outdoorModelNum}',
+                style: TextStyle(fontSize: 18)),
+          ),
+          Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Text('Outdoor Serial Number: ${formData.outdoorSerialNum}',
+                style: TextStyle(fontSize: 18)),
+          ),
+          Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Text('Outdoor Capacity: ${formData.outdoorCapacity}',
+                style: TextStyle(fontSize: 18)),
+          ),
+          Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Text('Created Date: ${formData.createdDate}',
+                style: TextStyle(fontSize: 18)),
+          ),
+          Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Text('Additional Field 1: ${formData.additionalField1}',
+                style: TextStyle(fontSize: 18)),
+          ),
+          Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Text('Additional Field 2: ${formData.additionalField2}',
+                style: TextStyle(fontSize: 18)),
+          ),
+        ],
       ),
     );
   }

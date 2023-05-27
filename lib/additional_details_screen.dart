@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'form_data.dart';
 import 'full_detials_screen.dart';
 import 'list_screen.dart';
 

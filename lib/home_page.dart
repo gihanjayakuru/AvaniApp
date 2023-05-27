@@ -20,6 +20,9 @@ class _MyFormScreenState extends State<MyFormScreen> {
   TextEditingController outdoorSerialNumController = TextEditingController();
   TextEditingController outdoorCapacityController = TextEditingController();
 
+  // Declare savedFormData list here
+  List<Map<String, dynamic>> savedFormData = [];
+
   // Define form key for validation
   final _formKey = GlobalKey<FormState>();
 
@@ -209,7 +212,8 @@ class _MyFormScreenState extends State<MyFormScreen> {
   // );
   // }
 // }
-  List<Map<String, dynamic>> savedFormData = [];
+//IN HERE THE FORM NOT BE EMPTY
+  // List<Map<String, dynamic>> savedFormData = [];
 
   void _saveForm() async {
     // Retrieve the form field values using the controllers
@@ -222,6 +226,10 @@ class _MyFormScreenState extends State<MyFormScreen> {
     String outdoorModelNum = outdoorModelNumController.text;
     String outdoorSerialNum = outdoorSerialNumController.text;
     String outdoorCapacity = outdoorCapacityController.text;
+
+    // Retrieve the additional field values
+    String additionalField1 = 'Value 1'; // Replace with the appropriate value
+    String additionalField2 = 'Value 2'; // Replace with the appropriate value
 
     // Get the current date and time
     DateTime now = DateTime.now();
@@ -237,6 +245,8 @@ class _MyFormScreenState extends State<MyFormScreen> {
       'outdoorModelNum': outdoorModelNum,
       'outdoorSerialNum': outdoorSerialNum,
       'outdoorCapacity': outdoorCapacity,
+      'additionalField1': additionalField1,
+      'additionalField2': additionalField2,
       'createdDate': now.toIso8601String(),
     };
 

@@ -15,8 +15,8 @@ class FormData {
   String outdoorSerialNum;
   String outdoorCapacity;
   DateTime createdDate;
-  // String additionalField1; // New additional field
-  // String additionalField2; // New additional field
+  String additionalField1; // New additional field
+  String additionalField2; // New additional field
 
   FormData({
     required this.location,
@@ -29,8 +29,8 @@ class FormData {
     required this.outdoorSerialNum,
     required this.outdoorCapacity,
     required this.createdDate,
-    // required this.additionalField1,
-    // required this.additionalField2,
+    required this.additionalField1,
+    required this.additionalField2,
   });
 
   Map<String, dynamic> toJson() {
@@ -45,8 +45,8 @@ class FormData {
       'outdoorSerialNum': outdoorSerialNum,
       'outdoorCapacity': outdoorCapacity,
       'createdDate': createdDate.toIso8601String(),
-      // 'additionalField1': additionalField1, // Serialize additional field
-      // 'additionalField2': additionalField2, // Serialize additional field
+      'additionalField1': additionalField1, // Serialize additional field
+      'additionalField2': additionalField2, // Serialize additional field
     };
   }
 
@@ -62,10 +62,10 @@ class FormData {
       outdoorSerialNum: json['outdoorSerialNum'],
       outdoorCapacity: json['outdoorCapacity'],
       createdDate: DateTime.parse(json['createdDate']),
-      // additionalField1:
-      //     json['additionalField1'], // Deserialize additional field
-      // additionalField2:
-      //     json['additionalField2'], // Deserialize additional field
+      additionalField1:
+          json['additionalField1'], // Deserialize additional field
+      additionalField2:
+          json['additionalField2'], // Deserialize additional field
     );
   }
 }
@@ -160,6 +160,8 @@ class _ListScreenState extends State<ListScreen> {
                 children: [
                   Text(formData.location),
                   Text('Created: ${formData.createdDate.toString()}'),
+                  // Text('Additional Field 1: ${formData.additionalField1}'),
+                  // Text('Additional Field 2: ${formData.additionalField2}'),
                 ],
               ),
             ),
