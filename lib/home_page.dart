@@ -1,64 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'list_screen.dart';
-import 'package:intl/intl.dart';
 import 'dart:convert';
-
-class FormData {
-  String location;
-  String indoorModel;
-  String indoorModelNum;
-  String indoorSerialNum;
-  String indoorCapacity;
-  String outdoorModel;
-  String outdoorModelNum;
-  String outdoorSerialNum;
-  String outdoorCapacity;
-  DateTime createdDate;
-
-  FormData({
-    required this.location,
-    required this.indoorModel,
-    required this.indoorModelNum,
-    required this.indoorSerialNum,
-    required this.indoorCapacity,
-    required this.outdoorModel,
-    required this.outdoorModelNum,
-    required this.outdoorSerialNum,
-    required this.outdoorCapacity,
-    required this.createdDate,
-  });
-
-  factory FormData.fromJson(Map<String, dynamic> json) {
-    return FormData(
-      location: json['location'],
-      indoorModel: json['indoorModel'],
-      indoorModelNum: json['indoorModelNum'],
-      indoorSerialNum: json['indoorSerialNum'],
-      indoorCapacity: json['indoorCapacity'],
-      outdoorModel: json['outdoorModel'],
-      outdoorModelNum: json['outdoorModelNum'],
-      outdoorSerialNum: json['outdoorSerialNum'],
-      outdoorCapacity: json['outdoorCapacity'],
-      createdDate: DateTime.parse(json['createdDate']),
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'location': location,
-      'indoorModel': indoorModel,
-      'indoorModelNum': indoorModelNum,
-      'indoorSerialNum': indoorSerialNum,
-      'indoorCapacity': indoorCapacity,
-      'outdoorModel': outdoorModel,
-      'outdoorModelNum': outdoorModelNum,
-      'outdoorSerialNum': outdoorSerialNum,
-      'outdoorCapacity': outdoorCapacity,
-      'createdDate': createdDate.toIso8601String(),
-    };
-  }
-}
 
 class MyFormScreen extends StatefulWidget {
   @override
@@ -300,6 +243,7 @@ class _MyFormScreenState extends State<MyFormScreen> {
     // Save the form data to shared_preferences
     SharedPreferences prefs = await SharedPreferences.getInstance();
     savedFormData.add(formData);
+    // print(formData);
     await prefs.setString('savedFormData', jsonEncode(savedFormData));
 
     // Once the data is saved, you can navigate to the list screen or perform any other actions

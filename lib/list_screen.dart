@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'additional_details_screen.dart';
+
 class FormData {
   String location;
   String indoorModel;
@@ -13,6 +15,8 @@ class FormData {
   String outdoorSerialNum;
   String outdoorCapacity;
   DateTime createdDate;
+  // String additionalField1; // New additional field
+  // String additionalField2; // New additional field
 
   FormData({
     required this.location,
@@ -25,6 +29,8 @@ class FormData {
     required this.outdoorSerialNum,
     required this.outdoorCapacity,
     required this.createdDate,
+    // required this.additionalField1,
+    // required this.additionalField2,
   });
 
   Map<String, dynamic> toJson() {
@@ -39,6 +45,8 @@ class FormData {
       'outdoorSerialNum': outdoorSerialNum,
       'outdoorCapacity': outdoorCapacity,
       'createdDate': createdDate.toIso8601String(),
+      // 'additionalField1': additionalField1, // Serialize additional field
+      // 'additionalField2': additionalField2, // Serialize additional field
     };
   }
 
@@ -54,6 +62,10 @@ class FormData {
       outdoorSerialNum: json['outdoorSerialNum'],
       outdoorCapacity: json['outdoorCapacity'],
       createdDate: DateTime.parse(json['createdDate']),
+      // additionalField1:
+      //     json['additionalField1'], // Deserialize additional field
+      // additionalField2:
+      //     json['additionalField2'], // Deserialize additional field
     );
   }
 }
@@ -96,39 +108,27 @@ class _ListScreenState extends State<ListScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Add Details'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Add your additional input fields here
-              TextField(
-                decoration: InputDecoration(labelText: 'Additional Field 1'),
-              ),
-              TextField(
-                decoration: InputDecoration(labelText: 'Additional Field 2'),
-              ),
-            ],
-          ),
+          title: Text('Additional Details'),
+          content: Text('Would you like to add more details?'),
           actions: [
-            ElevatedButton(
+            TextButton(
               onPressed: () {
-                // Save the additional details and update the savedFormData
-                // or perform any other desired action
-                setState(() {
-                  selectedFormData = null;
-                });
-                Navigator.of(context).pop();
+                Navigator.pop(context); // Close the dialog
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        AdditionalDetailsScreen(formData: formData),
+                  ),
+                );
               },
-              child: Text('Save'),
+              child: Text('Yes'),
             ),
             TextButton(
               onPressed: () {
-                setState(() {
-                  selectedFormData = null;
-                });
-                Navigator.of(context).pop();
+                Navigator.pop(context); // Close the dialog
               },
-              child: Text('Cancel'),
+              child: Text('No'),
             ),
           ],
         );
