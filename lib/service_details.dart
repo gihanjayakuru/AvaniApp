@@ -1,6 +1,6 @@
-import 'package:avani_app/service_list.dart';
 import 'package:flutter/material.dart';
-import 'package:avani_app/list_screen.dart';
+
+import 'form_data.dart';
 
 class ServiceFormScreen extends StatefulWidget {
   final FormData formData;
@@ -96,12 +96,12 @@ class _ServiceFormScreenState extends State<ServiceFormScreen> {
     // Here, you can use a database or any other storage mechanism to save the data.
 
     // After saving the data, navigate to the ServiceListScreen
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) =>
-            ServiceListScreen(serviceDetails: [serviceFormData]),
-      ),
-    );
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(
+    //     builder: (context) =>
+    //         ServiceListScreen(serviceDetails: [serviceFormData]),
+    //   ),
+    // );
   }
 }

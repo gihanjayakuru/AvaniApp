@@ -214,7 +214,6 @@ class _MyFormScreenState extends State<MyFormScreen> {
 // }
 //IN HERE THE FORM NOT BE EMPTY
   // List<Map<String, dynamic>> savedFormData = [];
-
   void _saveForm() async {
     // Retrieve the form field values using the controllers
     String location = locationController.text;
@@ -250,10 +249,18 @@ class _MyFormScreenState extends State<MyFormScreen> {
       'createdDate': now.toIso8601String(),
     };
 
-    // Save the form data to shared_preferences
+    // Save the form data to SharedPreferences
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    savedFormData.add(formData);
-    // print(formData);
+    String? savedFormDataString = prefs.getString('savedFormData');
+    if (savedFormDataString != null) {
+      // Append the new form data to the existing saved form data
+      List<dynamic> savedFormDataJson = jsonDecode(savedFormDataString);
+      savedFormDataJson.add(formData);
+      savedFormData = List<Map<String, dynamic>>.from(savedFormDataJson);
+    } else {
+      // Create a new list with the current form data
+      savedFormData = [formData];
+    }
     await prefs.setString('savedFormData', jsonEncode(savedFormData));
 
     // Once the data is saved, you can navigate to the list screen or perform any other actions

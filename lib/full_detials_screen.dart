@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'form_data.dart';
 import 'list_screen.dart';
 
 class FullDetailsScreen extends StatelessWidget {
@@ -66,16 +67,16 @@ class FullDetailsScreen extends StatelessWidget {
             child: Text('Created Date: ${formData.createdDate}',
                 style: TextStyle(fontSize: 18)),
           ),
-          Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Text('Additional Field 1: ${formData.additionalField1}',
-                style: TextStyle(fontSize: 18)),
-          ),
-          Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Text('Additional Field 2: ${formData.additionalField2}',
-                style: TextStyle(fontSize: 18)),
-          ),
+          // Padding(
+          //   padding: EdgeInsets.all(16.0),
+          //   child: Text('Additional Field 1: ${formData.additionalField1}',
+          //       style: TextStyle(fontSize: 18)),
+          // ),
+          // Padding(
+          //   padding: EdgeInsets.all(16.0),
+          //   child: Text('Additional Field 2: ${formData.additionalField2}',
+          //       style: TextStyle(fontSize: 18)),
+          // ),
         ],
       ),
     );

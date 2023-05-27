@@ -1,7 +1,6 @@
+import 'package:avani_app/service_list.dart';
 import 'package:flutter/material.dart';
-
-import 'full_detials_screen.dart';
-import 'list_screen.dart';
+import 'package:avani_app/form_data.dart';
 
 class AdditionalDetailsScreen extends StatefulWidget {
   final FormData formData;
@@ -14,58 +13,81 @@ class AdditionalDetailsScreen extends StatefulWidget {
 }
 
 class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
-  TextEditingController _additionalField1Controller = TextEditingController();
-  TextEditingController _additionalField2Controller = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    // Initialize the additional field values if needed
-  }
+  TextEditingController _additionalFieldController = TextEditingController();
 
   @override
   void dispose() {
-    _additionalField1Controller.dispose();
-    _additionalField2Controller.dispose();
+    _additionalFieldController.dispose();
     super.dispose();
+  }
+
+  // void _saveAdditionalDetails() {
+  //   String additionalField = _additionalFieldController.text;
+
+  //   // Merge the past details with the new additional details
+  //   Map<String, dynamic> mergedData = {
+  //     'location': widget.formData.location,
+  //     'additionalDetails': additionalField,
+  //     'createdDate': widget.formData.createdDate,
+  //   };
+
+  //   // Pass the merged data back to the previous screen
+  //   Navigator.pop(context, mergedData);
+  // }
+  void _saveAdditionalDetails() {
+    String additionalField = _additionalFieldController.text;
+
+    // Merge the past details with the new additional details
+    Map<String, dynamic> mergedData = {
+      'location': widget.formData.location,
+      'additionalDetails': additionalField,
+      'createdDate': widget.formData.createdDate,
+    };
+
+    // Pass the merged data to the ServiceListScreen
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ServiceListScreen(
+          mergedFormDataList: [mergedData],
+          serviceDetails: [], // Provide service details as needed
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Additional Details'),
+        title: Text('Additional Details vvvvv'),
       ),
-      body: Column(
-        children: [
-          TextField(
-            controller: _additionalField1Controller,
-            decoration: InputDecoration(labelText: 'Additional Field 1'),
-          ),
-          TextField(
-            controller: _additionalField2Controller,
-            decoration: InputDecoration(labelText: 'Additional Field 2'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              // Save the additional details
-              String additionalField1 = _additionalField1Controller.text;
-              String additionalField2 = _additionalField2Controller.text;
-              // Perform any desired action with the additional details
-              // You can save the details, update the existing FormData object, or use a separate data structure
-
-              Navigator.pop(context); // Go back to the previous screen
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      FullDetailsScreen(formData: widget.formData),
-                ),
-              );
-            },
-            child: Text('Save'),
-          ),
-        ],
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              'Location: ${widget.formData.location}',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 16),
+            TextFormField(
+              controller: _additionalFieldController,
+              decoration: InputDecoration(
+                labelText: 'Additional Field',
+              ),
+            ),
+            SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: _saveAdditionalDetails,
+              child: Text('Save'),
+            ),
+          ],
+        ),
       ),
     );
   }
