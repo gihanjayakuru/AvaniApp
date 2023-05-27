@@ -28,6 +28,18 @@ class _MyAppState extends State<MyApp> {
   int _currentIndex = 0;
   late List<Widget> _screens;
 
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _screens = [
+  //     MyFormScreen(),
+  //     ListScreen(),
+  //     ServiceListScreen(
+  //       serviceDetails: widget.serviceDetails,
+  //       mergedFormDataList: widget.mergedFormDataList,
+  //     ),
+  //   ];
+  // }
   @override
   void initState() {
     super.initState();
@@ -36,7 +48,8 @@ class _MyAppState extends State<MyApp> {
       ListScreen(),
       ServiceListScreen(
         serviceDetails: widget.serviceDetails,
-        mergedFormDataList: widget.mergedFormDataList,
+        mergedFormDataList:
+            List<Map<String, dynamic>>.from(widget.mergedFormDataList),
       ),
     ];
   }

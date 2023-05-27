@@ -1,11 +1,17 @@
-import 'package:avani_app/service_list.dart';
 import 'package:flutter/material.dart';
+import 'package:avani_app/service_list.dart';
 import 'package:avani_app/form_data.dart';
 
 class AdditionalDetailsScreen extends StatefulWidget {
   final FormData formData;
+  final List<Map<String, dynamic>> serviceDetails;
+  final List<Map<String, dynamic>> mergedFormDataList;
 
-  AdditionalDetailsScreen({required this.formData});
+  AdditionalDetailsScreen({
+    required this.formData,
+    required this.serviceDetails,
+    required this.mergedFormDataList,
+  });
 
   @override
   _AdditionalDetailsScreenState createState() =>
@@ -31,8 +37,16 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
   //     'createdDate': widget.formData.createdDate,
   //   };
 
-  //   // Pass the merged data back to the previous screen
-  //   Navigator.pop(context, mergedData);
+  //   // Pass the merged data to the ServiceListScreen
+  //   Navigator.pushReplacement(
+  //     context,
+  //     MaterialPageRoute(
+  //       builder: (context) => ServiceListScreen(
+  //         serviceDetails: widget.serviceDetails,
+  //         mergedFormDataList: [...widget.mergedFormDataList, mergedData],
+  //       ),
+  //     ),
+  //   );
   // }
   void _saveAdditionalDetails() {
     String additionalField = _additionalFieldController.text;
@@ -60,7 +74,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Additional Details vvvvv'),
+        title: Text('Additional Details'),
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),

@@ -4,7 +4,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'additional_details_screen.dart';
 import 'form_data.dart';
-import 'service_details.dart';
 
 class ListScreen extends StatefulWidget {
   @override
@@ -51,8 +50,11 @@ class _ListScreenState extends State<ListScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>
-                        AdditionalDetailsScreen(formData: formData),
+                    builder: (context) => AdditionalDetailsScreen(
+                      formData: formData,
+                      serviceDetails: [], // Provide service details as needed
+                      mergedFormDataList: [], // Provide merged form data as needed
+                    ),
                   ),
                 );
               },

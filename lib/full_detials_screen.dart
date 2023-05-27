@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'form_data.dart';
-import 'list_screen.dart';
 
 class FullDetailsScreen extends StatelessWidget {
   final FormData formData;
