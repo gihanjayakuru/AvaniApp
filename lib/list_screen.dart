@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'additional_details_screen.dart';
+import 'service_details.dart';
 
 class FormData {
   String location;
@@ -117,8 +118,7 @@ class _ListScreenState extends State<ListScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>
-                        AdditionalDetailsScreen(formData: formData),
+                    builder: (context) => ServiceFormScreen(formData: formData),
                   ),
                 );
               },
