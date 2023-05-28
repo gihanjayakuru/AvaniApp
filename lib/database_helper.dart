@@ -9,7 +9,7 @@ class DatabaseHelper {
   DatabaseHelper._init();
 
   Future<Database> get database async {
-    if (_database != null) return _database!;
+    if (_database != null && _database!.isOpen) return _database!;
     _database = await _initDB('avani_data.db');
     return _database!;
   }
@@ -61,53 +61,34 @@ class DatabaseHelper {
   ''');
   }
 
-  Future<int> insertFormData(Map<String, dynamic> formData) async {
+  Future<List<Map<String, dynamic>>> getServiceFormDataList() async {
     final db = await instance.database;
-    return await db.insert('form_data', formData);
+    return await db.query('service_form_data');
   }
 
-  // Future<void> insertServiceFormData(MergedData formData) async {
-  //   final db = await database;
-
-  //   // Convert the formData to JSON using its toJson method
-  //   final formDataJson = formData.toJson();
-
-  //   // Insert the formDataJson into the 'mergedData' table
-  //   await db.insert('mergedData', formDataJson,
-  //       conflictAlgorithm: ConflictAlgorithm.replace);
-  // }
-  // Future<void> insertServiceFormData(Map<String, dynamic> formData) async {
-  //   final db = await database;
-
-  //   // Convert the formData to a MergedData object
-  //   final mergedData = MergedData(
-  //     location: formData['location'],
-  //     serviceType: formData['serviceType'],
-  //     serviceDescription: formData['serviceDescription'],
-  //   );
-
-  //   // Insert the mergedData into the 'serviceFormData' table
-  //   await db.insert('mergedData', mergedData.toJson(),
-  //       conflictAlgorithm: ConflictAlgorithm.replace);
-  // }
-
-  // Future<int> insertServiceFormData(
-  //     Map<String, dynamic> serviceFormData) async {
-  //   print(serviceFormData);
-
-  //   final db = await instance.database;
-  //   return await db.insert('service_form_data', serviceFormData);
-  // }
-
-  Future<int> insertServiceFormData(
+  Future<void> insertServiceFormData(
       Map<String, dynamic> serviceFormData) async {
+    final Database db = await instance.database;
+    await db.insert('service_form_data', serviceFormData);
+  }
+
+  Future<int> deleteServiceFormData(int id) async {
     final db = await instance.database;
-    return await db.insert('service_form_data', serviceFormData);
+    return await db.delete(
+      'service_form_data',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
   }
 
   Future<List<Map<String, dynamic>>> getFormDataList() async {
-    final db = await instance.database;
+    final db = await database;
     return await db.query('form_data');
+  }
+
+  Future<int> insertFormData(Map<String, dynamic> formData) async {
+    final db = await instance.database;
+    return await db.insert('form_data', formData);
   }
 
   Future<int> updateFormData(Map<String, dynamic> formData) async {
@@ -128,5 +109,12 @@ class DatabaseHelper {
       where: 'id = ?',
       whereArgs: [id],
     );
+  }
+
+  Future<void> closeDatabase() async {
+    if (_database != null && _database!.isOpen) {
+      await _database!.close();
+      _database = null;
+    }
   }
 }

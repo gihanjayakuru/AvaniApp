@@ -20,6 +20,13 @@ class _LocationListScreenState extends State<LocationListScreen> {
     _loadFormData();
   }
 
+  @override
+  void dispose() {
+    // Close the database connection
+    DatabaseHelper.instance.closeDatabase();
+    super.dispose();
+  }
+
   void _loadFormData() async {
     List<Map<String, dynamic>> formDataList =
         await DatabaseHelper.instance.getFormDataList();

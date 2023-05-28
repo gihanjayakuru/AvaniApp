@@ -1,7 +1,8 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
 
+import 'database_helper.dart';
 import 'location_list.dart';
 import 'service_data.dart';
 
@@ -12,7 +13,6 @@ class ServiceListScreen extends StatefulWidget {
 
 class _ServiceListScreenState extends State<ServiceListScreen> {
   List<MergedData> savedServiceFormData = [];
-  // List<MergedData> savedMergedData = [];
 
   @override
   void initState() {
@@ -20,21 +20,44 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
     _loadServiceFormData();
   }
 
+  @override
+  void dispose() {
+    // Close the database connection
+    DatabaseHelper.instance.closeDatabase();
+    super.dispose();
+  }
+
   void _loadServiceFormData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    Database database = await openDatabase(
+      join(await getDatabasesPath(), 'avani_data.db'),
+    );
 
-    String? savedServiceFormDataJson = prefs.getString('savedServiceFormData');
+    List<Map<String, dynamic>> serviceFormDataList =
+        await database.query('service_form_data');
 
-    if (savedServiceFormDataJson != null) {
-      List<dynamic> serviceFormDataList = jsonDecode(savedServiceFormDataJson);
-      savedServiceFormData = serviceFormDataList
-          .map((formDataJson) => MergedData.fromJson(formDataJson))
-          .toList();
-    }
+    savedServiceFormData = serviceFormDataList
+        .map((formData) => MergedData.fromJson(formData))
+        .toList();
 
-    setState(() {
-      // Trigger a rebuild to display the retrieved data
-    });
+    await database.close();
+
+    setState(() {});
+  }
+
+  void _deleteServiceFormData(int id) async {
+    Database database = await openDatabase(
+      join(await getDatabasesPath(), 'avani_data.db'),
+    );
+
+    await database.delete(
+      'service_form_data',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+
+    await database.close();
+
+    _loadServiceFormData();
   }
 
   @override
@@ -55,21 +78,23 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
                   Text('location: ${serviceFormData.location}'),
                   Text('serviceType: ${serviceFormData.serviceType}'),
                   Text(
-                      'serviceDescription: ${serviceFormData.serviceDescription}')
+                      'serviceDescription: ${serviceFormData.serviceDescription}'),
                 ],
+              ),
+              trailing: IconButton(
+                icon: Icon(Icons.delete),
+                onPressed: () => _deleteServiceFormData(serviceFormData.id),
               ),
             ),
           );
         },
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 2, // Set the index of the current screen
+        currentIndex: 2,
         onTap: (int index) {
           if (index == 0) {
-            // Navigate to HomeScreen
             Navigator.popUntil(context, (route) => route.isFirst);
           } else if (index == 1) {
-            // Navigate to LocationListScreen
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => LocationListScreen()),

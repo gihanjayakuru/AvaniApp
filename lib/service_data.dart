@@ -1,5 +1,5 @@
 class MergedData {
-  final String id;
+  int id;
   final String location;
   final String serviceType;
   final String serviceDescription;
@@ -15,7 +15,7 @@ class MergedData {
 
   factory MergedData.fromJson(Map<String, dynamic> json) {
     return MergedData(
-      id: json['id'] ?? '', // Assign an empty string if the value is null
+      id: json['id'], // Assign an empty string if the value is null
       location:
           json['location'] ?? '', // Assign an empty string if the value is null
       serviceType: json['serviceType'] ??
