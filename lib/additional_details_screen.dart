@@ -164,7 +164,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
         'savedServiceFormData', jsonEncode(savedServiceFormData));
 
     // Once the data is saved, you can navigate to the list screen or perform any other actions
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => ServiceListScreen()),
     );
