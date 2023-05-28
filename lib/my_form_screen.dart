@@ -405,6 +405,10 @@ class _MyFormScreenState extends State<MyFormScreen> {
     await prefs.setString('savedFormData', jsonEncode(savedFormData));
 
     // Once the data is saved, you can navigate to the list screen or perform any other actions
+    //  Navigator.push(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => ListScreen()),
+
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => LocationListScreen()),

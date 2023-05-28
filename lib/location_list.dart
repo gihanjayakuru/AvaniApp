@@ -18,8 +18,7 @@ class _LocationListScreenState extends State<LocationListScreen> {
   @override
   void initState() {
     super.initState();
-    _loadFormData();
-    // _loadMergedData();
+    _loadFormData2();
   }
 
   void _loadFormData() async {
@@ -105,23 +104,112 @@ class _LocationListScreenState extends State<LocationListScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Additional Details'),
-          content: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text('Location: ${formData.location}'),
-              SizedBox(height: 8),
-              Text('Created: ${formData.blowerCheck}'),
-              SizedBox(height: 8),
-              Text('indoorModel:'),
-              Text(formData.checkNoise),
-            ],
+          title: Text('Location Details'),
+          content: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ListTile(
+                  title: Text('Location'),
+                  subtitle: Text(formData.location ?? ''),
+                ),
+                Divider(),
+                ListTile(
+                  title: Text('Filter Clean'),
+                  subtitle: Text(formData.filterClean ?? ''),
+                ),
+                Divider(),
+                ListTile(
+                  title: Text('Blower Check'),
+                  subtitle: Text(formData.blowerCheck ?? ''),
+                ),
+                Divider(),
+                ListTile(
+                  title: Text('Inspect Clean IDU Coil Fins'),
+                  subtitle: Text(formData.inspectCleanIduCoilFins ?? ''),
+                ),
+                Divider(),
+                ListTile(
+                  title: Text('Check Clean Drain Plate'),
+                  subtitle: Text(formData.checkCleanDrainPlate ?? ''),
+                ),
+                Divider(),
+                ListTile(
+                  title: Text('Drain Pump Check'),
+                  subtitle: Text(formData.drainPumpCheck ?? ''),
+                ),
+                Divider(),
+                ListTile(
+                  title: Text('Check Piping Duck Insulation'),
+                  subtitle: Text(formData.checkPipingDuckInsulation ?? ''),
+                ),
+                Divider(),
+                ListTile(
+                  title: Text('Check Noise'),
+                  subtitle: Text(formData.checkNoise ?? ''),
+                ),
+                Divider(),
+                ListTile(
+                  title: Text('Indoor Housing Condition'),
+                  subtitle: Text(formData.indoorHousingCondition ?? ''),
+                ),
+                Divider(),
+                ListTile(
+                  title: Text('PCB Status'),
+                  subtitle: Text(formData.pcbStatus ?? ''),
+                ),
+                Divider(),
+                ListTile(
+                  title: Text('AC Sliding Door Operation'),
+                  subtitle: Text(formData.acSlidinDoorOperation ?? ''),
+                ),
+                Divider(),
+                ListTile(
+                  title: Text('Thermostat Setting'),
+                  subtitle: Text(formData.thermostatSetting ?? ''),
+                ),
+                Divider(),
+                ListTile(
+                  title: Text('Drain Line Clean'),
+                  subtitle: Text(formData.drainLineClean ?? ''),
+                ),
+                Divider(),
+                ListTile(
+                  title: Text('Compressor Noise'),
+                  subtitle: Text(formData.compressorNoise ?? ''),
+                ),
+                Divider(),
+                ListTile(
+                  title: Text('Fan Noise'),
+                  subtitle: Text(formData.fanNoise ?? ''),
+                ),
+                Divider(),
+                ListTile(
+                  title: Text('Outdoor Housing Condition'),
+                  subtitle: Text(formData.outdoorHousingCondition ?? ''),
+                ),
+                Divider(),
+                ListTile(
+                  title: Text('Remark'),
+                  subtitle: Text(formData.remark ?? ''),
+                ),
+                Divider(),
+                ListTile(
+                  title: Text('Date'),
+                  subtitle: Text(formData.date ?? ''),
+                ),
+                Divider(),
+                ListTile(
+                  title: Text('Technician Name'),
+                  subtitle: Text(formData.technicianName ?? ''),
+                ),
+              ],
+            ),
           ),
           actions: [
             TextButton(
               onPressed: () {
-                // Navigator.pop(context); // Close the dialog
+                Navigator.pop(context); // Close the dialog
                 Navigator.popUntil(context, (route) => route.isFirst);
                 Navigator.push(
                   context,
@@ -132,13 +220,13 @@ class _LocationListScreenState extends State<LocationListScreen> {
                   ),
                 );
               },
-              child: Text('Yes'),
+              child: Text('ADD'),
             ),
             TextButton(
               onPressed: () {
                 Navigator.pop(context); // Close the dialog
               },
-              child: Text('No'),
+              child: Text('Close'),
             ),
           ],
         );
