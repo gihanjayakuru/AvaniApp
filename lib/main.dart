@@ -42,28 +42,28 @@ class _MyAppState extends State<MyApp> {
           title: const Text('ToDo App'),
         ),
         body: _screens[_currentIndex],
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _currentIndex,
-          onTap: (int index) {
-            setState(() {
-              _currentIndex = index;
-            });
-          },
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.list),
-              label: 'LocationList',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.list),
-              label: 'ServiceList',
-            ),
-          ],
-        ),
+        // bottomNavigationBar: BottomNavigationBar(
+        //   currentIndex: _currentIndex,
+        //   onTap: (int index) {
+        //     setState(() {
+        //       _currentIndex = index;
+        //     });
+        //   },
+        //   items: [
+        //     BottomNavigationBarItem(
+        //       icon: Icon(Icons.home),
+        //       label: 'Home',
+        //     ),
+        //     BottomNavigationBarItem(
+        //       icon: Icon(Icons.list),
+        //       label: 'LocationList',
+        //     ),
+        //     BottomNavigationBarItem(
+        //       icon: Icon(Icons.list),
+        //       label: 'ServiceList',
+        //     ),
+        //   ],
+        // ),
       ),
     );
   }
