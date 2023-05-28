@@ -1,10 +1,7 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import 'additional_details_screen.dart';
 import 'form_data.dart';
 import 'service_list.dart';
+import 'database_helper.dart';
 
 class LocationListScreen extends StatefulWidget {
   @override
@@ -12,143 +9,62 @@ class LocationListScreen extends StatefulWidget {
 }
 
 class _LocationListScreenState extends State<LocationListScreen> {
+  TextEditingController _searchController = TextEditingController();
   List<FormData> savedFormData = [];
   FormData? selectedFormData;
 
   @override
   void initState() {
     super.initState();
-    _loadFormData2();
+    _loadFormData();
   }
 
   void _loadFormData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<Map<String, dynamic>> formDataList =
+        await DatabaseHelper.instance.getFormDataList();
 
-    String? savedFormDataJson = prefs.getString('savedFormData');
-
-    if (savedFormDataJson != null) {
-      List<dynamic> formDataList = jsonDecode(savedFormDataJson);
-      savedFormData = formDataList
-          .map((formDataJson) => FormData.fromJson(formDataJson))
-          .toList();
-    }
-
-    setState(() {
-      // Trigger a rebuild to display the retrieved data
-    });
-  }
-
-  // void _loadMergedData() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-
-  //   String? savedMergedDataJson = prefs.getString('savedMergedData');
-
-  //   if (savedMergedDataJson != null) {
-  //     List<dynamic> mergedDataList = jsonDecode(savedMergedDataJson);
-  //     savedMergedData = mergedDataList
-  //         .map((mergedDataJson) => MergedData.fromJson(mergedDataJson))
-  //         .toList();
-  //   }
-
-  //   setState(() {
-  //     // Trigger a rebuild to display the retrieved data
-  //   });
-  // }
-  void _loadFormData2() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    List<String>? savedFormDataJsonList = prefs.getStringList('savedFormData');
-
-    if (savedFormDataJsonList != null) {
-      savedFormData = savedFormDataJsonList.map((formDataJson) {
-        try {
-          return FormData.fromJson(jsonDecode(formDataJson));
-        } catch (e) {
-          // Error occurred during parsing, handle it accordingly
-          print('Error parsing FormData: $e');
-          return FormData(
-            location: '', // Provide default value or handle differently
-            filterClean: '',
-            blowerCheck: '',
-            inspectCleanIduCoilFins: '',
-            checkCleanDrainPlate: '',
-            drainPumpCheck: '',
-            checkPipingDuckInsulation: '',
-            checkNoise: '',
-            indoorHousingCondition: '',
-            pcbStatus: '',
-            acSlidinDoorOperation: '',
-            thermostatSetting: '',
-            drainLineClean: '',
-            compressorNoise: '',
-            fanNoise: '',
-            outdoorHousingCondition: '',
-            remark: '',
-            date: '',
-            technicianName: '',
-          );
-        }
-      }).toList();
-    } else {
-      savedFormData = []; // Handle case where no data is saved
-    }
+    savedFormData = formDataList.map((formDataMap) {
+      return FormData(
+        id: formDataMap['id'],
+        location: formDataMap['location'],
+        filterClean: formDataMap['filterClean'],
+        blowerCheck: formDataMap['blowerCheck'],
+        inspectCleanIduCoilFins: formDataMap['inspectCleanIduCoilFins'],
+        checkCleanDrainPlate: formDataMap['checkCleanDrainPlate'],
+        drainPumpCheck: formDataMap['drainPumpCheck'],
+        checkPipingDuckInsulation: formDataMap['checkPipingDuckInsulation'],
+        checkNoise: formDataMap['checkNoise'],
+        indoorHousingCondition: formDataMap['indoorHousingCondition'],
+        pcbStatus: formDataMap['pcbStatus'],
+        acSlidinDoorOperation: formDataMap['acSlidinDoorOperation'],
+        thermostatSetting: formDataMap['thermostatSetting'],
+        drainLineClean: formDataMap['drainLineClean'],
+        compressorNoise: formDataMap['compressorNoise'],
+        fanNoise: formDataMap['fanNoise'],
+        outdoorHousingCondition: formDataMap['outdoorHousingCondition'],
+        remark: formDataMap['remark'],
+        date: formDataMap['date'],
+        technicianName: formDataMap['technicianName'],
+      );
+    }).toList();
 
     setState(() {
       // Trigger a rebuild to display the retrieved data
     });
   }
 
-//
-  void _deleteFormData(FormData formData) {
+  void _deleteFormData(FormData formData) async {
+    await DatabaseHelper.instance.deleteFormData(formData.id);
+
     setState(() {
       savedFormData.remove(formData);
     });
-
-    _saveFormData(); // Save the updated list
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('Item deleted'),
         duration: Duration(seconds: 2),
       ),
-    );
-  }
-
-  void _saveFormData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    List<String> formDataJsonList = savedFormData.map((formData) {
-      return jsonEncode(formData.toJson());
-    }).toList();
-
-    prefs.setStringList('savedFormData', formDataJsonList);
-  }
-
-  void _showDeleteConfirmationDialog(BuildContext context, FormData formData) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Confirm Deletion'),
-          content: Text('Are you sure you want to delete this item?'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                // Perform deletion logic here
-                _deleteFormData(formData);
-                Navigator.pop(context); // Close the dialog
-              },
-              child: Text('Delete'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context); // Close the dialog
-              },
-              child: Text('Cancel'),
-            ),
-          ],
-        );
-      },
     );
   }
 
@@ -268,9 +184,9 @@ class _LocationListScreenState extends State<LocationListScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => AdditionalDetailsScreen(
-                      formData: formData,
-                    ),
+                    builder: (context) => LocationListScreen(
+                        // formData: formData,
+                        ),
                   ),
                 );
               },
@@ -290,6 +206,12 @@ class _LocationListScreenState extends State<LocationListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    List<FormData> filteredFormData = savedFormData.where((formData) {
+      final location = formData.location.toLowerCase();
+      final query = _searchController.text.toLowerCase();
+      return location.contains(query);
+    }).toList();
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Location List Screen'),
@@ -303,17 +225,19 @@ class _LocationListScreenState extends State<LocationListScreen> {
               onTap: () {
                 _showDetailsDialog(context, formData, index);
               },
-              title: Text(formData.location),
+              title: Text('location: ${formData.location ?? ''}'),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Created: ${formData.checkNoise}'),
+                  Text('Created: ${formData.date ?? ''}'),
+                  Text('id: ${formData.id}'),
+                  Text('technicianName: ${formData.technicianName ?? ''}'),
                 ],
               ),
               trailing: IconButton(
                 icon: Icon(Icons.delete),
                 onPressed: () {
-                  _showDeleteConfirmationDialog(context, formData);
+                  _deleteFormData(formData);
                 },
               ),
             ),
