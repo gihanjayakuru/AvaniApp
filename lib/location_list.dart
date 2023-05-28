@@ -1,3 +1,4 @@
+import 'package:avani_app/additional_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'form_data.dart';
 import 'service_list.dart';
@@ -196,9 +197,10 @@ class _LocationListScreenState extends State<LocationListScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => LocationListScreen(
-                        // formData: formData,
-                        ),
+                    builder: (context) => AdditionalDetailsScreen(
+                      formData: formData,
+                      //formData: filteredFormData[index],
+                    ),
                   ),
                 );
               },
