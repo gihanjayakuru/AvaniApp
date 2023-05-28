@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'list_screen.dart';
+import 'location_list.dart';
 import 'dart:convert';
 
 class MyFormScreen extends StatefulWidget {
@@ -51,7 +51,7 @@ class _MyFormScreenState extends State<MyFormScreen> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => ListScreen()),
+              MaterialPageRoute(builder: (context) => LocationListScreen()),
             );
           },
         ),
@@ -226,10 +226,6 @@ class _MyFormScreenState extends State<MyFormScreen> {
     String outdoorSerialNum = outdoorSerialNumController.text;
     String outdoorCapacity = outdoorCapacityController.text;
 
-    // Retrieve the additional field values
-    String additionalField1 = 'Value 1'; // Replace with the appropriate value
-    String additionalField2 = 'Value 2'; // Replace with the appropriate value
-
     // Get the current date and time
     DateTime now = DateTime.now();
 
@@ -244,8 +240,6 @@ class _MyFormScreenState extends State<MyFormScreen> {
       'outdoorModelNum': outdoorModelNum,
       'outdoorSerialNum': outdoorSerialNum,
       'outdoorCapacity': outdoorCapacity,
-      'additionalField1': additionalField1,
-      'additionalField2': additionalField2,
       'createdDate': now.toIso8601String(),
     };
 
@@ -266,7 +260,7 @@ class _MyFormScreenState extends State<MyFormScreen> {
     // Once the data is saved, you can navigate to the list screen or perform any other actions
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => ListScreen()),
+      MaterialPageRoute(builder: (context) => LocationListScreen()),
     );
   }
 }

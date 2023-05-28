@@ -1,17 +1,14 @@
-import 'package:flutter/material.dart';
 import 'package:avani_app/service_list.dart';
-import 'package:avani_app/form_data.dart';
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'form_data.dart';
+import 'location_list.dart';
+import 'dart:convert';
 
 class AdditionalDetailsScreen extends StatefulWidget {
   final FormData formData;
-  final List<Map<String, dynamic>> serviceDetails;
-  final List<Map<String, dynamic>> mergedFormDataList;
 
-  AdditionalDetailsScreen({
-    required this.formData,
-    required this.serviceDetails,
-    required this.mergedFormDataList,
-  });
+  AdditionalDetailsScreen({required this.formData});
 
   @override
   _AdditionalDetailsScreenState createState() =>
@@ -19,90 +16,157 @@ class AdditionalDetailsScreen extends StatefulWidget {
 }
 
 class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
-  TextEditingController _additionalFieldController = TextEditingController();
+  // Define controllers for text fields
+  TextEditingController locationController = TextEditingController();
+  TextEditingController serviceTypeController = TextEditingController();
+  TextEditingController serviceDescriptionController = TextEditingController();
+
+  // Declare savedServiceFormData list here
+  List<Map<String, dynamic>> savedServiceFormData = [];
+
+  // Define form key for validation
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
-    _additionalFieldController.dispose();
+    // Dispose of controllers
+    locationController.dispose();
+    serviceTypeController.dispose();
+    serviceDescriptionController.dispose();
     super.dispose();
-  }
-
-  // void _saveAdditionalDetails() {
-  //   String additionalField = _additionalFieldController.text;
-
-  //   // Merge the past details with the new additional details
-  //   Map<String, dynamic> mergedData = {
-  //     'location': widget.formData.location,
-  //     'additionalDetails': additionalField,
-  //     'createdDate': widget.formData.createdDate,
-  //   };
-
-  //   // Pass the merged data to the ServiceListScreen
-  //   Navigator.pushReplacement(
-  //     context,
-  //     MaterialPageRoute(
-  //       builder: (context) => ServiceListScreen(
-  //         serviceDetails: widget.serviceDetails,
-  //         mergedFormDataList: [...widget.mergedFormDataList, mergedData],
-  //       ),
-  //     ),
-  //   );
-  // }
-  void _saveAdditionalDetails() {
-    String additionalField = _additionalFieldController.text;
-
-    // Merge the past details with the new additional details
-    Map<String, dynamic> mergedData = {
-      'location': widget.formData.location,
-      'additionalDetails': additionalField,
-      'createdDate': widget.formData.createdDate,
-    };
-
-    // Pass the merged data to the ServiceListScreen
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ServiceListScreen(
-          mergedFormDataList: [mergedData],
-          serviceDetails: [], // Provide service details as needed
-        ),
-      ),
-    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Additional Details'),
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(
-              'Location: ${widget.formData.location}',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 16),
-            TextFormField(
-              controller: _additionalFieldController,
-              decoration: InputDecoration(
-                labelText: 'Additional Field',
-              ),
-            ),
-            SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: _saveAdditionalDetails,
-              child: Text('Save'),
-            ),
-          ],
+        title: Text('Form'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => LocationListScreen()),
+            );
+          },
         ),
       ),
+      body: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Text(
+                  'Location: ${widget.formData.location}',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Text(
+                  'Service :',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: serviceTypeController,
+                      decoration: InputDecoration(labelText: 'serviceType'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter the serviceType';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: serviceDescriptionController,
+                      decoration:
+                          InputDecoration(labelText: 'serviceDescription'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter the serviceDescription';
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              //
+            ],
+          ),
+        ),
+      ),
+      /////////
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: ElevatedButton(
+          onPressed: () {
+            if (_formKey.currentState?.validate() == true) {
+              // Form is valid, save the data
+              _saveForm();
+            }
+          },
+          child: Text('Save'),
+        ),
+      ),
+    );
+  }
+
+  // );
+  // }
+// }
+  void _saveForm() async {
+    // Retrieve the form field values using the controllers
+    String location = locationController.text;
+    String serviceType = serviceTypeController.text;
+    String serviceDescription = serviceDescriptionController.text;
+
+    // Get the current date and time
+    DateTime now = DateTime.now();
+
+    // Create a map of the form data
+    Map<String, dynamic> serviceFormData = {
+      'location': location,
+      'serviceType': serviceType,
+      'serviceDescription': serviceDescription,
+      'createdDate': now.toIso8601String(),
+    };
+
+    // Save the form data to SharedPreferences
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? savedServiceFormDataString =
+        prefs.getString('savedServiceFormData');
+    if (savedServiceFormDataString != null) {
+      // Append the new form data to the existing saved form data
+      List<dynamic> savedServiceFormDataJson =
+          jsonDecode(savedServiceFormDataString);
+      savedServiceFormDataJson.add(serviceFormData);
+      savedServiceFormData =
+          List<Map<String, dynamic>>.from(savedServiceFormDataJson);
+    } else {
+      // Create a new list with the current form data
+      savedServiceFormData = [serviceFormData];
+    }
+    await prefs.setString(
+        'savedServiceFormData', jsonEncode(savedServiceFormData));
+
+    // Once the data is saved, you can navigate to the list screen or perform any other actions
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ServiceListScreen()),
     );
   }
 }

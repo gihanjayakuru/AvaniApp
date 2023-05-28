@@ -4,13 +4,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'additional_details_screen.dart';
 import 'form_data.dart';
+import 'service_data.dart';
 
-class ListScreen extends StatefulWidget {
+class LocationListScreen extends StatefulWidget {
   @override
-  _ListScreenState createState() => _ListScreenState();
+  _LocationListScreenState createState() => _LocationListScreenState();
 }
 
-class _ListScreenState extends State<ListScreen> {
+class _LocationListScreenState extends State<LocationListScreen> {
   List<FormData> savedFormData = [];
   FormData? selectedFormData;
 
@@ -18,12 +19,14 @@ class _ListScreenState extends State<ListScreen> {
   void initState() {
     super.initState();
     _loadFormData();
+    // _loadMergedData();
   }
 
   void _loadFormData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     String? savedFormDataJson = prefs.getString('savedFormData');
+
     if (savedFormDataJson != null) {
       List<dynamic> formDataList = jsonDecode(savedFormDataJson);
       savedFormData = formDataList
@@ -36,13 +39,41 @@ class _ListScreenState extends State<ListScreen> {
     });
   }
 
-  void _showDetailsDialog(BuildContext context, FormData formData) {
+  // void _loadMergedData() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  //   String? savedMergedDataJson = prefs.getString('savedMergedData');
+
+  //   if (savedMergedDataJson != null) {
+  //     List<dynamic> mergedDataList = jsonDecode(savedMergedDataJson);
+  //     savedMergedData = mergedDataList
+  //         .map((mergedDataJson) => MergedData.fromJson(mergedDataJson))
+  //         .toList();
+  //   }
+
+  //   setState(() {
+  //     // Trigger a rebuild to display the retrieved data
+  //   });
+  // }
+
+  void _showDetailsDialog(BuildContext context, FormData formData, int index) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Additional Details'),
-          content: Text('Would you like to add more details?'),
+          content: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('Location: ${formData.location}'),
+              SizedBox(height: 8),
+              Text('Created: ${formData.createdDate.toString()}'),
+              SizedBox(height: 8),
+              Text('indoorModel:'),
+              Text(formData.indoorModel),
+            ],
+          ),
           actions: [
             TextButton(
               onPressed: () {
@@ -52,8 +83,6 @@ class _ListScreenState extends State<ListScreen> {
                   MaterialPageRoute(
                     builder: (context) => AdditionalDetailsScreen(
                       formData: formData,
-                      serviceDetails: [], // Provide service details as needed
-                      mergedFormDataList: [], // Provide merged form data as needed
                     ),
                   ),
                 );
@@ -76,7 +105,7 @@ class _ListScreenState extends State<ListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('List Screen'),
+        title: Text('Location List Screen'),
       ),
       body: ListView.builder(
         itemCount: savedFormData.length,
@@ -85,10 +114,7 @@ class _ListScreenState extends State<ListScreen> {
           return Card(
             child: ListTile(
               onTap: () {
-                setState(() {
-                  selectedFormData = formData;
-                });
-                _showDetailsDialog(context, formData);
+                _showDetailsDialog(context, formData, index);
               },
               title: Text(formData.location),
               subtitle: Column(
