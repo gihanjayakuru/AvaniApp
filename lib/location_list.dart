@@ -152,13 +152,6 @@ class _LocationListScreenState extends State<LocationListScreen> {
     );
   }
 
-  // void _deleteFormData(FormData formData) {
-  //   // Perform deletion logic here, such as removing the item from the list
-  //   setState(() {
-  //     savedFormData.remove(formData);
-  //   });
-  // }
-
 //
   void _showDetailsDialog(BuildContext context, FormData formData, int index) {
     showDialog(
@@ -295,34 +288,6 @@ class _LocationListScreenState extends State<LocationListScreen> {
     );
   }
 
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Scaffold(
-  //     appBar: AppBar(
-  //       title: Text('Location List Screen'),
-  //     ),
-  //     body: ListView.builder(
-  //       itemCount: savedFormData.length,
-  //       itemBuilder: (context, index) {
-  //         FormData formData = savedFormData[index];
-  //         return Card(
-  //           child: ListTile(
-  //             onTap: () {
-  //               _showDetailsDialog(context, formData, index);
-  //             },
-  //             title: Text(formData.location),
-  //             subtitle: Column(
-  //               crossAxisAlignment: CrossAxisAlignment.start,
-  //               children: [
-  //                 Text('Created: ${formData.createdDate.toString()}'),
-  //               ],
-  //             ),
-  //           ),
-  //         );
-  //       },
-  //     ),
-  //   );
-  // }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

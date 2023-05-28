@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'database_helper.dart';
 import 'location_list.dart';
-import 'dart:convert';
 
 class MyFormScreen extends StatefulWidget {
   @override
@@ -36,9 +34,6 @@ class _MyFormScreenState extends State<MyFormScreen> {
   TextEditingController remarkController = TextEditingController();
   TextEditingController dateController = TextEditingController();
   TextEditingController technicianNameController = TextEditingController();
-
-  // Declare savedFormData list here
-  List<Map<String, dynamic>> savedFormData = [];
 
   // Define form key for validation
   final _formKey = GlobalKey<FormState>();
@@ -334,14 +329,7 @@ class _MyFormScreenState extends State<MyFormScreen> {
     );
   }
 
-  // );
-  // }
-// }
-//IN HERE THE FORM NOT BE EMPTY
-  // List<Map<String, dynamic>> savedFormData = [];
   void _saveForm() async {
-    print("object");
-
     // Retrieve the form field values using the controllers
     String location = locationController.text;
     String filterClean = filterCleanController.text;
@@ -353,11 +341,9 @@ class _MyFormScreenState extends State<MyFormScreen> {
     String checkNoise = checkNoiseController.text;
     String indoorHousingCondition = indoorHousingConditionController.text;
     String pcbStatus = pcbStatusController.text;
-
     String acSlidinDoorOperation = acSlidinDoorOperationController.text;
     String thermostatSetting = thermostatSettingController.text;
     String drainLineClean = drainLineCleanController.text;
-
     String compressorNoise = compressorNoiseController.text;
     String fanNoise = fanNoiseController.text;
     String outdoorHousingCondition = outdoorHousingConditionController.text;
@@ -388,30 +374,39 @@ class _MyFormScreenState extends State<MyFormScreen> {
       'technicianName': technicianName,
     };
 
-    print(formData);
+    // Save the form data in SQLite
+    int id = await DatabaseHelper.instance.insertFormData(formData);
+    print('Form data saved with ID: $id');
 
-    // Save the form data to SharedPreferences
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? savedFormDataString = prefs.getString('savedFormData');
-    if (savedFormDataString != null) {
-      // Append the new form data to the existing saved form data
-      List<dynamic> savedFormDataJson = jsonDecode(savedFormDataString);
-      savedFormDataJson.add(formData);
-      savedFormData = List<Map<String, dynamic>>.from(savedFormDataJson);
-    } else {
-      // Create a new list with the current form data
-      savedFormData = [formData];
-    }
-    await prefs.setString('savedFormData', jsonEncode(savedFormData));
+    // Clear the form fields
+    _clearForm();
 
     // Once the data is saved, you can navigate to the list screen or perform any other actions
-    //  Navigator.push(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => ListScreen()),
-
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => LocationListScreen()),
     );
+  }
+
+  void _clearForm() {
+    locationController.clear();
+    filterCleanController.clear();
+    blowerCheckController.clear();
+    inspectCleanIduCoilFinsController.clear();
+    checkCleanDrainPlateController.clear();
+    drainPumpCheckController.clear();
+    checkPipingDuckInsulationController.clear();
+    checkNoiseController.clear();
+    indoorHousingConditionController.clear();
+    pcbStatusController.clear();
+    acSlidinDoorOperationController.clear();
+    thermostatSettingController.clear();
+    drainLineCleanController.clear();
+    compressorNoiseController.clear();
+    fanNoiseController.clear();
+    outdoorHousingConditionController.clear();
+    remarkController.clear();
+    dateController.clear();
+    technicianNameController.clear();
   }
 }
