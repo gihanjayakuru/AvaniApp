@@ -57,13 +57,12 @@ class _LocationListScreenState extends State<LocationListScreen> {
   void _loadFormData2() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    String? savedFormDataJson = prefs.getString('savedFormData');
+    List<String>? savedFormDataJsonList = prefs.getStringList('savedFormData');
 
-    if (savedFormDataJson != null) {
-      List<dynamic> formDataList = jsonDecode(savedFormDataJson);
-      savedFormData = formDataList.map((formDataJson) {
+    if (savedFormDataJsonList != null) {
+      savedFormData = savedFormDataJsonList.map((formDataJson) {
         try {
-          return FormData.fromJson(formDataJson);
+          return FormData.fromJson(jsonDecode(formDataJson));
         } catch (e) {
           // Error occurred during parsing, handle it accordingly
           print('Error parsing FormData: $e');
@@ -99,6 +98,68 @@ class _LocationListScreenState extends State<LocationListScreen> {
     });
   }
 
+//
+  void _deleteFormData(FormData formData) {
+    setState(() {
+      savedFormData.remove(formData);
+    });
+
+    _saveFormData(); // Save the updated list
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Item deleted'),
+        duration: Duration(seconds: 2),
+      ),
+    );
+  }
+
+  void _saveFormData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    List<String> formDataJsonList = savedFormData.map((formData) {
+      return jsonEncode(formData.toJson());
+    }).toList();
+
+    prefs.setStringList('savedFormData', formDataJsonList);
+  }
+
+  void _showDeleteConfirmationDialog(BuildContext context, FormData formData) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirm Deletion'),
+          content: Text('Are you sure you want to delete this item?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                // Perform deletion logic here
+                _deleteFormData(formData);
+                Navigator.pop(context); // Close the dialog
+              },
+              child: Text('Delete'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close the dialog
+              },
+              child: Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  // void _deleteFormData(FormData formData) {
+  //   // Perform deletion logic here, such as removing the item from the list
+  //   setState(() {
+  //     savedFormData.remove(formData);
+  //   });
+  // }
+
+//
   void _showDetailsDialog(BuildContext context, FormData formData, int index) {
     showDialog(
       context: context,
@@ -262,7 +323,6 @@ class _LocationListScreenState extends State<LocationListScreen> {
   //     ),
   //   );
   // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -285,18 +345,22 @@ class _LocationListScreenState extends State<LocationListScreen> {
                   Text('Created: ${formData.checkNoise}'),
                 ],
               ),
+              trailing: IconButton(
+                icon: Icon(Icons.delete),
+                onPressed: () {
+                  _showDeleteConfirmationDialog(context, formData);
+                },
+              ),
             ),
           );
         },
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 1, // Set the index of the current screen
+        currentIndex: 1,
         onTap: (int index) {
           if (index == 0) {
-            // Navigate to HomeScreen
             Navigator.popUntil(context, (route) => route.isFirst);
           } else if (index == 2) {
-            // Navigate to ServiceListScreen
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => ServiceListScreen()),
