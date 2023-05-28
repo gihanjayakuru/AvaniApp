@@ -12,7 +12,7 @@ class _MyFormScreenState extends State<MyFormScreen> {
   TextEditingController locationController = TextEditingController();
   TextEditingController filterCleanController = TextEditingController();
   TextEditingController blowerCheckController = TextEditingController();
-  TextEditingController inspectCleanIduCoilFinsController =
+  TextEditingController indoorInspectCleanIduCoilFinsController =
       TextEditingController();
   TextEditingController checkCleanDrainPlateController =
       TextEditingController();
@@ -22,15 +22,21 @@ class _MyFormScreenState extends State<MyFormScreen> {
   TextEditingController checkNoiseController = TextEditingController();
   TextEditingController indoorHousingConditionController =
       TextEditingController();
-  TextEditingController pcbStatusController = TextEditingController();
+  TextEditingController indoorPcbStatusController = TextEditingController();
+////////////////////////////////////////////////////////////////////////////
+  TextEditingController compressorNoiseController = TextEditingController();
+  TextEditingController fanNoiseController = TextEditingController();
+  TextEditingController outdoorInspectCleanIduCoilFinsController =
+      TextEditingController();
+  TextEditingController outdoorPcbStatusController = TextEditingController();
+  TextEditingController outdoorHousingConditionController =
+      TextEditingController();
+  ////////////////////////////////////////////////////////////////////
   TextEditingController acSlidinDoorOperationController =
       TextEditingController();
   TextEditingController thermostatSettingController = TextEditingController();
   TextEditingController drainLineCleanController = TextEditingController();
-  TextEditingController compressorNoiseController = TextEditingController();
-  TextEditingController fanNoiseController = TextEditingController();
-  TextEditingController outdoorHousingConditionController =
-      TextEditingController();
+  /////////////////////////////////////////////////////////
   TextEditingController remarkController = TextEditingController();
   TextEditingController dateController = TextEditingController();
   TextEditingController technicianNameController = TextEditingController();
@@ -44,26 +50,29 @@ class _MyFormScreenState extends State<MyFormScreen> {
     locationController.dispose();
     filterCleanController.dispose();
     blowerCheckController.dispose();
-    inspectCleanIduCoilFinsController.dispose();
+    indoorInspectCleanIduCoilFinsController.dispose();
     checkCleanDrainPlateController.dispose();
     drainPumpCheckController.dispose();
     checkPipingDuckInsulationController.dispose();
     checkNoiseController.dispose();
     indoorHousingConditionController.dispose();
-    pcbStatusController.dispose();
+    indoorPcbStatusController.dispose();
+    //////////////////////////////////////////////
+    compressorNoiseController.dispose();
+    fanNoiseController.dispose();
+    outdoorInspectCleanIduCoilFinsController.dispose();
+    outdoorPcbStatusController.dispose();
+    outdoorHousingConditionController.dispose();
+    ////////////////////////////////
     acSlidinDoorOperationController.dispose();
     thermostatSettingController.dispose();
     drainLineCleanController.dispose();
-    compressorNoiseController.dispose();
-    fanNoiseController.dispose();
-    outdoorHousingConditionController.dispose();
+    ////////////////////////////
     remarkController.dispose();
     dateController.dispose();
     technicianNameController.dispose();
     super.dispose();
   }
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +107,7 @@ class _MyFormScreenState extends State<MyFormScreen> {
                   },
                 ),
               ),
-              Padding(
+              const Padding(
                 padding: EdgeInsets.all(16.0),
                 child: Text(
                   'Indoor unit',
@@ -109,7 +118,7 @@ class _MyFormScreenState extends State<MyFormScreen> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(16.0),
                 child: Column(
                   children: [
                     TextFormField(
@@ -133,33 +142,33 @@ class _MyFormScreenState extends State<MyFormScreen> {
                       },
                     ),
                     TextFormField(
-                      controller: inspectCleanIduCoilFinsController,
-                      decoration: InputDecoration(labelText: 'Serial Number'),
+                      controller: indoorInspectCleanIduCoilFinsController,
+                      decoration: InputDecoration(
+                          labelText: 'indoorInspectCleanIduCoilFins'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter the indoor serial number';
+                          return 'Please enter the indoorInspectCleanIduCoilFins';
                         }
                         return null;
                       },
                     ),
                     TextFormField(
                       controller: checkCleanDrainPlateController,
-                      decoration: InputDecoration(
-                          labelText: 'checkCleanDrainPlateController'),
+                      decoration:
+                          InputDecoration(labelText: 'checkCleanDrainPlate'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter the checkCleanDrainPlateController';
+                          return 'Please enter the checkCleanDrainPlate';
                         }
                         return null;
                       },
                     ),
                     TextFormField(
                       controller: drainPumpCheckController,
-                      decoration: InputDecoration(
-                          labelText: 'drainPumpCheckController'),
+                      decoration: InputDecoration(labelText: 'drainPumpCheck'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter the drainPumpCheckController';
+                          return 'Please enter the drainPumpCheck';
                         }
                         return null;
                       },
@@ -167,98 +176,97 @@ class _MyFormScreenState extends State<MyFormScreen> {
                     TextFormField(
                       controller: checkPipingDuckInsulationController,
                       decoration: InputDecoration(
-                          labelText: 'checkPipingDuckInsulationController'),
+                          labelText: 'checkPipingDuckInsulation'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter the checkPipingDuckInsulationController';
+                          return 'Please enter the checkPipingDuckInsulation';
                         }
                         return null;
                       },
                     ),
                     TextFormField(
                       controller: checkNoiseController,
-                      decoration:
-                          InputDecoration(labelText: 'checkNoiseController'),
+                      decoration: InputDecoration(labelText: 'checkNoise'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter the checkNoiseController';
+                          return 'Please enter the checkNoise';
                         }
                         return null;
                       },
                     ),
                     TextFormField(
                       controller: indoorHousingConditionController,
-                      decoration: InputDecoration(
-                          labelText: 'indoorHousingConditionController'),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter the indoorHousingConditionController';
-                        }
-                        return null;
-                      },
-                    ),
-                    TextFormField(
-                      controller: pcbStatusController,
                       decoration:
-                          InputDecoration(labelText: 'pcbStatusController'),
+                          InputDecoration(labelText: 'indoorHousingCondition'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter the pcbStatusController';
+                          return 'Please enter the indoorHousingCondition';
                         }
                         return null;
                       },
                     ),
                     TextFormField(
-                      controller: acSlidinDoorOperationController,
-                      decoration: InputDecoration(
-                          labelText: 'acSlidinDoorOperationController'),
+                      controller: indoorPcbStatusController,
+                      decoration:
+                          InputDecoration(labelText: 'indoorPcbStatus '),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter the acSlidinDoorOperationController';
+                          return 'Please enter the indoorPcbStatus';
                         }
                         return null;
                       },
                     ),
-                    TextFormField(
-                      controller: thermostatSettingController,
-                      decoration: InputDecoration(
-                          labelText: 'thermostatSettingController'),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter the thermostatSettingController';
-                        }
-                        return null;
-                      },
+                    const Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: Text(
+                        'Outdoor unit',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
-                    TextFormField(
-                      controller: drainLineCleanController,
-                      decoration: InputDecoration(
-                          labelText: 'drainLineCleanController'),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter the drainLineCleanController';
-                        }
-                        return null;
-                      },
-                    ),
+
+                    //////////////////////////////////////////////////////////////////////////////////////////////////////
                     TextFormField(
                       controller: compressorNoiseController,
-                      decoration: InputDecoration(
-                          labelText: 'compressorNoiseController'),
+                      decoration: InputDecoration(labelText: 'compressorNoise'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter the compressorNoiseController';
+                          return 'Please enter the compressorNoise';
                         }
                         return null;
                       },
                     ),
                     TextFormField(
                       controller: fanNoiseController,
-                      decoration:
-                          InputDecoration(labelText: 'fanNoiseController'),
+                      decoration: InputDecoration(labelText: 'fanNoise'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter the fanNoiseController';
+                          return 'Please enter the fanNoise';
+                        }
+                        return null;
+                      },
+                    ),
+
+                    TextFormField(
+                      controller: outdoorInspectCleanIduCoilFinsController,
+                      decoration: InputDecoration(
+                          labelText: 'outdoorInspectCleanIduCoilFins'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter the outdoorInspectCleanIduCoilFins';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: outdoorPcbStatusController,
+                      decoration:
+                          InputDecoration(labelText: 'outdoorPcbStatus'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter the outdoorPcbStatus';
                         }
                         return null;
                       },
@@ -266,21 +274,64 @@ class _MyFormScreenState extends State<MyFormScreen> {
                     TextFormField(
                       controller: outdoorHousingConditionController,
                       decoration: InputDecoration(
-                          labelText: 'outdoorHousingConditionController'),
+                          labelText: 'outdoorHousingCondition '),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter the outdoorHousingConditionController';
+                          return 'Please enter the outdoorHousingCondition ';
+                        }
+                        return null;
+                      },
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: Text(
+                        'General',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+
+                    TextFormField(
+                      controller: acSlidinDoorOperationController,
+                      decoration:
+                          InputDecoration(labelText: 'acSlidinDoorOperation'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter the acSlidinDoorOperation';
                         }
                         return null;
                       },
                     ),
                     TextFormField(
-                      controller: remarkController,
+                      controller: thermostatSettingController,
                       decoration:
-                          InputDecoration(labelText: 'remarkController'),
+                          InputDecoration(labelText: 'thermostatSetting '),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter the remarkController';
+                          return 'Please enter the thermostatSetting';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: drainLineCleanController,
+                      decoration: InputDecoration(labelText: 'drainLineClean '),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter the drainLineClean';
+                        }
+                        return null;
+                      },
+                    ),
+
+                    TextFormField(
+                      controller: remarkController,
+                      decoration: InputDecoration(labelText: 'remark'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter the remark';
                         }
                         return null;
                       },
@@ -297,11 +348,10 @@ class _MyFormScreenState extends State<MyFormScreen> {
                     ),
                     TextFormField(
                       controller: technicianNameController,
-                      decoration: InputDecoration(
-                          labelText: 'technicianNameController'),
+                      decoration: InputDecoration(labelText: 'technicianName'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter the technicianNameController';
+                          return 'Please enter the technicianName';
                         }
                         return null;
                       },
@@ -336,19 +386,26 @@ class _MyFormScreenState extends State<MyFormScreen> {
     String location = locationController.text;
     String filterClean = filterCleanController.text;
     String blowerCheck = blowerCheckController.text;
-    String inspectCleanIduCoilFins = inspectCleanIduCoilFinsController.text;
+    String indoorInspectCleanIduCoilFins =
+        indoorInspectCleanIduCoilFinsController.text;
     String checkCleanDrainPlate = checkCleanDrainPlateController.text;
     String drainPumpCheck = drainPumpCheckController.text;
     String checkPipingDuckInsulation = checkPipingDuckInsulationController.text;
     String checkNoise = checkNoiseController.text;
     String indoorHousingCondition = indoorHousingConditionController.text;
-    String pcbStatus = pcbStatusController.text;
-    String acSlidinDoorOperation = acSlidinDoorOperationController.text;
-    String thermostatSetting = thermostatSettingController.text;
-    String drainLineClean = drainLineCleanController.text;
+    String indoorPcbStatus = indoorPcbStatusController.text;
+    ////////////////////////////////
     String compressorNoise = compressorNoiseController.text;
     String fanNoise = fanNoiseController.text;
+    String outdoorInspectCleanIduCoilFins =
+        outdoorInspectCleanIduCoilFinsController.text;
+    String outdoorPcbStatus = outdoorPcbStatusController.text;
     String outdoorHousingCondition = outdoorHousingConditionController.text;
+    ////////////////////////////////////
+    String acSlidinDoorOperation = acSlidinDoorOperationController.text;
+    String thermostatSetting = thermostatSettingController.text;
+    String drainLineClean = thermostatSettingController.text;
+    ///////////////////
     String remark = remarkController.text;
     String date = dateController.text;
     String technicianName = technicianNameController.text;
@@ -358,19 +415,24 @@ class _MyFormScreenState extends State<MyFormScreen> {
       'location': location,
       'filterClean': filterClean,
       'blowerCheck': blowerCheck,
-      'inspectCleanIduCoilFins': inspectCleanIduCoilFins,
+      'indoorInspectCleanIduCoilFins': indoorInspectCleanIduCoilFins,
       'checkCleanDrainPlate': checkCleanDrainPlate,
       'drainPumpCheck': drainPumpCheck,
       'checkPipingDuckInsulation': checkPipingDuckInsulation,
       'checkNoise': checkNoise,
       'indoorHousingCondition': indoorHousingCondition,
-      'pcbStatus': pcbStatus,
+      'indoorPcbStatus': indoorPcbStatus,
+      /////////////////////////////////
+      'compressorNoise': compressorNoise,
+      'fanNoise': fanNoise,
+      'outdoorInspectCleanIduCoilFins': outdoorInspectCleanIduCoilFins,
+      'outdoorPcbStatus': outdoorPcbStatus,
+      'outdoorHousingCondition': outdoorHousingCondition,
+      ///////////////////////////////////////
       'acSlidinDoorOperation': acSlidinDoorOperation,
       'thermostatSetting': thermostatSetting,
       'drainLineClean': drainLineClean,
-      'compressorNoise': compressorNoise,
-      'fanNoise': fanNoise,
-      'outdoorHousingCondition': outdoorHousingCondition,
+      ///////////////////////////
       'remark': remark,
       'date': date,
       'technicianName': technicianName,
@@ -394,19 +456,24 @@ class _MyFormScreenState extends State<MyFormScreen> {
     locationController.clear();
     filterCleanController.clear();
     blowerCheckController.clear();
-    inspectCleanIduCoilFinsController.clear();
+    indoorInspectCleanIduCoilFinsController.clear();
     checkCleanDrainPlateController.clear();
     drainPumpCheckController.clear();
     checkPipingDuckInsulationController.clear();
     checkNoiseController.clear();
     indoorHousingConditionController.clear();
-    pcbStatusController.clear();
-    acSlidinDoorOperationController.clear();
-    thermostatSettingController.clear();
-    drainLineCleanController.clear();
+    indoorPcbStatusController.clear();
+    ////////////////////////////////
     compressorNoiseController.clear();
     fanNoiseController.clear();
+    outdoorInspectCleanIduCoilFinsController.clear();
+    outdoorPcbStatusController.clear();
     outdoorHousingConditionController.clear();
+    ////////////////////////////////////
+    acSlidinDoorOperationController.clear();
+    thermostatSettingController.clear();
+    thermostatSettingController.clear();
+    ///////////////////
     remarkController.clear();
     dateController.clear();
     technicianNameController.clear();

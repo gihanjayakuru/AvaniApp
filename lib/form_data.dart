@@ -4,19 +4,24 @@ class FormData {
   String? location;
   String? filterClean;
   String? blowerCheck;
-  String? inspectCleanIduCoilFins;
+  String? indoorInspectCleanIduCoilFins;
   String? checkCleanDrainPlate;
   String? drainPumpCheck;
   String? checkPipingDuckInsulation;
   String? checkNoise;
   String? indoorHousingCondition;
-  String? pcbStatus;
+  String? indoorPcbStatus;
+/////////////////////////////////
+  String? compressorNoise;
+  String? fanNoise;
+  String? outdoorInspectCleanIduCoilFins;
+  String? outdoorPcbStatus;
+  String? outdoorHousingCondition;
+  //////////////////////
   String? acSlidinDoorOperation;
   String? thermostatSetting;
   String? drainLineClean;
-  String? compressorNoise;
-  String? fanNoise;
-  String? outdoorHousingCondition;
+  ////////////////////////////////////
   String? remark;
   String? date;
   String? technicianName;
@@ -26,19 +31,24 @@ class FormData {
     this.location,
     this.filterClean,
     this.blowerCheck,
-    this.inspectCleanIduCoilFins,
+    this.indoorInspectCleanIduCoilFins,
     this.checkCleanDrainPlate,
     this.drainPumpCheck,
     this.checkPipingDuckInsulation,
     this.checkNoise,
     this.indoorHousingCondition,
-    this.pcbStatus,
+    this.indoorPcbStatus,
+    ////////////////////////////
+    this.compressorNoise,
+    this.fanNoise,
+    this.outdoorInspectCleanIduCoilFins,
+    this.outdoorPcbStatus,
+    this.outdoorHousingCondition,
+    ////////////////////////////////////
     this.acSlidinDoorOperation,
     this.thermostatSetting,
     this.drainLineClean,
-    this.compressorNoise,
-    this.fanNoise,
-    this.outdoorHousingCondition,
+    ////////////////////////////
     this.remark,
     this.date,
     this.technicianName,
@@ -51,19 +61,24 @@ class FormData {
       location: map['location'],
       filterClean: map['filterClean'],
       blowerCheck: map['blowerCheck'],
-      inspectCleanIduCoilFins: map['inspectCleanIduCoilFins'],
+      indoorInspectCleanIduCoilFins: map['indoorInspectCleanIduCoilFins'],
       checkCleanDrainPlate: map['checkCleanDrainPlate'],
       drainPumpCheck: map['drainPumpCheck'],
       checkPipingDuckInsulation: map['checkPipingDuckInsulation'],
       checkNoise: map['checkNoise'],
       indoorHousingCondition: map['indoorHousingCondition'],
-      pcbStatus: map['pcbStatus'],
+      indoorPcbStatus: map['indoorPcbStatus'],
+      //////////////////////////////////////////////
+      compressorNoise: map['compressorNoise'],
+      fanNoise: map['fanNoise'],
+      outdoorInspectCleanIduCoilFins: map['outdoorInspectCleanIduCoilFins'],
+      outdoorPcbStatus: map['outdoorPcbStatus'],
+      outdoorHousingCondition: map['outdoorHousingCondition'],
+      ///////////////////////////////////////////
       acSlidinDoorOperation: map['acSlidinDoorOperation'],
       thermostatSetting: map['thermostatSetting'],
       drainLineClean: map['drainLineClean'],
-      compressorNoise: map['compressorNoise'],
-      fanNoise: map['fanNoise'],
-      outdoorHousingCondition: map['outdoorHousingCondition'],
+      /////////////////////////////////////////////
       remark: map['remark'],
       date: map['date'],
       technicianName: map['technicianName'],
@@ -77,19 +92,24 @@ class FormData {
       'location': location,
       'filterClean': filterClean,
       'blowerCheck': blowerCheck,
-      'inspectCleanIduCoilFins': inspectCleanIduCoilFins,
+      'indoorInspectCleanIduCoilFins': indoorInspectCleanIduCoilFins,
       'checkCleanDrainPlate': checkCleanDrainPlate,
       'drainPumpCheck': drainPumpCheck,
       'checkPipingDuckInsulation': checkPipingDuckInsulation,
       'checkNoise': checkNoise,
       'indoorHousingCondition': indoorHousingCondition,
-      'pcbStatus': pcbStatus,
+      'indoorPcbStatus': indoorPcbStatus,
+      /////////////////////////////////
+      'compressorNoise': compressorNoise,
+      'fanNoise': fanNoise,
+      'outdoorInspectCleanIduCoilFins': outdoorInspectCleanIduCoilFins,
+      'outdoorPcbStatus': outdoorPcbStatus,
+      'outdoorHousingCondition': outdoorHousingCondition,
+      ///////////////////////////////////////
       'acSlidinDoorOperation': acSlidinDoorOperation,
       'thermostatSetting': thermostatSetting,
       'drainLineClean': drainLineClean,
-      'compressorNoise': compressorNoise,
-      'fanNoise': fanNoise,
-      'outdoorHousingCondition': outdoorHousingCondition,
+      ///////////////////////////
       'remark': remark,
       'date': date,
       'technicianName': technicianName,

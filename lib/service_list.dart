@@ -76,9 +76,9 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('location: ${serviceFormData.location}'),
-                  Text('serviceType: ${serviceFormData.serviceType}'),
+                  Text('serviceType: ${serviceFormData.afterAmp}'),
                   Text(
-                      'serviceDescription: ${serviceFormData.serviceDescription}'),
+                      'serviceDescription: ${serviceFormData.afterGasPressureHighSide}'),
                 ],
               ),
               trailing: IconButton(

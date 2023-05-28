@@ -37,19 +37,26 @@ class _LocationListScreenState extends State<LocationListScreen> {
         location: formDataMap['location'],
         filterClean: formDataMap['filterClean'],
         blowerCheck: formDataMap['blowerCheck'],
-        inspectCleanIduCoilFins: formDataMap['inspectCleanIduCoilFins'],
+        indoorInspectCleanIduCoilFins:
+            formDataMap['indoorInspectCleanIduCoilFins'],
         checkCleanDrainPlate: formDataMap['checkCleanDrainPlate'],
         drainPumpCheck: formDataMap['drainPumpCheck'],
         checkPipingDuckInsulation: formDataMap['checkPipingDuckInsulation'],
         checkNoise: formDataMap['checkNoise'],
         indoorHousingCondition: formDataMap['indoorHousingCondition'],
-        pcbStatus: formDataMap['pcbStatus'],
+        indoorPcbStatus: formDataMap['indoorPcbStatus'],
+        //////////////////////////////////////////////
+        compressorNoise: formDataMap['compressorNoise'],
+        fanNoise: formDataMap['fanNoise'],
+        outdoorInspectCleanIduCoilFins:
+            formDataMap['outdoorInspectCleanIduCoilFins'],
+        outdoorPcbStatus: formDataMap['outdoorPcbStatus'],
+        outdoorHousingCondition: formDataMap['outdoorHousingCondition'],
+        ///////////////////////////////////////////
         acSlidinDoorOperation: formDataMap['acSlidinDoorOperation'],
         thermostatSetting: formDataMap['thermostatSetting'],
         drainLineClean: formDataMap['drainLineClean'],
-        compressorNoise: formDataMap['compressorNoise'],
-        fanNoise: formDataMap['fanNoise'],
-        outdoorHousingCondition: formDataMap['outdoorHousingCondition'],
+        /////////////////////////////////////////////
         remark: formDataMap['remark'],
         date: formDataMap['date'],
         technicianName: formDataMap['technicianName'],
@@ -104,6 +111,18 @@ class _LocationListScreenState extends State<LocationListScreen> {
                   subtitle: Text(formData.location ?? ''),
                 ),
                 Divider(),
+                ////////////////////indoor//////////////////////
+                ///
+                const Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Text(
+                    'Indoor unit',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
                 ListTile(
                   title: Text('Filter Clean'),
                   subtitle: Text(formData.filterClean ?? ''),
@@ -116,7 +135,7 @@ class _LocationListScreenState extends State<LocationListScreen> {
                 Divider(),
                 ListTile(
                   title: Text('Inspect Clean IDU Coil Fins'),
-                  subtitle: Text(formData.inspectCleanIduCoilFins ?? ''),
+                  subtitle: Text(formData.indoorInspectCleanIduCoilFins ?? ''),
                 ),
                 Divider(),
                 ListTile(
@@ -146,37 +165,69 @@ class _LocationListScreenState extends State<LocationListScreen> {
                 Divider(),
                 ListTile(
                   title: Text('PCB Status'),
-                  subtitle: Text(formData.pcbStatus ?? ''),
+                  subtitle: Text(formData.indoorPcbStatus ?? ''),
                 ),
                 Divider(),
-                ListTile(
-                  title: Text('AC Sliding Door Operation'),
-                  subtitle: Text(formData.acSlidinDoorOperation ?? ''),
+                //////////////////////////outdoor//////////////////////////////
+                const Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Text(
+                    'Outdoor unit',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
-                Divider(),
                 ListTile(
-                  title: Text('Thermostat Setting'),
-                  subtitle: Text(formData.thermostatSetting ?? ''),
-                ),
-                Divider(),
-                ListTile(
-                  title: Text('Drain Line Clean'),
-                  subtitle: Text(formData.drainLineClean ?? ''),
-                ),
-                Divider(),
-                ListTile(
-                  title: Text('Compressor Noise'),
+                  title: Text('compressor Noise'),
                   subtitle: Text(formData.compressorNoise ?? ''),
                 ),
                 Divider(),
                 ListTile(
-                  title: Text('Fan Noise'),
+                  title: Text('fan Noise'),
                   subtitle: Text(formData.fanNoise ?? ''),
                 ),
                 Divider(),
                 ListTile(
-                  title: Text('Outdoor Housing Condition'),
+                  title: Text('outdoor Inspect Clean Idu Coil Fins'),
+                  subtitle: Text(formData.outdoorInspectCleanIduCoilFins ?? ''),
+                ),
+                Divider(),
+                ListTile(
+                  title: Text('outdoor Pcb Status'),
+                  subtitle: Text(formData.outdoorPcbStatus ?? ''),
+                ),
+                Divider(),
+                ListTile(
+                  title: Text('outdoor Housing Condition'),
                   subtitle: Text(formData.outdoorHousingCondition ?? ''),
+                ),
+                Divider(),
+                //////////////////////////General///////////////////////////////
+                const Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Text(
+                    'General',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                ListTile(
+                  title: Text('ac Slidin Door Operation'),
+                  subtitle: Text(formData.acSlidinDoorOperation ?? ''),
+                ),
+                Divider(),
+                ListTile(
+                  title: Text('thermostat Setting'),
+                  subtitle: Text(formData.thermostatSetting ?? ''),
+                ),
+                Divider(),
+                ListTile(
+                  title: Text('drain Line Clean'),
+                  subtitle: Text(formData.drainLineClean ?? ''),
                 ),
                 Divider(),
                 ListTile(
