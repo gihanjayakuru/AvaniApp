@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
 
 import 'database_helper.dart';
 import 'location_list.dart';
@@ -28,34 +28,18 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
   }
 
   void _loadServiceFormData() async {
-    Database database = await openDatabase(
-      join(await getDatabasesPath(), 'avani_data.db'),
-    );
-
     List<Map<String, dynamic>> serviceFormDataList =
-        await database.query('service_form_data');
+        await DatabaseHelper.instance.getServiceFormDataList();
 
     savedServiceFormData = serviceFormDataList
         .map((formData) => MergedData.fromJson(formData))
         .toList();
 
-    await database.close();
-
     setState(() {});
   }
 
   void _deleteServiceFormData(int id) async {
-    Database database = await openDatabase(
-      join(await getDatabasesPath(), 'avani_data.db'),
-    );
-
-    await database.delete(
-      'service_form_data',
-      where: 'id = ?',
-      whereArgs: [id],
-    );
-
-    await database.close();
+    await DatabaseHelper.instance.deleteServiceFormData(id);
 
     _loadServiceFormData();
   }

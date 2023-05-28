@@ -16,8 +16,32 @@ class AdditionalDetailsScreen extends StatefulWidget {
 
 class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
   // Define controllers for text fields
-  TextEditingController serviceTypeController = TextEditingController();
-  TextEditingController serviceDescriptionController = TextEditingController();
+  TextEditingController beforeRoomTemperatureController =
+      TextEditingController();
+  TextEditingController beforeSetPointTemperatureController =
+      TextEditingController();
+  TextEditingController beforeSupplyGrillTemperatureController =
+      TextEditingController();
+  TextEditingController beforeReturnGrillTemperatureController =
+      TextEditingController();
+  TextEditingController beforeGasPressureLowSideController =
+      TextEditingController();
+  TextEditingController beforeGasPressureHighSideController =
+      TextEditingController();
+  TextEditingController beforeAmpController = TextEditingController();
+  TextEditingController afterRoomTemperatureController =
+      TextEditingController();
+  TextEditingController afterSetPointTemperatureController =
+      TextEditingController();
+  TextEditingController afterSupplyGrillTemperatureController =
+      TextEditingController();
+  TextEditingController afterReturnGrillTemperatureController =
+      TextEditingController();
+  TextEditingController afterGasPressureLowSideController =
+      TextEditingController();
+  TextEditingController afterGasPressureHighSideController =
+      TextEditingController();
+  TextEditingController afterAmpController = TextEditingController();
 
   // Define form key for validation
   final _formKey = GlobalKey<FormState>();
@@ -25,8 +49,20 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
   @override
   void dispose() {
     // Dispose of controllers
-    serviceTypeController.dispose();
-    serviceDescriptionController.dispose();
+    beforeRoomTemperatureController.dispose();
+    beforeSetPointTemperatureController.dispose();
+    beforeSupplyGrillTemperatureController.dispose();
+    beforeReturnGrillTemperatureController.dispose();
+    beforeGasPressureLowSideController.dispose();
+    beforeGasPressureHighSideController.dispose();
+    beforeAmpController.dispose();
+    afterRoomTemperatureController.dispose();
+    afterSetPointTemperatureController.dispose();
+    afterSupplyGrillTemperatureController.dispose();
+    afterReturnGrillTemperatureController.dispose();
+    afterGasPressureLowSideController.dispose();
+    afterGasPressureHighSideController.dispose();
+    afterAmpController.dispose();
     super.dispose();
   }
 
@@ -63,7 +99,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
               Padding(
                 padding: EdgeInsets.all(16.0),
                 child: Text(
-                  'Service:',
+                  'Before Service:',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -75,22 +111,164 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
                 child: Column(
                   children: [
                     TextFormField(
-                      controller: serviceTypeController,
-                      decoration: InputDecoration(labelText: 'Service Type'),
+                      controller: beforeRoomTemperatureController,
+                      decoration:
+                          InputDecoration(labelText: 'beforeRoomTemperature '),
                       validator: (value) {
                         if (value?.isEmpty ?? true) {
-                          return 'Please enter the service type';
+                          return 'Please enter the beforeRoomTemperature';
                         }
                         return null;
                       },
                     ),
                     TextFormField(
-                      controller: serviceDescriptionController,
-                      decoration:
-                          InputDecoration(labelText: 'Service Description'),
+                      controller: beforeSetPointTemperatureController,
+                      decoration: InputDecoration(
+                          labelText: 'beforeSetPointTemperature '),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter the service description';
+                          return 'Please enter the beforeSetPointTemperature ';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: beforeSupplyGrillTemperatureController,
+                      decoration: InputDecoration(
+                          labelText: 'beforeSupplyGrillTemperature '),
+                      validator: (value) {
+                        if (value?.isEmpty ?? true) {
+                          return 'Please enter the beforeSupplyGrillTemperature ';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: beforeReturnGrillTemperatureController,
+                      decoration: InputDecoration(
+                          labelText: 'beforeReturnGrillTemperature '),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter the beforeReturnGrillTemperature ';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: beforeGasPressureLowSideController,
+                      decoration: InputDecoration(
+                          labelText: 'beforeGasPressureLowSide '),
+                      validator: (value) {
+                        if (value?.isEmpty ?? true) {
+                          return 'Please enter the beforeGasPressureLowSide ';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: beforeGasPressureHighSideController,
+                      decoration: InputDecoration(
+                          labelText: 'beforeGasPressureHighSide '),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter the beforeGasPressureHighSide ';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: beforeAmpController,
+                      decoration: InputDecoration(labelText: 'beforeAmp '),
+                      validator: (value) {
+                        if (value?.isEmpty ?? true) {
+                          return 'Please enter the beforeAmp ';
+                        }
+                        return null;
+                      },
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: Text(
+                        'After Service:',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    TextFormField(
+                      controller: afterRoomTemperatureController,
+                      decoration:
+                          InputDecoration(labelText: 'afterRoomTemperature '),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter the afterRoomTemperature ';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: afterSetPointTemperatureController,
+                      decoration: InputDecoration(
+                          labelText: 'afterSetPointTemperature '),
+                      validator: (value) {
+                        if (value?.isEmpty ?? true) {
+                          return 'Please enter the afterSetPointTemperature ';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: afterSupplyGrillTemperatureController,
+                      decoration: InputDecoration(
+                          labelText: 'afterSupplyGrillTemperature '),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter the afterSupplyGrillTemperature ';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: afterReturnGrillTemperatureController,
+                      decoration: InputDecoration(
+                          labelText: 'afterReturnGrillTemperature '),
+                      validator: (value) {
+                        if (value?.isEmpty ?? true) {
+                          return 'Please enter the afterReturnGrillTemperature ';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: afterGasPressureLowSideController,
+                      decoration:
+                          InputDecoration(labelText: 'afterGasPressureLowSide'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter the afterGasPressureLowSide ';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: afterGasPressureHighSideController,
+                      decoration: InputDecoration(
+                          labelText: 'afterGasPressureHighSide '),
+                      validator: (value) {
+                        if (value?.isEmpty ?? true) {
+                          return 'Please enter the afterGasPressureHighSide ';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: afterAmpController,
+                      decoration:
+                          InputDecoration(labelText: 'afterAmpController '),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter the afterAmpController ';
                         }
                         return null;
                       },
@@ -120,18 +298,46 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
   void _saveForm() async {
     // Retrieve the form field values using the controllers
     String location = widget.formData.location ?? '';
-    String serviceType = serviceTypeController.text;
-    String serviceDescription = serviceDescriptionController.text;
+    String beforeRoomTemperature = beforeRoomTemperatureController.text;
+    String beforeSetPointTemperature = beforeSetPointTemperatureController.text;
+    String beforeSupplyGrillTemperature =
+        beforeSupplyGrillTemperatureController.text;
+    String beforeReturnGrillTemperature =
+        beforeReturnGrillTemperatureController.text;
+    String beforeGasPressureLowSide = beforeGasPressureLowSideController.text;
+    String beforeGasPressureHighSide = beforeGasPressureHighSideController.text;
+    String beforeAmp = beforeAmpController.text;
+    String afterRoomTemperature = afterRoomTemperatureController.text;
+    String afterSetPointTemperature = afterSetPointTemperatureController.text;
+    String afterSupplyGrillTemperature =
+        afterSupplyGrillTemperatureController.text;
+    String afterReturnGrillTemperature =
+        afterReturnGrillTemperatureController.text;
+    String afterGasPressureLowSide = afterGasPressureLowSideController.text;
+    String afterGasPressureHighSide = afterGasPressureHighSideController.text;
+    String afterAmp = afterAmpController.text;
 
     // Get the current date and time
     DateTime now = DateTime.now();
 
     // Create a map of the form data
     Map<String, dynamic> serviceFormData = {
-      'location': location,
-      'serviceType': serviceType,
-      'serviceDescription': serviceDescription,
       'createdDate': now.toIso8601String(),
+      'location': location,
+      'beforeRoomTemperature': beforeRoomTemperature,
+      'beforeSetPointTemperature': beforeSetPointTemperature,
+      'beforeSupplyGrillTemperature': beforeSupplyGrillTemperature,
+      'beforeReturnGrillTemperature': beforeReturnGrillTemperature,
+      'beforeGasPressureLowSide': beforeGasPressureLowSide,
+      'beforeGasPressureHighSide': beforeGasPressureHighSide,
+      'beforeAmp': beforeAmp,
+      'afterRoomTemperature': afterRoomTemperature,
+      'afterSetPointTemperature': afterSetPointTemperature,
+      'afterSupplyGrillTemperature': afterSupplyGrillTemperature,
+      'afterReturnGrillTemperature': afterReturnGrillTemperature,
+      'afterGasPressureLowSide': afterGasPressureLowSide,
+      'afterGasPressureHighSide': afterGasPressureHighSide,
+      'afterAmp': afterAmp,
     };
 
     // Save the form data using your existing DatabaseHelper class

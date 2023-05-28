@@ -1,5 +1,6 @@
 class MergedData {
   int id;
+  final String createdDate;
   final String location;
   final String beforeRoomTemperature;
   final String beforeSetPointTemperature;
@@ -18,6 +19,7 @@ class MergedData {
 
   MergedData({
     required this.id,
+    required this.createdDate,
     required this.location,
     required this.beforeRoomTemperature,
     required this.beforeSetPointTemperature,
@@ -39,6 +41,7 @@ class MergedData {
     return MergedData(
       id: json['id'],
       // Assign an empty string if the value is null
+      createdDate: json['createdDate'] ?? '',
       location: json['location'] ?? '',
       beforeRoomTemperature: json['beforeRoomTemperature'] ?? '',
       beforeSetPointTemperature: json['beforeSetPointTemperature'] ?? '',
@@ -60,6 +63,7 @@ class MergedData {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
+      'createdDate': createdDate,
       'location': location,
       'beforeRoomTemperature': beforeRoomTemperature,
       'beforeSetPointTemperature': beforeSetPointTemperature,

@@ -10,7 +10,7 @@ class DatabaseHelper {
 
   Future<Database> get database async {
     if (_database != null && _database!.isOpen) return _database!;
-    _database = await _initDB('avani_data.db');
+    _database = await _initDB('databaseD.db');
     return _database!;
   }
 
@@ -29,15 +29,28 @@ class DatabaseHelper {
     await db.execute('''
     CREATE TABLE IF NOT EXISTS service_form_data (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
+      createdDate TEXT,
       location TEXT,
-      serviceType TEXT,
-      serviceDescription TEXT,
-      createdDate TEXT
+      beforeRoomTemperature TEXT,
+      beforeSetPointTemperature TEXT,
+      beforeSupplyGrillTemperature TEXT,
+      beforeReturnGrillTemperature TEXT,
+      beforeGasPressureLowSide TEXT,
+      beforeGasPressureHighSide TEXT,
+      beforeAmp TEXT,
+      afterRoomTemperature TEXT,
+      afterSetPointTemperature TEXT,
+      afterSupplyGrillTemperature TEXT,
+      afterReturnGrillTemperature TEXT,
+      afterGasPressureLowSide TEXT,
+      afterGasPressureHighSide TEXT,
+      afterAmp TEXT
     )
   ''');
     await db.execute('''
     CREATE TABLE IF NOT EXISTS form_data(
       id INTEGER PRIMARY KEY AUTOINCREMENT,
+      createdDate TEXT,
       location TEXT,
       filterClean TEXT,
       blowerCheck TEXT,
@@ -58,7 +71,7 @@ class DatabaseHelper {
       drainLineClean TEXT,
       remark TEXT,
       date TEXT,
-      technicianName TEXT,
+      technicianName TEXT
     )
   ''');
   }
