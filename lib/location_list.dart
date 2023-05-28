@@ -19,7 +19,6 @@ class _LocationListScreenState extends State<LocationListScreen> {
   void initState() {
     super.initState();
     _loadFormData();
-    // _loadMergedData();
   }
 
   void _loadFormData() async {
@@ -39,23 +38,6 @@ class _LocationListScreenState extends State<LocationListScreen> {
     });
   }
 
-  // void _loadMergedData() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-
-  //   String? savedMergedDataJson = prefs.getString('savedMergedData');
-
-  //   if (savedMergedDataJson != null) {
-  //     List<dynamic> mergedDataList = jsonDecode(savedMergedDataJson);
-  //     savedMergedData = mergedDataList
-  //         .map((mergedDataJson) => MergedData.fromJson(mergedDataJson))
-  //         .toList();
-  //   }
-
-  //   setState(() {
-  //     // Trigger a rebuild to display the retrieved data
-  //   });
-  // }
-
   void _showDetailsDialog(BuildContext context, FormData formData, int index) {
     showDialog(
       context: context,
@@ -68,10 +50,13 @@ class _LocationListScreenState extends State<LocationListScreen> {
             children: [
               Text('Location: ${formData.location}'),
               SizedBox(height: 8),
-              Text('Created: ${formData.createdDate.toString()}'),
+              Text('Created: ${formData.date.toString()}'),
               SizedBox(height: 8),
               Text('indoorModel:'),
-              Text(formData.indoorModel),
+              Text(formData.acSlidinDoorOperation),
+              Text(formData.blowerCheck),
+              Text(formData.checkNoise),
+              Text(formData.filterClean),
             ],
           ),
           actions: [
@@ -102,35 +87,6 @@ class _LocationListScreenState extends State<LocationListScreen> {
     );
   }
 
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Scaffold(
-  //     appBar: AppBar(
-  //       title: Text('Location List Screen'),
-  //     ),
-  //     body: ListView.builder(
-  //       itemCount: savedFormData.length,
-  //       itemBuilder: (context, index) {
-  //         FormData formData = savedFormData[index];
-  //         return Card(
-  //           child: ListTile(
-  //             onTap: () {
-  //               _showDetailsDialog(context, formData, index);
-  //             },
-  //             title: Text(formData.location),
-  //             subtitle: Column(
-  //               crossAxisAlignment: CrossAxisAlignment.start,
-  //               children: [
-  //                 Text('Created: ${formData.createdDate.toString()}'),
-  //               ],
-  //             ),
-  //           ),
-  //         );
-  //       },
-  //     ),
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -150,7 +106,7 @@ class _LocationListScreenState extends State<LocationListScreen> {
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Created: ${formData.createdDate.toString()}'),
+                  Text('Created: ${formData.date.toString()}'),
                 ],
               ),
             ),
