@@ -9,10 +9,6 @@ class MyFormScreen extends StatefulWidget {
   _MyFormScreenState createState() => _MyFormScreenState();
 }
 
-// // Get the current date and time
-DateTime now2 = DateTime.now();
-String date2 = now2.toIso8601String();
-
 class _MyFormScreenState extends State<MyFormScreen> {
   // Define controllers for text fields
   TextEditingController locationController = TextEditingController();
@@ -46,14 +42,6 @@ class _MyFormScreenState extends State<MyFormScreen> {
 
   // Define form key for validation
   final _formKey = GlobalKey<FormState>();
-
-  @override
-  void initState() {
-    super.initState();
-// Set the initial value of the dateController to the current date if it's null
-    // Set the initial value of the dateController to the current date if it's null
-    dateController.text = date2;
-  }
 
   @override
   void dispose() {
@@ -303,7 +291,6 @@ class _MyFormScreenState extends State<MyFormScreen> {
                     TextFormField(
                       controller: dateController,
                       decoration: InputDecoration(labelText: 'Date'),
-                      // enabled: false,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Date not loading';
@@ -354,8 +341,6 @@ class _MyFormScreenState extends State<MyFormScreen> {
   // List<Map<String, dynamic>> savedFormData = [];
   void _saveForm() async {
     print("object");
-    // Get the current date and time
-    DateTime now = DateTime.now();
 
     // Retrieve the form field values using the controllers
     String location = locationController.text;
