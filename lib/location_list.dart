@@ -68,6 +68,18 @@ class _LocationListScreenState extends State<LocationListScreen> {
     );
   }
 
+  // void _deleteFormData(FormData formData) async {
+  //   bool success = await DatabaseHelper.instance.deleteFormData(formData.id);
+  //   if (success) {
+  //     setState(() {
+  //       savedFormData.remove(formData);
+  //     });
+  //     // Show a success message or perform any other necessary actions
+  //   } else {
+  //     // Show an error message or perform any other necessary actions
+  //   }
+  // }
+
 //
   void _showDetailsDialog(BuildContext context, FormData formData, int index) {
     showDialog(
@@ -207,7 +219,7 @@ class _LocationListScreenState extends State<LocationListScreen> {
   @override
   Widget build(BuildContext context) {
     List<FormData> filteredFormData = savedFormData.where((formData) {
-      final location = formData.location.toLowerCase();
+      final location = formData.location?.toLowerCase() ?? '';
       final query = _searchController.text.toLowerCase();
       return location.contains(query);
     }).toList();
@@ -216,33 +228,55 @@ class _LocationListScreenState extends State<LocationListScreen> {
       appBar: AppBar(
         title: Text('Location List Screen'),
       ),
-      body: ListView.builder(
-        itemCount: savedFormData.length,
-        itemBuilder: (context, index) {
-          FormData formData = savedFormData[index];
-          return Card(
-            child: ListTile(
-              onTap: () {
-                _showDetailsDialog(context, formData, index);
+      body: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.all(8.0),
+            child: TextField(
+              controller: _searchController,
+              decoration: InputDecoration(
+                labelText: 'Search by location',
+                prefixIcon: Icon(Icons.search),
+              ),
+              onChanged: (value) {
+                setState(() {
+                  // Trigger a rebuild to apply the search filter
+                });
               },
-              title: Text('location: ${formData.location ?? ''}'),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Created: ${formData.date ?? ''}'),
-                  Text('id: ${formData.id}'),
-                  Text('technicianName: ${formData.technicianName ?? ''}'),
-                ],
-              ),
-              trailing: IconButton(
-                icon: Icon(Icons.delete),
-                onPressed: () {
-                  _deleteFormData(formData);
-                },
-              ),
             ),
-          );
-        },
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: filteredFormData.length,
+              itemBuilder: (context, index) {
+                FormData formData = filteredFormData[index];
+                return Card(
+                  child: ListTile(
+                    onTap: () {
+                      _showDetailsDialog(context, formData, index);
+                    },
+                    title: Text('location: ${formData.location ?? ''}'),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Created: ${formData.date ?? ''}'),
+                        Text('id: ${formData.id}'),
+                        Text(
+                            'technicianName: ${formData.technicianName ?? ''}'),
+                      ],
+                    ),
+                    trailing: IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () {
+                        _deleteFormData(formData);
+                      },
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: 1,
@@ -274,3 +308,89 @@ class _LocationListScreenState extends State<LocationListScreen> {
     );
   }
 }
+  // @override
+  // Widget build(BuildContext context) {
+  //   List<FormData> filteredFormData = savedFormData.where((formData) {
+  //     final location = formData.location?.toLowerCase() ?? '';
+  //     final query = _searchController.text.toLowerCase();
+  //     return location.contains(query);
+  //   }).toList();
+
+  //   return Scaffold(
+  //     appBar: AppBar(
+  //       title: Text('Location List Screen'),
+  //     ),
+  //     body: Column(
+  //       children: [
+  //         Padding(
+  //           padding: EdgeInsets.all(8.0),
+  //           child: TextField(
+  //             controller: _searchController,
+  //             decoration: InputDecoration(
+  //               labelText: 'Search by location',
+  //               prefixIcon: Icon(Icons.search),
+  //             ),
+  //             onChanged: (value) {
+  //               setState(() {
+  //                 // Trigger a rebuild to apply the search filter
+  //               });
+  //             },
+  //           ),
+  //         ),
+  //         Expanded(
+  //           child: ListView.builder(
+  //             itemCount: filteredFormData.length,
+  //             itemBuilder: (context, index) {
+  //               FormData formData = filteredFormData[index];
+  //               return Card(
+  //                 child: ListTile(
+  //                   onTap: () {
+  //                     _showDetailsDialog(context, formData, index);
+  //                   },
+  //                   title: Text('location: ${formData.location ?? ''}'),
+  //                   subtitle: Column(
+  //                     crossAxisAlignment: CrossAxisAlignment.start,
+  //                     children: [
+  //                       Text('Created: ${formData.date ?? ''}'),
+  //                       Text('id: ${formData.id}'),
+  //                       Text(
+  //                           'technicianName: ${formData.technicianName ?? ''}'),
+  //                     ],
+  //                   ),
+  //                 ),
+  //               );
+  //             },
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //     bottomNavigationBar: BottomNavigationBar(
+  //       currentIndex: 1,
+  //       onTap: (int index) {
+  //         if (index == 0) {
+  //           Navigator.popUntil(context, (route) => route.isFirst);
+  //         } else if (index == 2) {
+  //           Navigator.pushReplacement(
+  //             context,
+  //             MaterialPageRoute(builder: (context) => ServiceListScreen()),
+  //           );
+  //         }
+  //       },
+  //       items: [
+  //         BottomNavigationBarItem(
+  //           icon: Icon(Icons.home),
+  //           label: 'Home',
+  //         ),
+  //         BottomNavigationBarItem(
+  //           icon: Icon(Icons.list),
+  //           label: 'LocationList',
+  //         ),
+  //         BottomNavigationBarItem(
+  //           icon: Icon(Icons.list),
+  //           label: 'ServiceList',
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
+// }
