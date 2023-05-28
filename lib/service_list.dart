@@ -45,15 +45,16 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
       body: ListView.builder(
         itemCount: savedServiceFormData.length,
         itemBuilder: (context, index) {
-          MergedData formData = savedServiceFormData[index];
+          MergedData serviceFormData = savedServiceFormData[index];
           return Card(
             child: ListTile(
-              title: Text(formData.location),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('serviceType: ${formData.serviceType}'),
-                  Text('serviceDescription: ${formData.serviceDescription}'),
+                  Text('location: ${serviceFormData.location}'),
+                  Text('serviceType: ${serviceFormData.serviceType}'),
+                  Text(
+                      'serviceDescription: ${serviceFormData.serviceDescription}')
                 ],
               ),
             ),

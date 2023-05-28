@@ -130,7 +130,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
 // }
   void _saveForm() async {
     // Retrieve the form field values using the controllers
-    String location = locationController.text;
+    String location = widget.formData.location;
     String serviceType = serviceTypeController.text;
     String serviceDescription = serviceDescriptionController.text;
 
