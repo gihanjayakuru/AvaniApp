@@ -345,15 +345,15 @@ class _LocationListScreenState extends State<LocationListScreen> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Home',
+            label: 'Add Locations',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.list),
-            label: 'LocationList',
+            label: 'Location List',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.list),
-            label: 'ServiceList',
+            label: 'Service List',
           ),
         ],
       ),

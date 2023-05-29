@@ -50,7 +50,12 @@ class _MyFormScreenState extends State<MyFormScreen> {
   // Variables for handling image
   String imagePath = '';
   // Variables for handling image
-  File? imageFile;
+  // File? imageFile;
+
+  File? _image;
+
+  // This is the image picker
+  final _picker = ImagePicker();
 
   @override
   void dispose() {
@@ -82,11 +87,11 @@ class _MyFormScreenState extends State<MyFormScreen> {
     super.dispose();
   }
 
-  void _resetImage() {
-    setState(() {
-      imageFile = null;
-    });
-  }
+  // void _resetImage() {
+  //   setState(() {
+  //     imageFile = null;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -108,26 +113,42 @@ class _MyFormScreenState extends State<MyFormScreen> {
           key: _formKey,
           child: Column(
             children: [
-              Container(
-                width: double.infinity,
-                height: 200,
-                color: Colors.grey.shade200,
-                child: imageFile == null
-                    ? Center(
-                        child: IconButton(
-                          icon: Icon(Icons.add_a_photo),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Stack(
+                  children: [
+                    Container(
+                      height: 200, // Adjust the height as per your requirement
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        border: Border.all(color: Colors.black),
+                      ),
+                      child: _image != null
+                          ? Image.file(_image!, fit: BoxFit.cover)
+                          : null,
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        color: Colors.grey[300],
+                        child: ElevatedButton(
                           onPressed: () {
                             setState(() {
-                              imageFile = null;
+                              _image = null;
                             });
-                            _selectImage();
+                            _openImagePicker();
                           },
+                          child: const Text('Add Image'),
                         ),
-                      )
-                    : Image.file(imageFile!),
+                      ),
+                    ),
+                  ],
+                ),
               ),
               Padding(
-                padding: EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(16.0),
                 child: TextFormField(
                   controller: locationController,
                   decoration: InputDecoration(labelText: 'Location'),
@@ -155,10 +176,10 @@ class _MyFormScreenState extends State<MyFormScreen> {
                   children: [
                     TextFormField(
                       controller: filterCleanController,
-                      decoration: InputDecoration(labelText: 'filterClean'),
+                      decoration: InputDecoration(labelText: 'Filter Clean'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter the filterClean';
+                          return 'Please enter the filter clean';
                         }
                         return null;
                       },
@@ -380,10 +401,10 @@ class _MyFormScreenState extends State<MyFormScreen> {
                     ),
                     TextFormField(
                       controller: technicianNameController,
-                      decoration: InputDecoration(labelText: 'technicianName'),
+                      decoration: InputDecoration(labelText: 'Technician Name'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter the technicianName';
+                          return 'Please enter the technician name';
                         }
                         return null;
                       },
@@ -391,13 +412,10 @@ class _MyFormScreenState extends State<MyFormScreen> {
                   ],
                 ),
               ),
-
-              //
             ],
           ),
         ),
       ),
-      /////////
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ElevatedButton(
@@ -413,12 +431,23 @@ class _MyFormScreenState extends State<MyFormScreen> {
     );
   }
 
-  void _selectImage() async {
-    final picker = ImagePicker();
-    final pickedImage = await picker.getImage(source: ImageSource.gallery);
+  // void _selectImage() async {
+  //   final picker = ImagePicker();
+  //   final pickedImage = await picker.getImage(source: ImageSource.gallery);
+  //   if (pickedImage != null) {
+  //     setState(() {
+  //       imageFile = File(pickedImage.path);
+  //     });
+  //   }
+  // }
+
+  // Implementing the image picker
+  Future<void> _openImagePicker() async {
+    final XFile? pickedImage =
+        await _picker.pickImage(source: ImageSource.camera);
     if (pickedImage != null) {
       setState(() {
-        imageFile = File(pickedImage.path);
+        _image = File(pickedImage.path);
       });
     }
   }
@@ -484,8 +513,7 @@ class _MyFormScreenState extends State<MyFormScreen> {
     int id = await DatabaseHelper.instance.insertFormData(formData);
     print('Form data saved with ID: $id');
 
-    final isImageSaved =
-        await DatabaseHelper.instance.saveImage(id, imageFile!);
+    final isImageSaved = await DatabaseHelper.instance.saveImage(id, _image!);
     if (isImageSaved) {
       // Image data was inserted successfully
       print(' Image data was inserted successfully');

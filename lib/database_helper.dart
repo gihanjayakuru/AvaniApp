@@ -141,10 +141,10 @@ class DatabaseHelper {
     );
   }
 
-  Future<bool> saveImage(int formId, File imageFile) async {
+  Future<bool> saveImage(int formId, File _image) async {
     final db = await instance.database;
-    final imagePath = imageFile.path;
-    final bytes = await imageFile.readAsBytes();
+    final imagePath = _image.path;
+    final bytes = await _image.readAsBytes();
     final imageName = path.basename(imagePath);
     final imageMap = {
       'form_id': formId,
