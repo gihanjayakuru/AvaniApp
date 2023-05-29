@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:avani_app/additional_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'form_data.dart';
@@ -13,6 +15,7 @@ class _LocationListScreenState extends State<LocationListScreen> {
   TextEditingController _searchController = TextEditingController();
   List<FormData> savedFormData = [];
   FormData? selectedFormData;
+  final DatabaseHelper databaseHelper = DatabaseHelper.instance;
 
   @override
   void initState() {
@@ -96,7 +99,13 @@ class _LocationListScreenState extends State<LocationListScreen> {
   // }
 
 //
-  void _showDetailsDialog(BuildContext context, FormData formData, int index) {
+  void _showDetailsDialog(
+      BuildContext context, FormData formData, int index) async {
+    final databaseHelper = DatabaseHelper.instance;
+    final imagePath = await databaseHelper.getImagePathForForm(formData.id);
+
+    print('image ID load in: ${formData.id}');
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -111,6 +120,11 @@ class _LocationListScreenState extends State<LocationListScreen> {
                   subtitle: Text(formData.location ?? ''),
                 ),
                 Divider(),
+                if (imagePath != null && File(imagePath).existsSync())
+                  Image.file(
+                      File(imagePath)), // Show the image using the file path
+                if (imagePath == null || !File(imagePath).existsSync())
+                  Text('Image not found'),
                 ////////////////////indoor//////////////////////
                 ///
                 const Padding(
@@ -244,6 +258,7 @@ class _LocationListScreenState extends State<LocationListScreen> {
                   title: Text('Technician Name'),
                   subtitle: Text(formData.technicianName ?? ''),
                 ),
+                Divider(),
               ],
             ),
           ),
@@ -257,7 +272,6 @@ class _LocationListScreenState extends State<LocationListScreen> {
                   MaterialPageRoute(
                     builder: (context) => AdditionalDetailsScreen(
                       formData: formData,
-                      //formData: filteredFormData[index],
                     ),
                   ),
                 );
@@ -310,29 +324,7 @@ class _LocationListScreenState extends State<LocationListScreen> {
               itemCount: filteredFormData.length,
               itemBuilder: (context, index) {
                 FormData formData = filteredFormData[index];
-                return Card(
-                  child: ListTile(
-                    onTap: () {
-                      _showDetailsDialog(context, formData, index);
-                    },
-                    title: Text('location: ${formData.location ?? ''}'),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Created: ${formData.date ?? ''}'),
-                        Text('id: ${formData.id}'),
-                        Text(
-                            'technicianName: ${formData.technicianName ?? ''}'),
-                      ],
-                    ),
-                    trailing: IconButton(
-                      icon: Icon(Icons.delete),
-                      onPressed: () {
-                        _deleteFormData(formData);
-                      },
-                    ),
-                  ),
-                );
+                return buildCard(context, formData, index, databaseHelper);
               },
             ),
           ),
@@ -364,6 +356,60 @@ class _LocationListScreenState extends State<LocationListScreen> {
             label: 'ServiceList',
           ),
         ],
+      ),
+    );
+  }
+
+  Widget buildCard(
+    BuildContext context,
+    FormData formData,
+    int index,
+    DatabaseHelper databaseHelper,
+  ) {
+    return Card(
+      child: ListTile(
+        onTap: () {
+          _showDetailsDialog(context, formData, index);
+        },
+        title: Text('location: ${formData.location ?? ''}'),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Created: ${formData.date ?? ''}'),
+            Text('id: ${formData.id}'),
+            Text('technicianName: ${formData.technicianName ?? ''}'),
+          ],
+        ),
+        leading: FutureBuilder<String?>(
+          future: databaseHelper.getImagePathForForm(formData.id),
+          builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator(); // Show loading indicator while fetching image path
+            } else if (snapshot.hasError || snapshot.data == null) {
+              return Icon(Icons
+                  .image_not_supported); // Show default icon if image path is not available
+            } else {
+              final imagePath = snapshot.data!;
+              if (File(imagePath).existsSync()) {
+                return Image.file(
+                  File(imagePath),
+                  width: 48,
+                  height: 48,
+                  fit: BoxFit.cover,
+                ); // Show the image using the file path
+              } else {
+                return Icon(Icons
+                    .image_not_supported); // Show default icon if image file does not exist
+              }
+            }
+          },
+        ),
+        trailing: IconButton(
+          icon: Icon(Icons.delete),
+          onPressed: () {
+            _deleteFormData(formData);
+          },
+        ),
       ),
     );
   }

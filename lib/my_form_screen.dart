@@ -82,6 +82,12 @@ class _MyFormScreenState extends State<MyFormScreen> {
     super.dispose();
   }
 
+  void _resetImage() {
+    setState(() {
+      imageFile = null;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -111,6 +117,9 @@ class _MyFormScreenState extends State<MyFormScreen> {
                         child: IconButton(
                           icon: Icon(Icons.add_a_photo),
                           onPressed: () {
+                            setState(() {
+                              imageFile = null;
+                            });
                             _selectImage();
                           },
                         ),
@@ -475,11 +484,20 @@ class _MyFormScreenState extends State<MyFormScreen> {
     int id = await DatabaseHelper.instance.insertFormData(formData);
     print('Form data saved with ID: $id');
 
-// Save the image file
-    if (imageFile != null) {
-      await DatabaseHelper.instance.saveImage(id, imageFile!);
-      print('Image saved for form ID: $id');
+    final isImageSaved =
+        await DatabaseHelper.instance.saveImage(id, imageFile!);
+    if (isImageSaved) {
+      // Image data was inserted successfully
+      print(' Image data was inserted successfully');
+    } else {
+      // Image data insertion failed
+      print('Image data insertion failed');
     }
+// // Save the image file
+//     if (imageFile != null) {
+//       await DatabaseHelper.instance.saveImage(id, imageFile!);
+//       print('Image saved for form ID: $id');
+//     }
     // Clear the form fields
     _clearForm();
 
