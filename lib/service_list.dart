@@ -49,14 +49,58 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
       context: context,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: Text('Service Details'),
+          title: Text('Before After Service Details'),
           content: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Location: ${serviceFormData.location}'),
-              Text('Service Type: ${serviceFormData.afterAmp}'),
+              Text('Location : ${serviceFormData.location}'),
+              Text('Date : ${serviceFormData.createdDate}'),
+              const Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Text(
+                  'Before Service',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
               Text(
-                  'Service Description: ${serviceFormData.afterGasPressureHighSide}'),
+                  'Room Temperature : ${serviceFormData.beforeRoomTemperature}'),
+              Text(
+                  'Set Point Temperature : ${serviceFormData.beforeSetPointTemperature}'),
+              Text(
+                  'Supply Grill Temperature : ${serviceFormData.beforeSupplyGrillTemperature}'),
+              Text(
+                  'Return Grill Temperature : ${serviceFormData.beforeReturnGrillTemperature}'),
+              Text(
+                  'Gas Pressure /Low Side : ${serviceFormData.beforeGasPressureLowSide}'),
+              Text(
+                  'Gas Pressure /High Side : ${serviceFormData.beforeGasPressureHighSide}'),
+              Text('Amp : ${serviceFormData.beforeAmp}'),
+              const Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Text(
+                  'After Service',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              Text(
+                  'Room Temperature : ${serviceFormData.afterRoomTemperature}'),
+              Text(
+                  'Set Point Temperature : ${serviceFormData.afterSetPointTemperature}'),
+              Text(
+                  'Supply Grill Temperature : ${serviceFormData.afterSupplyGrillTemperature}'),
+              Text(
+                  'Return Grill Temperature : ${serviceFormData.afterReturnGrillTemperature}'),
+              Text(
+                  'Gas Pressure /Low Side: ${serviceFormData.afterGasPressureLowSide}'),
+              Text(
+                  'Gas Pressure /High Side : ${serviceFormData.afterGasPressureHighSide}'),
+              Text('Amp : ${serviceFormData.afterAmp}'),
             ],
           ),
           actions: [
@@ -90,10 +134,12 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Location: ${serviceFormData.location}'),
+                  Text('Location : ${serviceFormData.location}'),
                   Text('Date : ${serviceFormData.createdDate}'),
-                  Text('Before temp: ${serviceFormData.beforeRoomTemperature}'),
-                  Text('After temp: ${serviceFormData.afterRoomTemperature}'),
+                  Text(
+                      'Before Temperature : ${serviceFormData.beforeRoomTemperature}'),
+                  Text(
+                      'After Temperature : ${serviceFormData.afterRoomTemperature}'),
                 ],
               ),
               trailing: IconButton(

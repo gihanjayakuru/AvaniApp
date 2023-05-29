@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'database_helper.dart';
 import 'location_list.dart';
 import 'dart:io';
@@ -95,9 +96,17 @@ class _MyFormScreenState extends State<MyFormScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Get the current date
+    DateTime now = DateTime.now();
+
+// Format the current date
+    String formattedDate = DateFormat('yyyy-MM-dd').format(now);
+    // Set the formatted date as the initial value for the dateController
+    dateController.text = formattedDate;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Form'),
+        title: Text('Location Form'),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
@@ -176,7 +185,7 @@ class _MyFormScreenState extends State<MyFormScreen> {
                   children: [
                     TextFormField(
                       controller: filterCleanController,
-                      decoration: InputDecoration(labelText: 'Filter Clean'),
+                      decoration: InputDecoration(labelText: 'Filter Clean :'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter the filter clean';
@@ -186,10 +195,10 @@ class _MyFormScreenState extends State<MyFormScreen> {
                     ),
                     TextFormField(
                       controller: blowerCheckController,
-                      decoration: InputDecoration(labelText: 'blowerCheck'),
+                      decoration: InputDecoration(labelText: 'Blower Check :'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter the blowerCheck';
+                          return 'Please enter the Blower Check';
                         }
                         return null;
                       },
@@ -197,28 +206,29 @@ class _MyFormScreenState extends State<MyFormScreen> {
                     TextFormField(
                       controller: indoorInspectCleanIduCoilFinsController,
                       decoration: InputDecoration(
-                          labelText: 'indoorInspectCleanIduCoilFins'),
+                          labelText: 'indoor Inspect/Clean IDU Coil Fins :'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter the indoorInspectCleanIduCoilFins';
+                          return 'Please enter the indoor Inspect/Clean IDU Coil Fins';
                         }
                         return null;
                       },
                     ),
                     TextFormField(
                       controller: checkCleanDrainPlateController,
-                      decoration:
-                          InputDecoration(labelText: 'checkCleanDrainPlate'),
+                      decoration: InputDecoration(
+                          labelText: 'Check/Clean Drain Plate :'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter the checkCleanDrainPlate';
+                          return 'Please enter the Check/Clean Drain Plate';
                         }
                         return null;
                       },
                     ),
                     TextFormField(
                       controller: drainPumpCheckController,
-                      decoration: InputDecoration(labelText: 'drainPumpCheck'),
+                      decoration:
+                          InputDecoration(labelText: 'Drain Pump Check :'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter the drainPumpCheck';
@@ -229,31 +239,31 @@ class _MyFormScreenState extends State<MyFormScreen> {
                     TextFormField(
                       controller: checkPipingDuckInsulationController,
                       decoration: InputDecoration(
-                          labelText: 'checkPipingDuckInsulation'),
+                          labelText: 'Check Piping & Duck Insulation :'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter the checkPipingDuckInsulation';
+                          return 'Please enter the Check Piping & Duck Insulation';
                         }
                         return null;
                       },
                     ),
                     TextFormField(
                       controller: checkNoiseController,
-                      decoration: InputDecoration(labelText: 'checkNoise'),
+                      decoration: InputDecoration(labelText: 'Check Noise :'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter the checkNoise';
+                          return 'Please enter the Check Noise';
                         }
                         return null;
                       },
                     ),
                     TextFormField(
                       controller: indoorHousingConditionController,
-                      decoration:
-                          InputDecoration(labelText: 'indoorHousingCondition'),
+                      decoration: InputDecoration(
+                          labelText: 'Indoor Housing Condition :'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter the indoorHousingCondition';
+                          return 'Please enter the Indoor Housing Condition';
                         }
                         return null;
                       },
@@ -261,10 +271,10 @@ class _MyFormScreenState extends State<MyFormScreen> {
                     TextFormField(
                       controller: indoorPcbStatusController,
                       decoration:
-                          InputDecoration(labelText: 'indoorPcbStatus '),
+                          InputDecoration(labelText: 'Indoor PCB Status :'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter the indoorPcbStatus';
+                          return 'Please enter the Indoor PCB Status';
                         }
                         return null;
                       },
@@ -283,20 +293,21 @@ class _MyFormScreenState extends State<MyFormScreen> {
                     //////////////////////////////////////////////////////////////////////////////////////////////////////
                     TextFormField(
                       controller: compressorNoiseController,
-                      decoration: InputDecoration(labelText: 'compressorNoise'),
+                      decoration:
+                          InputDecoration(labelText: 'Compressor Noise :'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter the compressorNoise';
+                          return 'Please enter the Compressor Noise';
                         }
                         return null;
                       },
                     ),
                     TextFormField(
                       controller: fanNoiseController,
-                      decoration: InputDecoration(labelText: 'fanNoise'),
+                      decoration: InputDecoration(labelText: 'Fan Noise :'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter the fanNoise';
+                          return 'Please enter the Fan Noise';
                         }
                         return null;
                       },
@@ -305,10 +316,10 @@ class _MyFormScreenState extends State<MyFormScreen> {
                     TextFormField(
                       controller: outdoorInspectCleanIduCoilFinsController,
                       decoration: InputDecoration(
-                          labelText: 'outdoorInspectCleanIduCoilFins'),
+                          labelText: 'Outdoor Inspect/Clean IDU Coil Fins :'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter the outdoorInspectCleanIduCoilFins';
+                          return 'Please enter the Outdoor Inspect/Clean IDU Coil Fins';
                         }
                         return null;
                       },
@@ -316,10 +327,10 @@ class _MyFormScreenState extends State<MyFormScreen> {
                     TextFormField(
                       controller: outdoorPcbStatusController,
                       decoration:
-                          InputDecoration(labelText: 'outdoorPcbStatus'),
+                          InputDecoration(labelText: 'Outdoor PCB Status :'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter the outdoorPcbStatus';
+                          return 'Please enter the Outdoor PCB Status';
                         }
                         return null;
                       },
@@ -327,10 +338,10 @@ class _MyFormScreenState extends State<MyFormScreen> {
                     TextFormField(
                       controller: outdoorHousingConditionController,
                       decoration: InputDecoration(
-                          labelText: 'outdoorHousingCondition '),
+                          labelText: 'Outdoor Housing Condition :'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter the outdoorHousingCondition ';
+                          return 'Please enter the Outdoor Housing Condition';
                         }
                         return null;
                       },
@@ -348,11 +359,11 @@ class _MyFormScreenState extends State<MyFormScreen> {
 
                     TextFormField(
                       controller: acSlidinDoorOperationController,
-                      decoration:
-                          InputDecoration(labelText: 'acSlidinDoorOperation'),
+                      decoration: InputDecoration(
+                          labelText: 'AC & Slidin Door Operation :'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter the acSlidinDoorOperation';
+                          return 'Please enter the AC & Slidin Door Operation';
                         }
                         return null;
                       },
@@ -360,20 +371,21 @@ class _MyFormScreenState extends State<MyFormScreen> {
                     TextFormField(
                       controller: thermostatSettingController,
                       decoration:
-                          InputDecoration(labelText: 'thermostatSetting '),
+                          InputDecoration(labelText: 'Thermostat Setting :'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter the thermostatSetting';
+                          return 'Please enter the Thermostat Setting';
                         }
                         return null;
                       },
                     ),
                     TextFormField(
                       controller: drainLineCleanController,
-                      decoration: InputDecoration(labelText: 'drainLineClean '),
+                      decoration:
+                          InputDecoration(labelText: 'Drain Line Clean :'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter the drainLineClean';
+                          return 'Please enter the Drain Line Clean';
                         }
                         return null;
                       },
@@ -381,17 +393,18 @@ class _MyFormScreenState extends State<MyFormScreen> {
 
                     TextFormField(
                       controller: remarkController,
-                      decoration: InputDecoration(labelText: 'remark'),
+                      decoration: InputDecoration(labelText: 'Remark :'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter the remark';
+                          return 'Please enter the Remark';
                         }
                         return null;
                       },
                     ),
                     TextFormField(
                       controller: dateController,
-                      decoration: InputDecoration(labelText: 'Date'),
+                      decoration: InputDecoration(labelText: 'Date :'),
+                      enabled: false, // Disable editing
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Date not loading';
@@ -401,10 +414,11 @@ class _MyFormScreenState extends State<MyFormScreen> {
                     ),
                     TextFormField(
                       controller: technicianNameController,
-                      decoration: InputDecoration(labelText: 'Technician Name'),
+                      decoration:
+                          InputDecoration(labelText: 'Technician Name :'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter the technician name';
+                          return 'Please enter the Technician Name';
                         }
                         return null;
                       },

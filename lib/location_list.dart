@@ -110,13 +110,13 @@ class _LocationListScreenState extends State<LocationListScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Location Details'),
+          title: Text('Location Details :'),
           content: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ListTile(
-                  title: Text('Location'),
+                  title: Text('Location :'),
                   subtitle: Text(formData.location ?? ''),
                 ),
                 Divider(),
@@ -124,13 +124,13 @@ class _LocationListScreenState extends State<LocationListScreen> {
                   Image.file(
                       File(imagePath)), // Show the image using the file path
                 if (imagePath == null || !File(imagePath).existsSync())
-                  Text('Image not found'),
+                  Text('Image not found !'),
                 ////////////////////indoor//////////////////////
                 ///
                 const Padding(
                   padding: EdgeInsets.all(16.0),
                   child: Text(
-                    'Indoor unit',
+                    'Indoor Unit :',
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -138,47 +138,47 @@ class _LocationListScreenState extends State<LocationListScreen> {
                   ),
                 ),
                 ListTile(
-                  title: Text('Filter Clean'),
+                  title: Text('Filter Clean :'),
                   subtitle: Text(formData.filterClean ?? ''),
                 ),
                 Divider(),
                 ListTile(
-                  title: Text('Blower Check'),
+                  title: Text('Blower Check :'),
                   subtitle: Text(formData.blowerCheck ?? ''),
                 ),
                 Divider(),
                 ListTile(
-                  title: Text('Inspect Clean IDU Coil Fins'),
+                  title: Text('Inspect/Clean IDU Coil Fins :'),
                   subtitle: Text(formData.indoorInspectCleanIduCoilFins ?? ''),
                 ),
                 Divider(),
                 ListTile(
-                  title: Text('Check Clean Drain Plate'),
+                  title: Text('Check/Clean Drain Plate :'),
                   subtitle: Text(formData.checkCleanDrainPlate ?? ''),
                 ),
                 Divider(),
                 ListTile(
-                  title: Text('Drain Pump Check'),
+                  title: Text('Drain Pump Check :'),
                   subtitle: Text(formData.drainPumpCheck ?? ''),
                 ),
                 Divider(),
                 ListTile(
-                  title: Text('Check Piping Duck Insulation'),
+                  title: Text('Check Piping & Duck Insulation :'),
                   subtitle: Text(formData.checkPipingDuckInsulation ?? ''),
                 ),
                 Divider(),
                 ListTile(
-                  title: Text('Check Noise'),
+                  title: Text('Check Noise :'),
                   subtitle: Text(formData.checkNoise ?? ''),
                 ),
                 Divider(),
                 ListTile(
-                  title: Text('Indoor Housing Condition'),
+                  title: Text('Indoor Housing Condition :'),
                   subtitle: Text(formData.indoorHousingCondition ?? ''),
                 ),
                 Divider(),
                 ListTile(
-                  title: Text('PCB Status'),
+                  title: Text('PCB Status :'),
                   subtitle: Text(formData.indoorPcbStatus ?? ''),
                 ),
                 Divider(),
@@ -194,27 +194,27 @@ class _LocationListScreenState extends State<LocationListScreen> {
                   ),
                 ),
                 ListTile(
-                  title: Text('compressor Noise'),
+                  title: Text('Compressor Noise :'),
                   subtitle: Text(formData.compressorNoise ?? ''),
                 ),
                 Divider(),
                 ListTile(
-                  title: Text('fan Noise'),
+                  title: Text('Fan Noise :'),
                   subtitle: Text(formData.fanNoise ?? ''),
                 ),
                 Divider(),
                 ListTile(
-                  title: Text('outdoor Inspect Clean Idu Coil Fins'),
+                  title: Text('Outdoor Inspect/Clean IDU Coil Fins :'),
                   subtitle: Text(formData.outdoorInspectCleanIduCoilFins ?? ''),
                 ),
                 Divider(),
                 ListTile(
-                  title: Text('outdoor Pcb Status'),
+                  title: Text('Outdoor PCB Status :'),
                   subtitle: Text(formData.outdoorPcbStatus ?? ''),
                 ),
                 Divider(),
                 ListTile(
-                  title: Text('outdoor Housing Condition'),
+                  title: Text('Outdoor Housing Condition :'),
                   subtitle: Text(formData.outdoorHousingCondition ?? ''),
                 ),
                 Divider(),
@@ -230,32 +230,32 @@ class _LocationListScreenState extends State<LocationListScreen> {
                   ),
                 ),
                 ListTile(
-                  title: Text('ac Slidin Door Operation'),
+                  title: Text('AC & Sliding Door Operation :'),
                   subtitle: Text(formData.acSlidinDoorOperation ?? ''),
                 ),
                 Divider(),
                 ListTile(
-                  title: Text('thermostat Setting'),
+                  title: Text('Thermostat Setting :'),
                   subtitle: Text(formData.thermostatSetting ?? ''),
                 ),
                 Divider(),
                 ListTile(
-                  title: Text('drain Line Clean'),
+                  title: Text('Drain Line Clean :'),
                   subtitle: Text(formData.drainLineClean ?? ''),
                 ),
                 Divider(),
                 ListTile(
-                  title: Text('Remark'),
+                  title: Text('Remark :'),
                   subtitle: Text(formData.remark ?? ''),
                 ),
                 Divider(),
                 ListTile(
-                  title: Text('Date'),
+                  title: Text('Date :'),
                   subtitle: Text(formData.date ?? ''),
                 ),
                 Divider(),
                 ListTile(
-                  title: Text('Technician Name'),
+                  title: Text('Technician Name :'),
                   subtitle: Text(formData.technicianName ?? ''),
                 ),
                 Divider(),
@@ -276,7 +276,7 @@ class _LocationListScreenState extends State<LocationListScreen> {
                   ),
                 );
               },
-              child: Text('ADD'),
+              child: Text('ADD Service'),
             ),
             TextButton(
               onPressed: () {
@@ -371,13 +371,13 @@ class _LocationListScreenState extends State<LocationListScreen> {
         onTap: () {
           _showDetailsDialog(context, formData, index);
         },
-        title: Text('location: ${formData.location ?? ''}'),
+        title: Text('location : ${formData.location ?? ''}'),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Created: ${formData.date ?? ''}'),
-            Text('id: ${formData.id}'),
-            Text('technicianName: ${formData.technicianName ?? ''}'),
+            Text('Created : ${formData.date ?? ''}'),
+            Text('id : ${formData.id}'),
+            Text('technicianName : ${formData.technicianName ?? ''}'),
           ],
         ),
         leading: FutureBuilder<String?>(

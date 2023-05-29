@@ -1,5 +1,6 @@
 import 'package:avani_app/service_list.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'database_helper.dart';
 import 'form_data.dart';
 import 'location_list.dart';
@@ -89,7 +90,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
               Padding(
                 padding: EdgeInsets.all(16.0),
                 child: Text(
-                  'Location: ${widget.formData.location}',
+                  'Location : ${widget.formData.location}',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -99,7 +100,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
               Padding(
                 padding: EdgeInsets.all(16.0),
                 child: Text(
-                  'Before Service:',
+                  'Before Service :',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -112,11 +113,11 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
                   children: [
                     TextFormField(
                       controller: beforeRoomTemperatureController,
-                      decoration:
-                          InputDecoration(labelText: 'beforeRoomTemperature '),
+                      decoration: InputDecoration(
+                          labelText: 'Before Room Temperature :'),
                       validator: (value) {
                         if (value?.isEmpty ?? true) {
-                          return 'Please enter the beforeRoomTemperature';
+                          return 'Please enter the Before Room Temperature';
                         }
                         return null;
                       },
@@ -124,10 +125,10 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
                     TextFormField(
                       controller: beforeSetPointTemperatureController,
                       decoration: InputDecoration(
-                          labelText: 'beforeSetPointTemperature '),
+                          labelText: 'Before Set Point Temperature :'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter the beforeSetPointTemperature ';
+                          return 'Please enter the Before Set Point Temperature';
                         }
                         return null;
                       },
@@ -135,10 +136,10 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
                     TextFormField(
                       controller: beforeSupplyGrillTemperatureController,
                       decoration: InputDecoration(
-                          labelText: 'beforeSupplyGrillTemperature '),
+                          labelText: 'Before Supply Grill Temperature :'),
                       validator: (value) {
                         if (value?.isEmpty ?? true) {
-                          return 'Please enter the beforeSupplyGrillTemperature ';
+                          return 'Please enter the Before Supply Grill Temperature';
                         }
                         return null;
                       },
@@ -146,10 +147,10 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
                     TextFormField(
                       controller: beforeReturnGrillTemperatureController,
                       decoration: InputDecoration(
-                          labelText: 'beforeReturnGrillTemperature '),
+                          labelText: 'Before Return Grill Temperature :'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter the beforeReturnGrillTemperature ';
+                          return 'Please enter the Before Return Grill Temperature';
                         }
                         return null;
                       },
@@ -157,10 +158,10 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
                     TextFormField(
                       controller: beforeGasPressureLowSideController,
                       decoration: InputDecoration(
-                          labelText: 'beforeGasPressureLowSide '),
+                          labelText: 'Before Gas Pressure /Low Side :'),
                       validator: (value) {
                         if (value?.isEmpty ?? true) {
-                          return 'Please enter the beforeGasPressureLowSide ';
+                          return 'Please enter the Before Gas Pressure /Low Side';
                         }
                         return null;
                       },
@@ -168,20 +169,20 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
                     TextFormField(
                       controller: beforeGasPressureHighSideController,
                       decoration: InputDecoration(
-                          labelText: 'beforeGasPressureHighSide '),
+                          labelText: 'Before Gas Pressure /High Side :'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter the beforeGasPressureHighSide ';
+                          return 'Please enter the Before Gas Pressure /High Side ';
                         }
                         return null;
                       },
                     ),
                     TextFormField(
                       controller: beforeAmpController,
-                      decoration: InputDecoration(labelText: 'beforeAmp '),
+                      decoration: InputDecoration(labelText: 'Before Amp :'),
                       validator: (value) {
                         if (value?.isEmpty ?? true) {
-                          return 'Please enter the beforeAmp ';
+                          return 'Please enter the Before Amp';
                         }
                         return null;
                       },
@@ -189,7 +190,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
                     Padding(
                       padding: EdgeInsets.all(16.0),
                       child: Text(
-                        'After Service:',
+                        'After Service :',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -198,11 +199,11 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
                     ),
                     TextFormField(
                       controller: afterRoomTemperatureController,
-                      decoration:
-                          InputDecoration(labelText: 'afterRoomTemperature '),
+                      decoration: InputDecoration(
+                          labelText: 'After Room Temperature :'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter the afterRoomTemperature ';
+                          return 'Please enter the After Room Temperature';
                         }
                         return null;
                       },
@@ -210,10 +211,10 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
                     TextFormField(
                       controller: afterSetPointTemperatureController,
                       decoration: InputDecoration(
-                          labelText: 'afterSetPointTemperature '),
+                          labelText: 'After Set Point Temperature :'),
                       validator: (value) {
                         if (value?.isEmpty ?? true) {
-                          return 'Please enter the afterSetPointTemperature ';
+                          return 'Please enter the After Set Point Temperature';
                         }
                         return null;
                       },
@@ -221,10 +222,10 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
                     TextFormField(
                       controller: afterSupplyGrillTemperatureController,
                       decoration: InputDecoration(
-                          labelText: 'afterSupplyGrillTemperature '),
+                          labelText: 'After Supply Grill Temperature :'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter the afterSupplyGrillTemperature ';
+                          return 'Please enter the After Supply Grill Temperature';
                         }
                         return null;
                       },
@@ -232,21 +233,21 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
                     TextFormField(
                       controller: afterReturnGrillTemperatureController,
                       decoration: InputDecoration(
-                          labelText: 'afterReturnGrillTemperature '),
+                          labelText: 'After Return Grill Temperature :'),
                       validator: (value) {
                         if (value?.isEmpty ?? true) {
-                          return 'Please enter the afterReturnGrillTemperature ';
+                          return 'Please enter the After Return Grill Temperature';
                         }
                         return null;
                       },
                     ),
                     TextFormField(
                       controller: afterGasPressureLowSideController,
-                      decoration:
-                          InputDecoration(labelText: 'afterGasPressureLowSide'),
+                      decoration: InputDecoration(
+                          labelText: 'After Gas Pressure /Low Side'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter the afterGasPressureLowSide ';
+                          return 'Please enter the After Gas Pressure /Low Side';
                         }
                         return null;
                       },
@@ -254,10 +255,10 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
                     TextFormField(
                       controller: afterGasPressureHighSideController,
                       decoration: InputDecoration(
-                          labelText: 'afterGasPressureHighSide '),
+                          labelText: 'After Gas Pressure /High Side :'),
                       validator: (value) {
                         if (value?.isEmpty ?? true) {
-                          return 'Please enter the afterGasPressureHighSide ';
+                          return 'Please enter the After Gas Pressure /High Side';
                         }
                         return null;
                       },
@@ -265,10 +266,10 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
                     TextFormField(
                       controller: afterAmpController,
                       decoration:
-                          InputDecoration(labelText: 'afterAmpController '),
+                          InputDecoration(labelText: 'After Amp Controller :'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter the afterAmpController ';
+                          return 'Please enter the After Amp Controller';
                         }
                         return null;
                       },
@@ -319,10 +320,11 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
 
     // Get the current date and time
     DateTime now = DateTime.now();
+    String formattedDate = DateFormat('yyyy-MM-dd').format(now);
 
     // Create a map of the form data
     Map<String, dynamic> serviceFormData = {
-      'createdDate': now.toIso8601String(),
+      'createdDate': formattedDate,
       'location': location,
       'beforeRoomTemperature': beforeRoomTemperature,
       'beforeSetPointTemperature': beforeSetPointTemperature,
