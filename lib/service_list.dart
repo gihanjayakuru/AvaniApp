@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
 
 import 'database_helper.dart';
 import 'location_list.dart';
@@ -44,6 +44,34 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
     _loadServiceFormData();
   }
 
+  void _showServiceDetailsDialog(MergedData serviceFormData, context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: Text('Service Details'),
+          content: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Location: ${serviceFormData.location}'),
+              Text('Service Type: ${serviceFormData.afterAmp}'),
+              Text(
+                  'Service Description: ${serviceFormData.afterGasPressureHighSide}'),
+            ],
+          ),
+          actions: [
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,13 +84,16 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
           MergedData serviceFormData = savedServiceFormData[index];
           return Card(
             child: ListTile(
+              onTap: () {
+                _showServiceDetailsDialog(serviceFormData, context);
+              },
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('location: ${serviceFormData.location}'),
-                  Text('serviceType: ${serviceFormData.afterAmp}'),
-                  Text(
-                      'serviceDescription: ${serviceFormData.afterGasPressureHighSide}'),
+                  Text('Location: ${serviceFormData.location}'),
+                  Text('Date : ${serviceFormData.createdDate}'),
+                  Text('Before temp: ${serviceFormData.beforeRoomTemperature}'),
+                  Text('After temp: ${serviceFormData.afterRoomTemperature}'),
                 ],
               ),
               trailing: IconButton(

@@ -1,5 +1,7 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'dart:io';
+import 'package:path/path.dart' as path;
 
 class DatabaseHelper {
   static final DatabaseHelper instance = DatabaseHelper._init();
@@ -71,7 +73,17 @@ class DatabaseHelper {
       drainLineClean TEXT,
       remark TEXT,
       date TEXT,
-      technicianName TEXT
+      technicianName TEXT,
+      image TEXT
+    )
+  ''');
+
+    await db.execute('''
+    CREATE TABLE IF NOT EXISTS images (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      form_id INTEGER,
+      image_name TEXT,
+      image_data BLOB
     )
   ''');
   }
@@ -124,6 +136,30 @@ class DatabaseHelper {
       where: 'id = ?',
       whereArgs: [id],
     );
+  }
+
+  Future<void> saveImage(int formId, File imageFile) async {
+    // Open the database
+    final db = await instance.database;
+
+    // Get the path to the image file
+    final imagePath = imageFile.path;
+
+    // Convert the image file to bytes
+    final bytes = await imageFile.readAsBytes();
+
+    // Define the image file name
+    final imageName = path.basename(imagePath);
+
+    // Create a map of the image data
+    final imageMap = {
+      'form_id': formId,
+      'image_name': imageName,
+      'image_data': bytes,
+    };
+
+    // Insert the image data into the database
+    await db.insert('images', imageMap);
   }
 
   Future<void> closeDatabase() async {

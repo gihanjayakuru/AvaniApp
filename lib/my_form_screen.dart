@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'database_helper.dart';
 import 'location_list.dart';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 
 class MyFormScreen extends StatefulWidget {
   @override
@@ -43,6 +46,11 @@ class _MyFormScreenState extends State<MyFormScreen> {
 
   // Define form key for validation
   final _formKey = GlobalKey<FormState>();
+
+  // Variables for handling image
+  String imagePath = '';
+  // Variables for handling image
+  File? imageFile;
 
   @override
   void dispose() {
@@ -94,6 +102,21 @@ class _MyFormScreenState extends State<MyFormScreen> {
           key: _formKey,
           child: Column(
             children: [
+              Container(
+                width: double.infinity,
+                height: 200,
+                color: Colors.grey.shade200,
+                child: imageFile == null
+                    ? Center(
+                        child: IconButton(
+                          icon: Icon(Icons.add_a_photo),
+                          onPressed: () {
+                            _selectImage();
+                          },
+                        ),
+                      )
+                    : Image.file(imageFile!),
+              ),
               Padding(
                 padding: EdgeInsets.all(16.0),
                 child: TextFormField(
@@ -381,6 +404,16 @@ class _MyFormScreenState extends State<MyFormScreen> {
     );
   }
 
+  void _selectImage() async {
+    final picker = ImagePicker();
+    final pickedImage = await picker.getImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      setState(() {
+        imageFile = File(pickedImage.path);
+      });
+    }
+  }
+
   void _saveForm() async {
     // Retrieve the form field values using the controllers
     String location = locationController.text;
@@ -442,6 +475,11 @@ class _MyFormScreenState extends State<MyFormScreen> {
     int id = await DatabaseHelper.instance.insertFormData(formData);
     print('Form data saved with ID: $id');
 
+// Save the image file
+    if (imageFile != null) {
+      await DatabaseHelper.instance.saveImage(id, imageFile!);
+      print('Image saved for form ID: $id');
+    }
     // Clear the form fields
     _clearForm();
 
