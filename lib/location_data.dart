@@ -1,4 +1,4 @@
-class FormData {
+class LocationData {
   int id; // Add the id property
 
   String? location;
@@ -13,7 +13,7 @@ class FormData {
   String? outdoorSerialNum;
   String? outdoorCapacity;
 
-  FormData({
+  LocationData({
     required this.id, //  Make the id property required
     this.location,
     /////////////////
@@ -28,9 +28,9 @@ class FormData {
     this.outdoorCapacity,
   });
 
-  // Add a factory constructor to create a FormData instance from a map
-  factory FormData.fromMap(Map<String, dynamic> map) {
-    return FormData(
+  // Add a factory constructor to create a LocationData instance from a map
+  factory LocationData.fromMap(Map<String, dynamic> map) {
+    return LocationData(
       id: map['id'],
       location: map['location'],
       ///////
@@ -46,7 +46,7 @@ class FormData {
     );
   }
 
-  // Add a method to convert a FormData instance to a map
+  // Add a method to convert a LocationData instance to a map
   Map<String, dynamic> toMap() {
     return {
       'id': id,

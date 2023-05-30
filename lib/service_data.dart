@@ -16,6 +16,30 @@ class MergedData {
   final String afterGasPressureLowSide;
   final String afterGasPressureHighSide;
   final String afterAmp;
+///////////////////////////////////////////////////////
+  String? filterClean;
+  String? blowerCheck;
+  String? indoorInspectCleanIduCoilFins;
+  String? checkCleanDrainPlate;
+  String? drainPumpCheck;
+  String? checkPipingDuckInsulation;
+  String? checkNoise;
+  String? indoorHousingCondition;
+  String? indoorPcbStatus;
+/////////////////////////////////
+  String? compressorNoise;
+  String? fanNoise;
+  String? outdoorInspectCleanIduCoilFins;
+  String? outdoorPcbStatus;
+  String? outdoorHousingCondition;
+  //////////////////////
+  String? acSlidinDoorOperation;
+  String? thermostatSetting;
+  String? drainLineClean;
+  ////////////////////////////////////
+  String? remark;
+  String? date;
+  String? technicianName;
 
   MergedData({
     required this.id,
@@ -35,6 +59,30 @@ class MergedData {
     required this.afterGasPressureLowSide,
     required this.afterGasPressureHighSide,
     required this.afterAmp,
+    ////////////////////
+    this.filterClean,
+    this.blowerCheck,
+    this.indoorInspectCleanIduCoilFins,
+    this.checkCleanDrainPlate,
+    this.drainPumpCheck,
+    this.checkPipingDuckInsulation,
+    this.checkNoise,
+    this.indoorHousingCondition,
+    this.indoorPcbStatus,
+    ////////////////////////////
+    this.compressorNoise,
+    this.fanNoise,
+    this.outdoorInspectCleanIduCoilFins,
+    this.outdoorPcbStatus,
+    this.outdoorHousingCondition,
+    ////////////////////////////////////
+    this.acSlidinDoorOperation,
+    this.thermostatSetting,
+    this.drainLineClean,
+    ////////////////////////////
+    this.remark,
+    this.date,
+    this.technicianName,
   });
 
   factory MergedData.fromJson(Map<String, dynamic> json) {
@@ -57,6 +105,32 @@ class MergedData {
       afterGasPressureLowSide: json['afterGasPressureLowSide'] ?? '',
       afterGasPressureHighSide: json['afterGasPressureHighSide'] ?? '',
       afterAmp: json['afterAmp'] ?? '',
+      /////////////////////////
+      filterClean: json['filterClean'] ?? '',
+      blowerCheck: json['blowerCheck'] ?? '',
+      indoorInspectCleanIduCoilFins:
+          json['indoorInspectCleanIduCoilFins'] ?? '',
+      checkCleanDrainPlate: json['checkCleanDrainPlate'] ?? '',
+      drainPumpCheck: json['drainPumpCheck'] ?? '',
+      checkPipingDuckInsulation: json['checkPipingDuckInsulation'] ?? '',
+      checkNoise: json['checkNoise'] ?? '',
+      indoorHousingCondition: json['indoorHousingCondition'] ?? '',
+      indoorPcbStatus: json['indoorPcbStatus'] ?? '',
+      //////////////////////////////////////////////
+      compressorNoise: json['compressorNoise'] ?? '',
+      fanNoise: json['fanNoise'] ?? '',
+      outdoorInspectCleanIduCoilFins:
+          json['outdoorInspectCleanIduCoilFins'] ?? '',
+      outdoorPcbStatus: json['outdoorPcbStatus'] ?? '',
+      outdoorHousingCondition: json['outdoorHousingCondition'] ?? '',
+      ///////////////////////////////////////////
+      acSlidinDoorOperation: json['acSlidinDoorOperation'] ?? '',
+      thermostatSetting: json['thermostatSetting'] ?? '',
+      drainLineClean: json['drainLineClean'] ?? '',
+      /////////////////////////////////////////////
+      remark: json['remark'] ?? '',
+      date: json['date'] ?? '',
+      technicianName: json['technicianName'] ?? '',
     );
   }
 
@@ -79,6 +153,30 @@ class MergedData {
       'afterGasPressureLowSide': afterGasPressureLowSide,
       'afterGasPressureHighSide': afterGasPressureHighSide,
       'afterAmp': afterAmp,
+      //////////////////////////////////////
+      'filterClean': filterClean,
+      'blowerCheck': blowerCheck,
+      'indoorInspectCleanIduCoilFins': indoorInspectCleanIduCoilFins,
+      'checkCleanDrainPlate': checkCleanDrainPlate,
+      'drainPumpCheck': drainPumpCheck,
+      'checkPipingDuckInsulation': checkPipingDuckInsulation,
+      'checkNoise': checkNoise,
+      'indoorHousingCondition': indoorHousingCondition,
+      'indoorPcbStatus': indoorPcbStatus,
+      /////////////////////////////////
+      'compressorNoise': compressorNoise,
+      'fanNoise': fanNoise,
+      'outdoorInspectCleanIduCoilFins': outdoorInspectCleanIduCoilFins,
+      'outdoorPcbStatus': outdoorPcbStatus,
+      'outdoorHousingCondition': outdoorHousingCondition,
+      ///////////////////////////////////////
+      'acSlidinDoorOperation': acSlidinDoorOperation,
+      'thermostatSetting': thermostatSetting,
+      'drainLineClean': drainLineClean,
+      ///////////////////////////
+      'remark': remark,
+      'date': date,
+      'technicianName': technicianName,
     };
   }
 }
