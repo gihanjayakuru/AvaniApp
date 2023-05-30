@@ -125,6 +125,13 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Get the current date
+    DateTime now = DateTime.now();
+
+// Format the current date
+    String formattedDate = DateFormat('yyyy-MM-dd').format(now);
+    // Set the formatted date as the initial value for the dateController
+    dateController.text = formattedDate;
     return Scaffold(
       appBar: AppBar(
         title: Text('Form'),
@@ -600,16 +607,18 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
           onPressed: () {
             if (_formKey.currentState?.validate() == true) {
               // Form is valid, save the data
+              print('_saveForm');
               _saveForm();
             }
           },
-          child: Text('Save'),
+          child: Text('Save Service'),
         ),
       ),
     );
   }
 
   void _saveForm() async {
+    print('calling _saveForm');
     // Retrieve the form field values using the controllers
     String location = widget.formData.location ?? '';
 
@@ -666,7 +675,6 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
     Map<String, dynamic> serviceFormData = {
       'createdDate': formattedDate,
       'location': location,
-
       'filterClean': filterClean,
       'blowerCheck': blowerCheck,
       'indoorInspectCleanIduCoilFins': indoorInspectCleanIduCoilFins,
@@ -676,21 +684,17 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
       'checkNoise': checkNoise,
       'indoorHousingCondition': indoorHousingCondition,
       'indoorPcbStatus': indoorPcbStatus,
-      /////////////////////////////////
       'compressorNoise': compressorNoise,
       'fanNoise': fanNoise,
       'outdoorInspectCleanIduCoilFins': outdoorInspectCleanIduCoilFins,
       'outdoorPcbStatus': outdoorPcbStatus,
       'outdoorHousingCondition': outdoorHousingCondition,
-      ///////////////////////////////////////
       'acSlidinDoorOperation': acSlidinDoorOperation,
       'thermostatSetting': thermostatSetting,
       'drainLineClean': drainLineClean,
-      ///////////////////////////
       'remark': remark,
       'date': date,
       'technicianName': technicianName,
-      ///////////////////////
       'beforeRoomTemperature': beforeRoomTemperature,
       'beforeSetPointTemperature': beforeSetPointTemperature,
       'beforeSupplyGrillTemperature': beforeSupplyGrillTemperature,
@@ -707,6 +711,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
       'afterAmp': afterAmp,
     };
 
+    print(serviceFormData);
     // Save the form data using your existing DatabaseHelper class
     await DatabaseHelper.instance.insertServiceFormData(serviceFormData);
 

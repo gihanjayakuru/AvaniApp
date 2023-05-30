@@ -13,7 +13,7 @@ class DatabaseHelper {
 
   Future<Database> get database async {
     if (_database != null && _database!.isOpen) return _database!;
-    _database = await _initDB('databasH.db');
+    _database = await _initDB('databasBa.db');
     return _database!;
   }
 
@@ -32,7 +32,6 @@ class DatabaseHelper {
     await db.execute('''
     CREATE TABLE IF NOT EXISTS service_form_data (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      
       createdDate TEXT,
       location TEXT,
       beforeRoomTemperature TEXT,
@@ -49,7 +48,6 @@ class DatabaseHelper {
       afterGasPressureLowSide TEXT,
       afterGasPressureHighSide TEXT,
       afterAmp TEXT,
-
       filterClean TEXT,
       blowerCheck TEXT,
       indoorInspectCleanIduCoilFins TEXT,
@@ -85,7 +83,7 @@ class DatabaseHelper {
       outdoorModel TEXT,
       outdoorModelNum TEXT,
       outdoorSerialNum TEXT,
-      outdoorCapacity TEXT,
+      outdoorCapacity TEXT
     )
   ''');
 

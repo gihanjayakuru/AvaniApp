@@ -38,31 +38,16 @@ class _LocationListScreenState extends State<LocationListScreen> {
       return FormData(
         id: formDataMap['id'],
         location: formDataMap['location'],
-        filterClean: formDataMap['filterClean'],
-        blowerCheck: formDataMap['blowerCheck'],
-        indoorInspectCleanIduCoilFins:
-            formDataMap['indoorInspectCleanIduCoilFins'],
-        checkCleanDrainPlate: formDataMap['checkCleanDrainPlate'],
-        drainPumpCheck: formDataMap['drainPumpCheck'],
-        checkPipingDuckInsulation: formDataMap['checkPipingDuckInsulation'],
-        checkNoise: formDataMap['checkNoise'],
-        indoorHousingCondition: formDataMap['indoorHousingCondition'],
-        indoorPcbStatus: formDataMap['indoorPcbStatus'],
-        //////////////////////////////////////////////
-        compressorNoise: formDataMap['compressorNoise'],
-        fanNoise: formDataMap['fanNoise'],
-        outdoorInspectCleanIduCoilFins:
-            formDataMap['outdoorInspectCleanIduCoilFins'],
-        outdoorPcbStatus: formDataMap['outdoorPcbStatus'],
-        outdoorHousingCondition: formDataMap['outdoorHousingCondition'],
-        ///////////////////////////////////////////
-        acSlidinDoorOperation: formDataMap['acSlidinDoorOperation'],
-        thermostatSetting: formDataMap['thermostatSetting'],
-        drainLineClean: formDataMap['drainLineClean'],
-        /////////////////////////////////////////////
-        remark: formDataMap['remark'],
-        date: formDataMap['date'],
-        technicianName: formDataMap['technicianName'],
+        ///////
+        indoorModel: formDataMap['indoorModel'],
+        indoorModelNum: formDataMap['indoorModelNum'],
+        indoorSerialNum: formDataMap['indoorSerialNum'],
+        indoorCapacity: formDataMap['indoorCapacity'],
+        //////
+        outdoorModel: formDataMap['outdoorModel'],
+        outdoorModelNum: formDataMap['outdoorModelNum'],
+        outdoorSerialNum: formDataMap['outdoorSerialNum'],
+        outdoorCapacity: formDataMap['outdoorCapacity'],
       );
     }).toList();
 
@@ -138,51 +123,26 @@ class _LocationListScreenState extends State<LocationListScreen> {
                   ),
                 ),
                 ListTile(
-                  title: Text('Filter Clean :'),
-                  subtitle: Text(formData.filterClean ?? ''),
+                  title: Text('indoor Model :'),
+                  subtitle: Text(formData.indoorModel ?? ''),
                 ),
                 Divider(),
                 ListTile(
-                  title: Text('Blower Check :'),
-                  subtitle: Text(formData.blowerCheck ?? ''),
+                  title: Text('indoor Model Num :'),
+                  subtitle: Text(formData.indoorModelNum ?? ''),
                 ),
                 Divider(),
                 ListTile(
-                  title: Text('Inspect/Clean IDU Coil Fins :'),
-                  subtitle: Text(formData.indoorInspectCleanIduCoilFins ?? ''),
+                  title: Text('indoor Serial Num :'),
+                  subtitle: Text(formData.indoorSerialNum ?? ''),
                 ),
                 Divider(),
                 ListTile(
-                  title: Text('Check/Clean Drain Plate :'),
-                  subtitle: Text(formData.checkCleanDrainPlate ?? ''),
+                  title: Text('indoor Capacity :'),
+                  subtitle: Text(formData.indoorCapacity ?? ''),
                 ),
                 Divider(),
-                ListTile(
-                  title: Text('Drain Pump Check :'),
-                  subtitle: Text(formData.drainPumpCheck ?? ''),
-                ),
-                Divider(),
-                ListTile(
-                  title: Text('Check Piping & Duck Insulation :'),
-                  subtitle: Text(formData.checkPipingDuckInsulation ?? ''),
-                ),
-                Divider(),
-                ListTile(
-                  title: Text('Check Noise :'),
-                  subtitle: Text(formData.checkNoise ?? ''),
-                ),
-                Divider(),
-                ListTile(
-                  title: Text('Indoor Housing Condition :'),
-                  subtitle: Text(formData.indoorHousingCondition ?? ''),
-                ),
-                Divider(),
-                ListTile(
-                  title: Text('PCB Status :'),
-                  subtitle: Text(formData.indoorPcbStatus ?? ''),
-                ),
-                Divider(),
-                //////////////////////////outdoor//////////////////////////////
+////////////////////////////Outdoor unit//////////////////////////////
                 const Padding(
                   padding: EdgeInsets.all(16.0),
                   child: Text(
@@ -194,69 +154,23 @@ class _LocationListScreenState extends State<LocationListScreen> {
                   ),
                 ),
                 ListTile(
-                  title: Text('Compressor Noise :'),
-                  subtitle: Text(formData.compressorNoise ?? ''),
+                  title: Text('out door Model :'),
+                  subtitle: Text(formData.outdoorModel ?? ''),
                 ),
                 Divider(),
                 ListTile(
-                  title: Text('Fan Noise :'),
-                  subtitle: Text(formData.fanNoise ?? ''),
+                  title: Text('outdoor Model Num :'),
+                  subtitle: Text(formData.outdoorModelNum ?? ''),
                 ),
                 Divider(),
                 ListTile(
-                  title: Text('Outdoor Inspect/Clean IDU Coil Fins :'),
-                  subtitle: Text(formData.outdoorInspectCleanIduCoilFins ?? ''),
+                  title: Text('outdoor Serial Num :'),
+                  subtitle: Text(formData.outdoorSerialNum ?? ''),
                 ),
                 Divider(),
                 ListTile(
-                  title: Text('Outdoor PCB Status :'),
-                  subtitle: Text(formData.outdoorPcbStatus ?? ''),
-                ),
-                Divider(),
-                ListTile(
-                  title: Text('Outdoor Housing Condition :'),
-                  subtitle: Text(formData.outdoorHousingCondition ?? ''),
-                ),
-                Divider(),
-                //////////////////////////General///////////////////////////////
-                const Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Text(
-                    'General',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                ListTile(
-                  title: Text('AC & Sliding Door Operation :'),
-                  subtitle: Text(formData.acSlidinDoorOperation ?? ''),
-                ),
-                Divider(),
-                ListTile(
-                  title: Text('Thermostat Setting :'),
-                  subtitle: Text(formData.thermostatSetting ?? ''),
-                ),
-                Divider(),
-                ListTile(
-                  title: Text('Drain Line Clean :'),
-                  subtitle: Text(formData.drainLineClean ?? ''),
-                ),
-                Divider(),
-                ListTile(
-                  title: Text('Remark :'),
-                  subtitle: Text(formData.remark ?? ''),
-                ),
-                Divider(),
-                ListTile(
-                  title: Text('Date :'),
-                  subtitle: Text(formData.date ?? ''),
-                ),
-                Divider(),
-                ListTile(
-                  title: Text('Technician Name :'),
-                  subtitle: Text(formData.technicianName ?? ''),
+                  title: Text('outdoor Capacity :'),
+                  subtitle: Text(formData.outdoorCapacity ?? ''),
                 ),
                 Divider(),
               ],
@@ -375,9 +289,9 @@ class _LocationListScreenState extends State<LocationListScreen> {
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Created : ${formData.date ?? ''}'),
-            Text('id : ${formData.id}'),
-            Text('technicianName : ${formData.technicianName ?? ''}'),
+            Text('indoorModel : ${formData.indoorModel ?? ''}'),
+            Text('outdoorModel : ${formData.outdoorModel}'),
+            // Text('technicianName : ${formData. ?? ''}'),
           ],
         ),
         leading: FutureBuilder<String?>(

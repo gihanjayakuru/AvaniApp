@@ -17,29 +17,29 @@ class MergedData {
   final String afterGasPressureHighSide;
   final String afterAmp;
 ///////////////////////////////////////////////////////
-  String? filterClean;
-  String? blowerCheck;
-  String? indoorInspectCleanIduCoilFins;
-  String? checkCleanDrainPlate;
-  String? drainPumpCheck;
-  String? checkPipingDuckInsulation;
-  String? checkNoise;
-  String? indoorHousingCondition;
-  String? indoorPcbStatus;
+  final String filterClean;
+  final String blowerCheck;
+  final String indoorInspectCleanIduCoilFins;
+  final String checkCleanDrainPlate;
+  final String drainPumpCheck;
+  final String checkPipingDuckInsulation;
+  final String checkNoise;
+  final String indoorHousingCondition;
+  final String indoorPcbStatus;
 /////////////////////////////////
-  String? compressorNoise;
-  String? fanNoise;
-  String? outdoorInspectCleanIduCoilFins;
-  String? outdoorPcbStatus;
-  String? outdoorHousingCondition;
+  final String compressorNoise;
+  final String fanNoise;
+  final String outdoorInspectCleanIduCoilFins;
+  final String outdoorPcbStatus;
+  final String outdoorHousingCondition;
   //////////////////////
-  String? acSlidinDoorOperation;
-  String? thermostatSetting;
-  String? drainLineClean;
+  final String acSlidinDoorOperation;
+  final String thermostatSetting;
+  final String drainLineClean;
   ////////////////////////////////////
-  String? remark;
-  String? date;
-  String? technicianName;
+  final String remark;
+  final String date;
+  final String technicianName;
 
   MergedData({
     required this.id,
@@ -60,29 +60,29 @@ class MergedData {
     required this.afterGasPressureHighSide,
     required this.afterAmp,
     ////////////////////
-    this.filterClean,
-    this.blowerCheck,
-    this.indoorInspectCleanIduCoilFins,
-    this.checkCleanDrainPlate,
-    this.drainPumpCheck,
-    this.checkPipingDuckInsulation,
-    this.checkNoise,
-    this.indoorHousingCondition,
-    this.indoorPcbStatus,
+    required this.filterClean,
+    required this.blowerCheck,
+    required this.indoorInspectCleanIduCoilFins,
+    required this.checkCleanDrainPlate,
+    required this.drainPumpCheck,
+    required this.checkPipingDuckInsulation,
+    required this.checkNoise,
+    required this.indoorHousingCondition,
+    required this.indoorPcbStatus,
     ////////////////////////////
-    this.compressorNoise,
-    this.fanNoise,
-    this.outdoorInspectCleanIduCoilFins,
-    this.outdoorPcbStatus,
-    this.outdoorHousingCondition,
+    required this.compressorNoise,
+    required this.fanNoise,
+    required this.outdoorInspectCleanIduCoilFins,
+    required this.outdoorPcbStatus,
+    required this.outdoorHousingCondition,
     ////////////////////////////////////
-    this.acSlidinDoorOperation,
-    this.thermostatSetting,
-    this.drainLineClean,
+    required this.acSlidinDoorOperation,
+    required this.thermostatSetting,
+    required this.drainLineClean,
     ////////////////////////////
-    this.remark,
-    this.date,
-    this.technicianName,
+    required this.remark,
+    required this.date,
+    required this.technicianName,
   });
 
   factory MergedData.fromJson(Map<String, dynamic> json) {
