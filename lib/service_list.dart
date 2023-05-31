@@ -1,13 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-// import 'package:sqflite/sqflite.dart';
-// import 'package:path/path.dart';
 
 import 'database_helper.dart';
 import 'location_list.dart';
 import 'service_data.dart';
 
-/// ADD search bar with Filter Data and location
-///Popup details screen add save as pdf all ADD service form with details
 class ServiceListScreen extends StatefulWidget {
   @override
   _ServiceListScreenState createState() => _ServiceListScreenState();
@@ -46,64 +44,95 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
     _loadServiceFormData();
   }
 
-  void _showServiceDetailsDialog(MergedData serviceFormData, context) {
+  void _showServiceDetailsDialog(MergedData serviceFormData, context) async {
+    List<Map<String, dynamic>> serviceImages = await DatabaseHelper.instance
+        .getServiceImagesForForm(serviceFormData.id);
+
+    print("Service list load with this id${serviceFormData.id}");
+
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
           title: Text('Before After Service Details'),
-          content: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Location : ${serviceFormData.location}'),
-              Text('Date : ${serviceFormData.createdDate}'),
-              const Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Text(
-                  'Before Service',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+          content: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Location : ${serviceFormData.location}'),
+                Text('Date : ${serviceFormData.createdDate}'),
+                const Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Text(
+                    'Before Service',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-              ),
-              Text(
-                  'Room Temperature : ${serviceFormData.beforeRoomTemperature}'),
-              Text(
-                  'Set Point Temperature : ${serviceFormData.beforeSetPointTemperature}'),
-              Text(
-                  'Supply Grill Temperature : ${serviceFormData.beforeSupplyGrillTemperature}'),
-              Text(
-                  'Return Grill Temperature : ${serviceFormData.beforeReturnGrillTemperature}'),
-              Text(
-                  'Gas Pressure /Low Side : ${serviceFormData.beforeGasPressureLowSide}'),
-              Text(
-                  'Gas Pressure /High Side : ${serviceFormData.beforeGasPressureHighSide}'),
-              Text('Amp : ${serviceFormData.beforeAmp}'),
-              const Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Text(
-                  'After Service',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                Text(
+                    'Room Temperature : ${serviceFormData.beforeRoomTemperature}'),
+                Text(
+                    'Set Point Temperature : ${serviceFormData.beforeSetPointTemperature}'),
+                Text(
+                    'Supply Grill Temperature : ${serviceFormData.beforeSupplyGrillTemperature}'),
+                Text(
+                    'Return Grill Temperature : ${serviceFormData.beforeReturnGrillTemperature}'),
+                Text(
+                    'Gas Pressure /Low Side : ${serviceFormData.beforeGasPressureLowSide}'),
+                Text(
+                    'Gas Pressure /High Side : ${serviceFormData.beforeGasPressureHighSide}'),
+                Text('Amp : ${serviceFormData.beforeAmp}'),
+                const Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Text(
+                    'After Service',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-              ),
-              Text(
-                  'Room Temperature : ${serviceFormData.afterRoomTemperature}'),
-              Text(
-                  'Set Point Temperature : ${serviceFormData.afterSetPointTemperature}'),
-              Text(
-                  'Supply Grill Temperature : ${serviceFormData.afterSupplyGrillTemperature}'),
-              Text(
-                  'Return Grill Temperature : ${serviceFormData.afterReturnGrillTemperature}'),
-              Text(
-                  'Gas Pressure /Low Side: ${serviceFormData.afterGasPressureLowSide}'),
-              Text(
-                  'Gas Pressure /High Side : ${serviceFormData.afterGasPressureHighSide}'),
-              Text('Amp : ${serviceFormData.afterAmp}'),
-            ],
+                Text(
+                    'Room Temperature : ${serviceFormData.afterRoomTemperature}'),
+                Text(
+                    'Set Point Temperature : ${serviceFormData.afterSetPointTemperature}'),
+                Text(
+                    'Supply Grill Temperature : ${serviceFormData.afterSupplyGrillTemperature}'),
+                Text(
+                    'Return Grill Temperature : ${serviceFormData.afterReturnGrillTemperature}'),
+                Text(
+                    'Gas Pressure /Low Side: ${serviceFormData.afterGasPressureLowSide}'),
+                Text(
+                    'Gas Pressure /High Side : ${serviceFormData.afterGasPressureHighSide}'),
+                Text('Amp : ${serviceFormData.afterAmp}'),
+                if (serviceImages.isNotEmpty)
+                  const Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Text(
+                      'Service Images',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                if (serviceImages.isNotEmpty)
+                  Wrap(
+                    spacing: 8.0,
+                    runSpacing: 8.0,
+                    children: serviceImages.map((imageData) {
+                      final String imagePath = imageData['image_path'];
+                      return ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.file(File(imagePath), fit: BoxFit.cover),
+                      );
+                    }).toList(),
+                  ),
+                if (serviceImages.isEmpty) Text('No images available'),
+              ],
+            ),
           ),
           actions: [
             TextButton(

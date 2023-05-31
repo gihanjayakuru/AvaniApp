@@ -13,7 +13,7 @@ class DatabaseHelper {
 
   Future<Database> get database async {
     if (_database != null && _database!.isOpen) return _database!;
-    _database = await _initDB('databasSAa.db');
+    _database = await _initDB('databaseNewx.db');
     return _database!;
   }
 
@@ -106,7 +106,7 @@ class DatabaseHelper {
       form_id TEXT,
       image_name TEXT,
       image_data TEXT,
-      image_path TEXT,
+      image_path TEXT
     )
   ''');
   }
@@ -251,7 +251,7 @@ class DatabaseHelper {
       final imagePath = image.path;
       final imageBytes = await image.readAsBytes();
       final imageName = path.basename(imagePath);
-
+      print(imagePath);
       final serviceImagesMap = {
         'form_id': formId,
         'image_name': imageName,

@@ -755,6 +755,12 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
     serviceImagesSaved =
         await DatabaseHelper.instance.saveServiceImages(selectedImages, id);
 
+    if (serviceImagesSaved = true) {
+      print('Images saved////////////');
+    } else {
+      print('Images not saved......////////////');
+    }
+
     // Once the data is saved, you can navigate to the list screen or perform any other actions
     Navigator.pushReplacement(
       context,
