@@ -1,6 +1,6 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'database_helper.dart';
 import 'location_list.dart';
@@ -12,7 +12,11 @@ class ServiceListScreen extends StatefulWidget {
 }
 
 class _ServiceListScreenState extends State<ServiceListScreen> {
+  // List<MergedData> savedServiceFormData = [];
+  String searchQuery = '';
+  // late DateTime selectedDateFilter;
   List<MergedData> savedServiceFormData = [];
+  DateTime? selectedDateFilter; // Initialize to null
 
   @override
   void initState() {
@@ -147,39 +151,118 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
     );
   }
 
+  List<MergedData> _filteredServiceFormData() {
+    List<MergedData> filteredList = savedServiceFormData;
+
+    if (searchQuery.isNotEmpty) {
+      filteredList = filteredList.where((formData) {
+        String location = formData.location.toLowerCase();
+        String date = formData.createdDate.toLowerCase();
+        return location.contains(searchQuery.toLowerCase()) ||
+            date.contains(searchQuery.toLowerCase());
+      }).toList();
+    }
+    // Filter by date
+    if (selectedDateFilter != null) {
+      filteredList = filteredList.where((formData) {
+        DateTime? date = DateFormat("yyyy-MM-dd").parse(formData.createdDate);
+        return date != null &&
+            date.year == selectedDateFilter!.year &&
+            date.month == selectedDateFilter!.month &&
+            date.day == selectedDateFilter!.day;
+      }).toList();
+    }
+
+    return filteredList; // Add a return statement here
+  }
+
+  //   // Filter by date
+  // if (selectedDateFilter != null) {
+  // filteredList = filteredList.where((formData) {
+  //   DateTime? date = DateFormat("yyyy-MM-dd").parse(formData.createdDate);
+  //   return date != null &&
+  //       date.year == selectedDateFilter!.year &&
+  //       date.month == selectedDateFilter!.month &&
+  //       date.day == selectedDateFilter!.day;
+  // }).toList();
+
+  //   return filteredList;
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Service List Screen'),
       ),
-      body: ListView.builder(
-        itemCount: savedServiceFormData.length,
-        itemBuilder: (context, index) {
-          MergedData serviceFormData = savedServiceFormData[index];
-          return Card(
-            child: ListTile(
-              onTap: () {
-                _showServiceDetailsDialog(serviceFormData, context);
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              decoration: InputDecoration(
+                labelText: 'Search',
+                prefixIcon: Icon(Icons.search),
+              ),
+              onChanged: (value) {
+                setState(() {
+                  searchQuery = value;
+                });
               },
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Location : ${serviceFormData.location}'),
-                  Text('Date : ${serviceFormData.createdDate}'),
-                  Text(
-                      'Before Temperature : ${serviceFormData.beforeRoomTemperature}'),
-                  Text(
-                      'After Temperature : ${serviceFormData.afterRoomTemperature}'),
-                ],
-              ),
-              trailing: IconButton(
-                icon: Icon(Icons.delete),
-                onPressed: () => _deleteServiceFormData(serviceFormData.id),
-              ),
             ),
-          );
-        },
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(
+              onPressed: () async {
+                final DateTime? picked = await showDatePicker(
+                  context: context,
+                  initialDate: DateTime.now(),
+                  firstDate: DateTime(2010),
+                  lastDate: DateTime(2030),
+                );
+
+                if (picked != null) {
+                  setState(() {
+                    selectedDateFilter = picked;
+                  });
+                }
+              },
+              child: Text('Filter by Date'),
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: _filteredServiceFormData().length,
+              itemBuilder: (context, index) {
+                MergedData serviceFormData = _filteredServiceFormData()[index];
+                return Card(
+                  child: ListTile(
+                    onTap: () {
+                      _showServiceDetailsDialog(serviceFormData, context);
+                    },
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Location : ${serviceFormData.location}'),
+                        Text('Date : ${serviceFormData.createdDate}'),
+                        Text(
+                            'Before Temperature : ${serviceFormData.beforeRoomTemperature}'),
+                        Text(
+                            'After Temperature : ${serviceFormData.afterRoomTemperature}'),
+                      ],
+                    ),
+                    trailing: IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () =>
+                          _deleteServiceFormData(serviceFormData.id),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: 2,
