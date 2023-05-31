@@ -99,6 +99,16 @@ class DatabaseHelper {
       outdoor_image_path TEXT
     )
   ''');
+
+    await db.execute('''
+    CREATE TABLE IF NOT EXISTS service_images (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      form_id TEXT,
+      image_name TEXT,
+      image_data TEXT,
+      image_path TEXT,
+    )
+  ''');
   }
 
   Future<List<Map<String, dynamic>>> getServiceFormDataList() async {
@@ -106,10 +116,15 @@ class DatabaseHelper {
     return await db.query('service_form_data');
   }
 
-  Future<void> insertServiceFormData(
+  // Future<int> insertFormData(Map<String, dynamic> formData) async {
+  //   final db = await instance.database;
+  //   return await db.insert('form_data', formData);
+  // }
+
+  Future<int> insertServiceFormData(
       Map<String, dynamic> serviceFormData) async {
-    final Database db = await instance.database;
-    await db.insert('service_form_data', serviceFormData);
+    final db = await instance.database;
+    return await db.insert('service_form_data', serviceFormData);
   }
 
   Future<int> deleteServiceFormData(int id) async {
@@ -229,6 +244,49 @@ class DatabaseHelper {
 
     return [];
   }
+
+  Future<bool> saveServiceImages(List<File> images, int formId) async {
+    final db = await instance.database;
+    for (final image in images) {
+      final imagePath = image.path;
+      final imageBytes = await image.readAsBytes();
+      final imageName = path.basename(imagePath);
+
+      final serviceImagesMap = {
+        'form_id': formId,
+        'image_name': imageName,
+        'image_data': imageBytes,
+        'image_path': imagePath,
+      };
+
+      await db.insert('service_images', serviceImagesMap);
+    }
+    return true;
+  }
+
+  Future<List<Map<String, dynamic>>> getServiceImagesForForm(int formId) async {
+    final db = await instance.database;
+    final result = await db.query(
+      'service_images',
+      where: 'form_id = ?',
+      whereArgs: [formId],
+    );
+    return result;
+  }
+
+  // Future<List<File>> getSelectedImages() async {
+  //   final db = await database;
+  //   final result = await db.query('selected_images');
+  //   final List<File> images = [];
+  //   for (final row in result) {
+  //     final imagePath = row['image_path'] as String;
+  //     final image = File(imagePath);
+  //     if (await image.exists()) {
+  //       images.add(image);
+  //     }
+  //   }
+  //   return images;
+  // }
 
   Future<void> closeDatabase() async {
     if (_database != null && _database!.isOpen) {

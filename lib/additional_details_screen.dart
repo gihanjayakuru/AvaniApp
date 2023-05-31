@@ -640,16 +640,6 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
     );
   }
 
-  // Future<void> _pickImages() async {
-  //   final imagePicker = ImagePicker();
-  //   final pickedImages = await imagePicker.pickMultiImage();
-  //   if (pickedImages != null) {
-  //     setState(() {
-  //       selectedImages =
-  //           pickedImages.map((pickedImage) => File(pickedImage.path)).toList();
-  //     });
-  //   }
-  // }
   Future<void> _pickImages() async {
     final imagePicker = ImagePicker();
     final pickedImages = await imagePicker.pickMultiImage();
@@ -661,6 +651,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
     }
   }
 
+///////////////////save form //////////
   void _saveForm() async {
     print('calling _saveForm');
     // Retrieve the form field values using the controllers
@@ -755,9 +746,14 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
       'afterAmp': afterAmp,
     };
 
-    print(serviceFormData);
-    // Save the form data using your existing DatabaseHelper class
-    await DatabaseHelper.instance.insertServiceFormData(serviceFormData);
+    int id =
+        await DatabaseHelper.instance.insertServiceFormData(serviceFormData);
+    print('service Form data saved with ID: $id');
+
+    bool serviceImagesSaved;
+
+    serviceImagesSaved =
+        await DatabaseHelper.instance.saveServiceImages(selectedImages, id);
 
     // Once the data is saved, you can navigate to the list screen or perform any other actions
     Navigator.pushReplacement(

@@ -338,6 +338,7 @@ class _MyFormScreenState extends State<MyFormScreen> {
     String outdoorCapacity = outdoorCapacityController.text;
 
     // Create a map of the form data
+
     Map<String, dynamic> formData = {
       'location': location,
       'indoorModel': indoorModel,
@@ -396,7 +397,6 @@ class _MyFormScreenState extends State<MyFormScreen> {
     indoorModelNumController.clear();
     indoorSerialNumController.clear();
     indoorCapacityController.clear();
-
     outdoorModelController.clear();
     outdoorModelNumController.clear();
     outdoorSerialNumController.clear();
