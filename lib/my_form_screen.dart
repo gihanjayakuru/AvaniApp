@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'database_helper.dart';
 import 'location_list.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
 
 class MyFormScreen extends StatefulWidget {
   @override
   _MyFormScreenState createState() => _MyFormScreenState();
 }
+
+//TO DO
+// remove top photo and add 1 photo to indoor unit and another to outdoor
 
 class _MyFormScreenState extends State<MyFormScreen> {
   // Define controllers for text fields
@@ -33,7 +34,9 @@ class _MyFormScreenState extends State<MyFormScreen> {
   // Variables for handling image
   // File? imageFile;
 
-  File? _image;
+  // File? _image;
+  File? _indoorImage;
+  File? _outdoorImage;
 
   // This is the image picker
   final _picker = ImagePicker();
@@ -64,14 +67,6 @@ class _MyFormScreenState extends State<MyFormScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Get the current date
-    // DateTime now = DateTime.now();
-
-// Format the current date
-    // String formattedDate = DateFormat('yyyy-MM-dd').format(now);
-    // // Set the formatted date as the initial value for the dateController
-    // dateController.text = formattedDate;
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Location Form'),
@@ -92,16 +87,41 @@ class _MyFormScreenState extends State<MyFormScreen> {
             children: [
               Padding(
                 padding: const EdgeInsets.all(16.0),
+                child: TextFormField(
+                  controller: locationController,
+                  decoration: InputDecoration(labelText: 'Location'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a location';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              ////
+              const Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Text(
+                  'Indoor unit',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
                 child: Stack(
                   children: [
                     Container(
+                      width: 200,
                       height: 200, // Adjust the height as per your requirement
                       decoration: BoxDecoration(
                         color: Colors.grey[300],
                         border: Border.all(color: Colors.black),
                       ),
-                      child: _image != null
-                          ? Image.file(_image!, fit: BoxFit.cover)
+                      child: _indoorImage != null
+                          ? Image.file(_indoorImage!, fit: BoxFit.cover)
                           : null,
                     ),
                     Positioned(
@@ -113,28 +133,15 @@ class _MyFormScreenState extends State<MyFormScreen> {
                         child: ElevatedButton(
                           onPressed: () {
                             setState(() {
-                              _image = null;
+                              _indoorImage = null;
                             });
-                            _openImagePicker();
+                            _openIndoorImagePicker();
                           },
-                          child: const Text('Add Image'),
+                          child: const Text('Add Indoor Image'),
                         ),
                       ),
                     ),
                   ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: TextFormField(
-                  controller: locationController,
-                  decoration: InputDecoration(labelText: 'Location'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a location';
-                    }
-                    return null;
-                  },
                 ),
               ),
               Padding(
@@ -163,9 +170,9 @@ class _MyFormScreenState extends State<MyFormScreen> {
                       },
                     ),
                     TextFormField(
-                      controller: outdoorSerialNumController,
+                      controller: indoorSerialNumController,
                       decoration:
-                          InputDecoration(labelText: 'outdoor Serial Num :'),
+                          InputDecoration(labelText: 'indoor Serial Num :'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter outdoor Serial Num';
@@ -183,6 +190,52 @@ class _MyFormScreenState extends State<MyFormScreen> {
                         }
                         return null;
                       },
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: Text(
+                        'Outdoor unit',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Stack(
+                        children: [
+                          Container(
+                            width: 200,
+                            height:
+                                200, // Adjust the height as per your requirement
+                            decoration: BoxDecoration(
+                              color: Colors.grey[300],
+                              border: Border.all(color: Colors.black),
+                            ),
+                            child: _outdoorImage != null
+                                ? Image.file(_outdoorImage!, fit: BoxFit.cover)
+                                : null,
+                          ),
+                          Positioned(
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            child: Container(
+                              color: Colors.grey[300],
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _outdoorImage = null;
+                                  });
+                                  _openOutdoorImagePicker();
+                                },
+                                child: const Text('Add Outdoor Image'),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     TextFormField(
                       controller: outdoorModelController,
@@ -249,36 +302,27 @@ class _MyFormScreenState extends State<MyFormScreen> {
     );
   }
 
-  // void _selectImage() async {
-  //   final picker = ImagePicker();
-  //   final pickedImage = await picker.getImage(source: ImageSource.gallery);
-  //   if (pickedImage != null) {
-  //     setState(() {
-  //       imageFile = File(pickedImage.path);
-  //     });
-  //   }
-  // }
-
-  // Implementing the image picker
-  Future<void> _openImagePicker() async {
+  Future<void> _openIndoorImagePicker() async {
     final XFile? pickedImage =
         await _picker.pickImage(source: ImageSource.gallery);
     if (pickedImage != null) {
       setState(() {
-        _image = File(pickedImage.path);
+        _indoorImage = File(pickedImage.path);
+        print('woooooooo indoor image :${_indoorImage}');
       });
     }
   }
 
-  // Future<void> _openImagePickerCamera() async {
-  //   final XFile? pickedImage =
-  //       await _picker.pickImage(source: ImageSource.camera);
-  //   if (pickedImage != null) {
-  //     setState(() {
-  //       _image = File(pickedImage.path);
-  //     });
-  //   }
-  // }
+  Future<void> _openOutdoorImagePicker() async {
+    final XFile? pickedImage =
+        await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      setState(() {
+        _outdoorImage = File(pickedImage.path);
+        print('woooooooo outdoor image :${_outdoorImage}');
+      });
+    }
+  }
 
   void _saveForm() async {
     // Retrieve the form field values using the controllers
@@ -310,19 +354,32 @@ class _MyFormScreenState extends State<MyFormScreen> {
     int id = await DatabaseHelper.instance.insertFormData(formData);
     print('Form data saved with ID: $id');
 
-    final isImageSaved = await DatabaseHelper.instance.saveImage(id, _image!);
-    if (isImageSaved) {
-      // Image data was inserted successfully
-      print(' Image data was inserted successfully');
+    bool isIndoorImageSaved;
+    // bool isOutdoorImageSaved = true;
+
+    // if (_indoorImage != null) {
+    //   isIndoorImageSaved =
+    //       await DatabaseHelper.instance.saveImages(id, _indoorImage!, null);
+    // }
+
+    // print('Indoor image file path: ${_indoorImage.path}');
+    isIndoorImageSaved = await DatabaseHelper.instance
+        .saveImages(id, _indoorImage, _outdoorImage);
+
+    //   isOutdoorImageSaved =
+    //       await DatabaseHelper.instance.saveImages(id, , _outdoorImage!);
+    // }
+    // print('checkings...... indor  :${isIndoorImageSaved}');
+    // print('checkings......  out :${isOutdoorImageSaved}');
+
+    if (isIndoorImageSaved) {
+      // Images were inserted successfully
+      print('2 Images were inserted successfully');
     } else {
-      // Image data insertion failed
-      print('Image data insertion failed');
+      // Image insertion failed
+      print('2 Images insertion failed');
     }
-// // Save the image file
-//     if (imageFile != null) {
-//       await DatabaseHelper.instance.saveImage(id, imageFile!);
-//       print('Image saved for form ID: $id');
-//     }
+
     // Clear the form fields
     _clearForm();
 

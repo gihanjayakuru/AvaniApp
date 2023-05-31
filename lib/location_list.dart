@@ -71,23 +71,13 @@ class _LocationListScreenState extends State<LocationListScreen> {
     );
   }
 
-  // void _deleteFormData(FormData formData) async {
-  //   bool success = await DatabaseHelper.instance.deleteFormData(formData.id);
-  //   if (success) {
-  //     setState(() {
-  //       savedFormData.remove(formData);
-  //     });
-  //     // Show a success message or perform any other necessary actions
-  //   } else {
-  //     // Show an error message or perform any other necessary actions
-  //   }
-  // }
-
-//
   void _showDetailsDialog(
-      BuildContext context, FormData formData, int index) async {
+    BuildContext context,
+    FormData formData,
+    int index,
+  ) async {
     final databaseHelper = DatabaseHelper.instance;
-    final imagePath = await databaseHelper.getImagePathForForm(formData.id);
+    final imagePaths = await databaseHelper.getImagePathsForForm(formData.id);
 
     print('image ID load in: ${formData.id}');
 
@@ -95,81 +85,94 @@ class _LocationListScreenState extends State<LocationListScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Location Details :'),
+          title: Text('Location Details:'),
           content: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ListTile(
-                  title: Text('Location :'),
+                  title: Text('Location:'),
                   subtitle: Text(formData.location ?? ''),
                 ),
                 Divider(),
-                if (imagePath != null && File(imagePath).existsSync())
-                  Image.file(
-                      File(imagePath)), // Show the image using the file path
-                if (imagePath == null || !File(imagePath).existsSync())
-                  Text('Image not found !'),
-                ////////////////////indoor//////////////////////
-                ///
-                const Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Text(
-                    'Indoor Unit :',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
+                if (imagePaths.isNotEmpty)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      if (imagePaths[0] != null &&
+                          File(imagePaths[0]!).existsSync())
+                        Image.file(
+                          File(imagePaths[0]!),
+                          width: 100,
+                          height: 100,
+                          fit: BoxFit.cover,
+                        ),
+                      if (imagePaths[1] != null &&
+                          File(imagePaths[1]!).existsSync())
+                        Image.file(
+                          File(imagePaths[1]!),
+                          width: 100,
+                          height: 100,
+                          fit: BoxFit.cover,
+                        ),
+                    ],
+                  ),
+                if (imagePaths.isEmpty ||
+                    !imagePaths.any((path) => path != null))
+                  Text('Images not found!'),
+                const SizedBox(height: 16),
+                const Text(
+                  'Indoor Unit:',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 ListTile(
-                  title: Text('indoor Model :'),
+                  title: Text('Indoor Model:'),
                   subtitle: Text(formData.indoorModel ?? ''),
                 ),
                 Divider(),
                 ListTile(
-                  title: Text('indoor Model Num :'),
+                  title: Text('Indoor Model Num:'),
                   subtitle: Text(formData.indoorModelNum ?? ''),
                 ),
                 Divider(),
                 ListTile(
-                  title: Text('indoor Serial Num :'),
+                  title: Text('Indoor Serial Num:'),
                   subtitle: Text(formData.indoorSerialNum ?? ''),
                 ),
                 Divider(),
                 ListTile(
-                  title: Text('indoor Capacity :'),
+                  title: Text('Indoor Capacity:'),
                   subtitle: Text(formData.indoorCapacity ?? ''),
                 ),
                 Divider(),
-////////////////////////////Outdoor unit//////////////////////////////
-                const Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Text(
-                    'Outdoor unit',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
+                const SizedBox(height: 16),
+                const Text(
+                  'Outdoor Unit:',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 ListTile(
-                  title: Text('out door Model :'),
+                  title: Text('Outdoor Model:'),
                   subtitle: Text(formData.outdoorModel ?? ''),
                 ),
                 Divider(),
                 ListTile(
-                  title: Text('outdoor Model Num :'),
+                  title: Text('Outdoor Model Num:'),
                   subtitle: Text(formData.outdoorModelNum ?? ''),
                 ),
                 Divider(),
                 ListTile(
-                  title: Text('outdoor Serial Num :'),
+                  title: Text('Outdoor Serial Num:'),
                   subtitle: Text(formData.outdoorSerialNum ?? ''),
                 ),
                 Divider(),
                 ListTile(
-                  title: Text('outdoor Capacity :'),
+                  title: Text('Outdoor Capacity:'),
                   subtitle: Text(formData.outdoorCapacity ?? ''),
                 ),
                 Divider(),
@@ -285,38 +288,59 @@ class _LocationListScreenState extends State<LocationListScreen> {
         onTap: () {
           _showDetailsDialog(context, formData, index);
         },
-        title: Text('location : ${formData.location ?? ''}'),
+        title: Text('Location: ${formData.location ?? ''}'),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('indoorModel : ${formData.indoorModel ?? ''}'),
-            Text('outdoorModel : ${formData.outdoorModel}'),
-            // Text('technicianName : ${formData. ?? ''}'),
+            Text('Indoor Model: ${formData.indoorModel ?? ''}'),
+            Text('Outdoor Model: ${formData.outdoorModel ?? ''}'),
           ],
         ),
-        leading: FutureBuilder<String?>(
-          future: databaseHelper.getImagePathForForm(formData.id),
-          builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator(); // Show loading indicator while fetching image path
-            } else if (snapshot.hasError || snapshot.data == null) {
-              return Icon(Icons
-                  .image_not_supported); // Show default icon if image path is not available
-            } else {
-              final imagePath = snapshot.data!;
-              if (File(imagePath).existsSync()) {
-                return Image.file(
-                  File(imagePath),
-                  width: 48,
-                  height: 48,
-                  fit: BoxFit.cover,
-                ); // Show the image using the file path
-              } else {
+        leading: Container(
+          width: 96, // Set a fixed width for the leading widget
+          child: FutureBuilder<List<String?>>(
+            future: databaseHelper.getImagePathsForForm(formData.id),
+            builder:
+                (BuildContext context, AsyncSnapshot<List<String?>> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return CircularProgressIndicator(); // Show loading indicator while fetching image paths
+              } else if (snapshot.hasError || snapshot.data == null) {
                 return Icon(Icons
-                    .image_not_supported); // Show default icon if image file does not exist
+                    .image_not_supported); // Show default icon if image paths are not available
+              } else {
+                final imagePaths = snapshot.data!;
+                return Row(
+                  children: [
+                    if (imagePaths.isNotEmpty &&
+                        imagePaths[0] != null &&
+                        File(imagePaths[0]!).existsSync())
+                      Image.file(
+                        File(imagePaths[0]!),
+                        width: 48,
+                        height: 48,
+                        fit: BoxFit.cover,
+                      ), // Show the indoor image using the file path
+                    if (imagePaths.isNotEmpty &&
+                        imagePaths[1] != null &&
+                        File(imagePaths[1]!).existsSync())
+                      Image.file(
+                        File(imagePaths[1]!),
+                        width: 48,
+                        height: 48,
+                        fit: BoxFit.cover,
+                      ), // Show the outdoor image using the file path
+                    if (imagePaths.length < 2 ||
+                        (imagePaths[0] == null && imagePaths[1] == null))
+                      Container(
+                        width: 48,
+                        height: 48,
+                        color: Colors.grey, // Placeholder for blank image
+                      ),
+                  ],
+                );
               }
-            }
-          },
+            },
+          ),
         ),
         trailing: IconButton(
           icon: Icon(Icons.delete),
@@ -328,89 +352,3 @@ class _LocationListScreenState extends State<LocationListScreen> {
     );
   }
 }
-  // @override
-  // Widget build(BuildContext context) {
-  //   List<FormData> filteredFormData = savedFormData.where((formData) {
-  //     final location = formData.location?.toLowerCase() ?? '';
-  //     final query = _searchController.text.toLowerCase();
-  //     return location.contains(query);
-  //   }).toList();
-
-  //   return Scaffold(
-  //     appBar: AppBar(
-  //       title: Text('Location List Screen'),
-  //     ),
-  //     body: Column(
-  //       children: [
-  //         Padding(
-  //           padding: EdgeInsets.all(8.0),
-  //           child: TextField(
-  //             controller: _searchController,
-  //             decoration: InputDecoration(
-  //               labelText: 'Search by location',
-  //               prefixIcon: Icon(Icons.search),
-  //             ),
-  //             onChanged: (value) {
-  //               setState(() {
-  //                 // Trigger a rebuild to apply the search filter
-  //               });
-  //             },
-  //           ),
-  //         ),
-  //         Expanded(
-  //           child: ListView.builder(
-  //             itemCount: filteredFormData.length,
-  //             itemBuilder: (context, index) {
-  //               FormData formData = filteredFormData[index];
-  //               return Card(
-  //                 child: ListTile(
-  //                   onTap: () {
-  //                     _showDetailsDialog(context, formData, index);
-  //                   },
-  //                   title: Text('location: ${formData.location ?? ''}'),
-  //                   subtitle: Column(
-  //                     crossAxisAlignment: CrossAxisAlignment.start,
-  //                     children: [
-  //                       Text('Created: ${formData.date ?? ''}'),
-  //                       Text('id: ${formData.id}'),
-  //                       Text(
-  //                           'technicianName: ${formData.technicianName ?? ''}'),
-  //                     ],
-  //                   ),
-  //                 ),
-  //               );
-  //             },
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //     bottomNavigationBar: BottomNavigationBar(
-  //       currentIndex: 1,
-  //       onTap: (int index) {
-  //         if (index == 0) {
-  //           Navigator.popUntil(context, (route) => route.isFirst);
-  //         } else if (index == 2) {
-  //           Navigator.pushReplacement(
-  //             context,
-  //             MaterialPageRoute(builder: (context) => ServiceListScreen()),
-  //           );
-  //         }
-  //       },
-  //       items: [
-  //         BottomNavigationBarItem(
-  //           icon: Icon(Icons.home),
-  //           label: 'Home',
-  //         ),
-  //         BottomNavigationBarItem(
-  //           icon: Icon(Icons.list),
-  //           label: 'LocationList',
-  //         ),
-  //         BottomNavigationBarItem(
-  //           icon: Icon(Icons.list),
-  //           label: 'ServiceList',
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
-// }

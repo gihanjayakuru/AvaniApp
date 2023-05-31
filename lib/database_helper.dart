@@ -13,7 +13,7 @@ class DatabaseHelper {
 
   Future<Database> get database async {
     if (_database != null && _database!.isOpen) return _database!;
-    _database = await _initDB('databasBa.db');
+    _database = await _initDB('databasSAa.db');
     return _database!;
   }
 
@@ -91,10 +91,12 @@ class DatabaseHelper {
     CREATE TABLE IF NOT EXISTS images (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       form_id INTEGER,
-      image_name TEXT,
-      imagePath TEXT,
-      image_data BLOB
-      
+      indoor_image_name TEXT,
+      indoor_image_data BLOB,
+      indoor_image_path TEXT,
+      outdoor_image_name TEXT,
+      outdoor_image_data BLOB,
+      outdoor_image_path TEXT
     )
   ''');
   }
@@ -149,48 +151,42 @@ class DatabaseHelper {
     );
   }
 
-  Future<bool> saveImage(int formId, File _image) async {
+  Future<bool> saveImages(
+      int formId, File? indoorImage, File? outdoorImage) async {
     final db = await instance.database;
-    final imagePath = _image.path;
-    final bytes = await _image.readAsBytes();
-    final imageName = path.basename(imagePath);
-    final imageMap = {
-      'form_id': formId,
-      'image_name': imageName,
-      'image_data': bytes,
-      'imagePath': imagePath,
-    };
-    print('image save with id:${formId}');
-    print('image save imageName:${imageName}');
-    print('image save imagePath:${imagePath}');
 
-    final insertedId = await db.insert('images', imageMap);
-    return insertedId != -1;
+    print('wccccco outdoor image :${outdoorImage}');
+    print('wooccccoccooo indoor image :${indoorImage}');
+
+    // Save indoor image
+    if (indoorImage != null && outdoorImage != null) {
+      final indoorImagePath = indoorImage.path;
+      final indoorBytes = await indoorImage.readAsBytes();
+      final indoorImageName = path.basename(indoorImagePath);
+
+      final outdoorImagePath = outdoorImage.path;
+      final outdoorBytes = await outdoorImage.readAsBytes();
+      final outdoorImageName = path.basename(outdoorImagePath);
+
+      final imageMap = {
+        'form_id': formId,
+        'indoor_image_name': indoorImageName,
+        'indoor_image_data': indoorBytes,
+        'indoor_image_path': indoorImagePath,
+        'outdoor_image_name': outdoorImageName,
+        'outdoor_image_data': outdoorBytes,
+        'outdoor_image_path': outdoorImagePath,
+      };
+
+      final indoorInsertedId = await db.insert('images', imageMap);
+      if (indoorInsertedId == -1) {
+        return false; // Indoor image insertion failed
+      }
+    }
+
+    return true; // Images saved successfully
   }
 
-  // Future<void> saveImage(int formId, File imageFile) async {
-  //   // Open the database
-  //   final db = await instance.database;
-
-  //   // Get the path to the image file
-  //   final imagePath = imageFile.path;
-
-  //   // Convert the image file to bytes
-  //   final bytes = await imageFile.readAsBytes();
-
-  //   // Define the image file name
-  //   final imageName = path.basename(imagePath);
-
-  //   // Create a map of the image data
-  //   final imageMap = {
-  //     'form_id': formId,
-  //     'image_name': imageName,
-  //     'image_data': bytes,
-  //   };
-
-  //   // Insert the image data into the database
-  //   await db.insert('images', imageMap);
-  // }
   Future<void> printImageData() async {
     final db = await instance.database;
     final result = await db.query('images');
@@ -209,92 +205,30 @@ class DatabaseHelper {
     }
   }
 
-  Future<String?> getImagePathForForm(int formId) async {
-    print('getImagePathForForm callingggg! : $formId');
-    printImageData();
+  Future<List<String?>> getImagePathsForForm(int formId) async {
     final db = await instance.database;
 
-    final query = '''
-    SELECT imagePath FROM images WHERE form_id = ? LIMIT 1
-  ''';
-    final result = await db.rawQuery(query, [formId]);
-
-    print('This is result:${result}');
-
-    if (result.isEmpty) {
-      print('No data Empty !');
-    }
+    final List<Map<String, dynamic>> result = await db.query(
+      'images',
+      columns: ['indoor_image_path', 'outdoor_image_path'],
+      where: 'form_id = ?',
+      whereArgs: [formId],
+      limit: 1,
+    );
 
     if (result.isNotEmpty) {
-      final imageName = result.first['image_name'] as String?;
-      print('Image name ::: --${imageName}');
+      final Map<String, dynamic> row = result.first;
+      final String? indoorImagePath = row['indoor_image_path'];
+      final String? outdoorImagePath = row['outdoor_image_path'];
 
-      // if (imageName != null) {
-      // final documentsDirectory = await getApplicationDocumentsDirectory();
-      // final imagePath = path.join(documentsDirectory.path, imageName);
-      final imagePath = result.first['imagePath'] as String;
-      // final imageFile = File(imagePath);
+      print('indoor path: ${indoorImagePath}');
+      print('outdoor path: ${outdoorImagePath}');
 
-      print('Image path ::: --${imagePath}');
-
-      return imagePath;
-      // if (await imageFile.exists()) {
-      //   print(
-      //       'Image path File Founded...: $imagePath'); // Print the image path
-      // } else {
-      //   print('Image file not found,by retrived path...');
-      // }
-      // }
+      return [indoorImagePath, outdoorImagePath];
     }
 
-    return null;
+    return [];
   }
-  // Future<String?> getImagePathForForm(int formId) async {
-  //   print('getImagePathForForm callingggg! : ${formId}');
-  //   final db = await instance.database;
-  //   final result = await db.query(
-  //     'images',
-  //     columns: ['image_name'],
-  //     where: 'form_id = ?',
-  //     whereArgs: [formId],
-  //     limit: 1,
-  //   );
-  //   if (result.isEmpty) {
-  //     print('No data Empty !');
-  //   }
-  //   if (result.isNotEmpty) {
-  //     final imageName = result.first['image_name'] as String?;
-  //     if (imageName != null) {
-  //       final documentsDirectory = await getApplicationDocumentsDirectory();
-  //       final imagePath = path.join(documentsDirectory.path, imageName);
-  //       final imageFile = File(imagePath);
-  //       if (await imageFile.exists()) {
-  //         print('Image path: $imagePath'); // Print the image path
-  //         return imagePath;
-  //       }
-  //     }
-  //   }
-  //   return null;
-  // }
-
-  // Future<String?> getImagePathForForm(int formId) async {
-  //   final db = await instance.database;
-  //   final result = await db.query(
-  //     'images',
-  //     columns: ['image_name'],
-  //     where: 'form_id = ?',
-  //     whereArgs: [formId],
-  //     limit: 1,
-  //   );
-  //   if (result.isNotEmpty) {
-  //     final imageName = result.first['image_name'] as String?;
-  //     if (imageName != null) {
-  //       final documentsPath = await getApplicationDocumentsDirectory();
-  //       return path.join(documentsPath.path, imageName);
-  //     }
-  //   }
-  //   return null;
-  // }
 
   Future<void> closeDatabase() async {
     if (_database != null && _database!.isOpen) {
