@@ -140,7 +140,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
     dateController.text = formattedDate;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Form'),
+        title: Text('Service Form'),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
@@ -348,7 +348,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
               const Padding(
                 padding: EdgeInsets.all(16.0),
                 child: Text(
-                  'Indoor unit',
+                  'Indoor Unit',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -382,7 +382,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
                     TextFormField(
                       controller: indoorInspectCleanIduCoilFinsController,
                       decoration: InputDecoration(
-                          labelText: 'indoor Inspect/Clean IDU Coil Fins :'),
+                          labelText: 'Indoor Inspect/Clean IDU Coil Fins :'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter the indoor Inspect/Clean IDU Coil Fins';
@@ -458,7 +458,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
                     const Padding(
                       padding: EdgeInsets.all(16.0),
                       child: Text(
-                        'Outdoor unit',
+                        'Outdoor Unit',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,

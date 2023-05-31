@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
 import 'database_helper.dart';
 import 'location_list.dart';
 import 'service_data.dart';
@@ -77,17 +76,24 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
                 ),
                 Text(
                     'Room Temperature : ${serviceFormData.beforeRoomTemperature}'),
+                Divider(),
                 Text(
                     'Set Point Temperature : ${serviceFormData.beforeSetPointTemperature}'),
+                Divider(),
                 Text(
                     'Supply Grill Temperature : ${serviceFormData.beforeSupplyGrillTemperature}'),
+                Divider(),
                 Text(
                     'Return Grill Temperature : ${serviceFormData.beforeReturnGrillTemperature}'),
+                Divider(),
                 Text(
                     'Gas Pressure /Low Side : ${serviceFormData.beforeGasPressureLowSide}'),
+                Divider(),
                 Text(
                     'Gas Pressure /High Side : ${serviceFormData.beforeGasPressureHighSide}'),
+                Divider(),
                 Text('Amp : ${serviceFormData.beforeAmp}'),
+                Divider(),
                 const Padding(
                   padding: EdgeInsets.all(16.0),
                   child: Text(
@@ -100,17 +106,101 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
                 ),
                 Text(
                     'Room Temperature : ${serviceFormData.afterRoomTemperature}'),
+                Divider(),
                 Text(
                     'Set Point Temperature : ${serviceFormData.afterSetPointTemperature}'),
+                Divider(),
                 Text(
                     'Supply Grill Temperature : ${serviceFormData.afterSupplyGrillTemperature}'),
+                Divider(),
                 Text(
                     'Return Grill Temperature : ${serviceFormData.afterReturnGrillTemperature}'),
+                Divider(),
+                Divider(),
                 Text(
                     'Gas Pressure /Low Side: ${serviceFormData.afterGasPressureLowSide}'),
+                Divider(),
                 Text(
                     'Gas Pressure /High Side : ${serviceFormData.afterGasPressureHighSide}'),
+                Divider(),
                 Text('Amp : ${serviceFormData.afterAmp}'),
+                const Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Text(
+                    'Indoor Unit :',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Text('blower Check : ${serviceFormData.blowerCheck}'),
+                Divider(),
+                Text(
+                    'indoor Inspect Clean IDU Coil Fins : ${serviceFormData.indoorInspectCleanIduCoilFins}'),
+                Divider(),
+                Text(
+                    'Check Clean Drain Plate : ${serviceFormData.checkCleanDrainPlate}'),
+                Divider(),
+                Text('Drain Pump Check : ${serviceFormData.drainPumpCheck}'),
+                Divider(),
+                Text(
+                    'Check Piping Duck Insulation : ${serviceFormData.checkPipingDuckInsulation}'),
+                Divider(),
+                Text('Check Noise : ${serviceFormData.checkNoise}'),
+                Divider(),
+                Text(
+                    'Indoor Housing Condition : ${serviceFormData.indoorHousingCondition}'),
+                Divider(),
+                Text('Indoor PCB Status : ${serviceFormData.indoorPcbStatus}'),
+                Divider(),
+                const Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Text(
+                    'Outdoor Unit :',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Text('Compressor Noise : ${serviceFormData.compressorNoise}'),
+                Divider(),
+                Text('Fan Noise : ${serviceFormData.fanNoise}'),
+                Divider(),
+                Text(
+                    'Outdoor Inspect Clean IDU Coil Fins : ${serviceFormData.outdoorInspectCleanIduCoilFins}'),
+                Divider(),
+                Text(
+                    'Outdoor PCB Status : ${serviceFormData.outdoorPcbStatus}'),
+                Divider(),
+                Text(
+                    'Outdoor Housing Condition : ${serviceFormData.outdoorHousingCondition}'),
+                Divider(),
+                const Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Text(
+                    'General :',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Text(
+                    'AC Sliding Door Operation : ${serviceFormData.acSlidinDoorOperation}'),
+                Divider(),
+                Text(
+                    'Thermostat Setting : ${serviceFormData.thermostatSetting}'),
+                Divider(),
+                Text('Drain Line Clean : ${serviceFormData.drainLineClean}'),
+                Divider(),
+                Text('Remark : ${serviceFormData.remark}'),
+                Divider(),
+                Text('Date : ${serviceFormData.date}'),
+                Divider(),
+                Text('Technician Name : ${serviceFormData.technicianName}'),
+                Divider(),
                 if (serviceImages.isNotEmpty)
                   const Padding(
                     padding: EdgeInsets.all(16.0),

@@ -150,7 +150,7 @@ class _MyFormScreenState extends State<MyFormScreen> {
                   children: [
                     TextFormField(
                       controller: indoorModelController,
-                      decoration: InputDecoration(labelText: 'indoor Model :'),
+                      decoration: InputDecoration(labelText: 'Indoor Model :'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter the indoor Model';
@@ -161,7 +161,7 @@ class _MyFormScreenState extends State<MyFormScreen> {
                     TextFormField(
                       controller: indoorModelNumController,
                       decoration:
-                          InputDecoration(labelText: 'indoor Model Number :'),
+                          InputDecoration(labelText: 'Indoor Model Number :'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter the indoor Model Num';
@@ -172,7 +172,7 @@ class _MyFormScreenState extends State<MyFormScreen> {
                     TextFormField(
                       controller: indoorSerialNumController,
                       decoration:
-                          InputDecoration(labelText: 'indoor Serial Num :'),
+                          InputDecoration(labelText: 'Indoor Serial Number :'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter outdoor Serial Num';
@@ -183,7 +183,7 @@ class _MyFormScreenState extends State<MyFormScreen> {
                     TextFormField(
                       controller: indoorCapacityController,
                       decoration:
-                          InputDecoration(labelText: 'indoor Capacity :'),
+                          InputDecoration(labelText: 'Indoor Capacity :'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter indoor Capacity';
@@ -239,7 +239,7 @@ class _MyFormScreenState extends State<MyFormScreen> {
                     ),
                     TextFormField(
                       controller: outdoorModelController,
-                      decoration: InputDecoration(labelText: 'outdoor Model :'),
+                      decoration: InputDecoration(labelText: 'Outdoor Model :'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter outdoor Model';
@@ -250,7 +250,7 @@ class _MyFormScreenState extends State<MyFormScreen> {
                     TextFormField(
                       controller: outdoorModelNumController,
                       decoration:
-                          InputDecoration(labelText: 'outdoor Model Num :'),
+                          InputDecoration(labelText: 'Outdoor Model Num :'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter outdoor Model Num';
@@ -261,7 +261,7 @@ class _MyFormScreenState extends State<MyFormScreen> {
                     TextFormField(
                       controller: outdoorSerialNumController,
                       decoration:
-                          InputDecoration(labelText: 'outdoor Serial Num :'),
+                          InputDecoration(labelText: 'Outdoor Serial Num :'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter outdoor Serial Num';
@@ -272,7 +272,7 @@ class _MyFormScreenState extends State<MyFormScreen> {
                     TextFormField(
                       controller: outdoorCapacityController,
                       decoration:
-                          InputDecoration(labelText: 'outdoor Capacity :'),
+                          InputDecoration(labelText: 'Outdoor Capacity :'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter outdoor Capacity';
@@ -308,7 +308,7 @@ class _MyFormScreenState extends State<MyFormScreen> {
     if (pickedImage != null) {
       setState(() {
         _indoorImage = File(pickedImage.path);
-        print('woooooooo indoor image :${_indoorImage}');
+        // print('woooooooo indoor image :${_indoorImage}');
       });
     }
   }
@@ -319,7 +319,7 @@ class _MyFormScreenState extends State<MyFormScreen> {
     if (pickedImage != null) {
       setState(() {
         _outdoorImage = File(pickedImage.path);
-        print('woooooooo outdoor image :${_outdoorImage}');
+        // print('woooooooo outdoor image :${_outdoorImage}');
       });
     }
   }
@@ -353,7 +353,7 @@ class _MyFormScreenState extends State<MyFormScreen> {
 
     // Save the form data in SQLite
     int id = await DatabaseHelper.instance.insertFormData(formData);
-    print('Form data saved with ID: $id');
+    // print('Form data saved with ID: $id');
 
     bool isIndoorImageSaved;
     // bool isOutdoorImageSaved = true;
