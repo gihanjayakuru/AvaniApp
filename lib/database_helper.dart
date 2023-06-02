@@ -302,6 +302,11 @@ class DatabaseHelper {
     return result.map((row) => row['pdf_path'] as String).toList();
   }
 
+  Future<void> deletePDF(String pdfPath) async {
+    final db = await instance.database;
+    await db.delete('saved_pdfs', where: 'pdf_path = ?', whereArgs: [pdfPath]);
+  }
+
   Future<int> savePDFPath(String pdfPath) async {
     print('calling save PDF classss....${pdfPath}');
     final db = await instance.database;

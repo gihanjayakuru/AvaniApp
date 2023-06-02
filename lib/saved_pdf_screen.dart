@@ -64,6 +64,12 @@ class _SavedPDFListScreenState extends State<SavedPDFListScreen> {
                 String pdfPath = savedPDFs[index];
                 return ListTile(
                   title: Text(pdfPath),
+                  trailing: IconButton(
+                    icon: Icon(Icons.delete),
+                    onPressed: () {
+                      _deletePDF(pdfPath);
+                    },
+                  ),
                   onTap: () {
                     _openPDFtonewscreen(pdfPath);
                   },
@@ -120,6 +126,38 @@ class _SavedPDFListScreenState extends State<SavedPDFListScreen> {
       ),
     );
   }
+
+  void _deletePDF(String path) async {
+    try {
+      File file = File(path);
+      bool exists = await file.exists();
+      if (exists) {
+        await DatabaseHelper.instance.deletePDF(path);
+        _loadSavedPDFs(); // Refresh the list before deleting the file
+
+        await file.delete();
+      } else {
+        print('PDF file does not exist at path: $path');
+      }
+    } catch (e) {
+      print('Error deleting PDF: $e');
+    }
+  }
+  // void _deletePDF(String path) async {
+  //   try {
+  //     File file = File(path);
+  //     bool exists = await file.exists();
+  //     if (exists) {
+  //       await file.delete();
+  //       await DatabaseHelper.instance.deletePDF(path);
+  //       _loadSavedPDFs();
+  //     } else {
+  //       print('PDF file does not exist at path: $path');
+  //     }
+  //   } catch (e) {
+  //     print('Error deleting PDF: $e');
+  //   }
+  // }
 
   void _openPDFtonewscreen(String path) {
     print(

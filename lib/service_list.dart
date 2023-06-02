@@ -1,16 +1,20 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
-import 'package:pdf/widgets.dart' as pw;
 import 'dart:io';
-import 'package:avani_app/saved_pdf_screen.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:pdf/widgets.dart' as pwPdfWidgets;
+import 'package:open_file/open_file.dart';
+
 import 'database_helper.dart';
 import 'location_list.dart';
 import 'my_form_screen.dart';
+import 'saved_pdf_screen.dart';
 import 'service_data.dart';
-import 'package:pdf/widgets.dart' as pwLib;
-
-// import 'package:pdf/widgets.dart' show PdfPageFormat, PdfImage;
 
 class ServiceListScreen extends StatefulWidget {
   @override
@@ -22,9 +26,8 @@ class PDFGenerator {
     List<Map<String, dynamic>> serviceImages = await DatabaseHelper.instance
         .getServiceImagesForForm(serviceFormData.id);
 
-    final pdf = pwLib.Document();
-    // List<Map<String, dynamic>> serviceImages = await DatabaseHelper.instance
-    //     .getServiceImagesForForm(serviceFormData.id);
+    final pdf = pw.Document();
+
     // Add content to the PDF
     pdf.addPage(
       pw.Page(
@@ -36,7 +39,9 @@ class PDFGenerator {
                 pw.Text(
                   'PDF Content',
                   style: pw.TextStyle(
-                      fontSize: 24, fontWeight: pw.FontWeight.bold),
+                    fontSize: 24,
+                    fontWeight: pw.FontWeight.bold,
+                  ),
                 ),
                 pw.SizedBox(height: 20),
                 pw.Text(
@@ -52,7 +57,9 @@ class PDFGenerator {
                 pw.Text(
                   'Before After Service Details',
                   style: pw.TextStyle(
-                      fontSize: 18, fontWeight: pw.FontWeight.bold),
+                    fontSize: 18,
+                    fontWeight: pw.FontWeight.bold,
+                  ),
                 ),
                 pw.SizedBox(height: 10),
                 pw.Text(
@@ -65,12 +72,13 @@ class PDFGenerator {
                   style: pw.TextStyle(fontSize: 14),
                 ),
                 // Add more details here for Before Service
-
                 pw.SizedBox(height: 20),
                 pw.Text(
                   'After Service',
                   style: pw.TextStyle(
-                      fontSize: 18, fontWeight: pw.FontWeight.bold),
+                    fontSize: 18,
+                    fontWeight: pw.FontWeight.bold,
+                  ),
                 ),
                 pw.SizedBox(height: 10),
                 pw.Text(
@@ -78,12 +86,13 @@ class PDFGenerator {
                   style: pw.TextStyle(fontSize: 14),
                 ),
                 // Add more details here for After Service
-
                 pw.SizedBox(height: 20),
                 pw.Text(
                   'Indoor Unit',
                   style: pw.TextStyle(
-                      fontSize: 18, fontWeight: pw.FontWeight.bold),
+                    fontSize: 18,
+                    fontWeight: pw.FontWeight.bold,
+                  ),
                 ),
                 pw.SizedBox(height: 10),
                 pw.Text(
@@ -91,12 +100,13 @@ class PDFGenerator {
                   style: pw.TextStyle(fontSize: 14),
                 ),
                 // Add more details here for Indoor Unit
-
                 pw.SizedBox(height: 20),
                 pw.Text(
                   'Outdoor Unit',
                   style: pw.TextStyle(
-                      fontSize: 18, fontWeight: pw.FontWeight.bold),
+                    fontSize: 18,
+                    fontWeight: pw.FontWeight.bold,
+                  ),
                 ),
                 pw.SizedBox(height: 10),
                 pw.Text(
@@ -104,21 +114,30 @@ class PDFGenerator {
                   style: pw.TextStyle(fontSize: 14),
                 ),
                 // Add more details here for Outdoor Unit
-
                 pw.SizedBox(height: 20),
                 pw.Text(
-                  'General',
+                  'Service Images',
                   style: pw.TextStyle(
-                      fontSize: 18, fontWeight: pw.FontWeight.bold),
+                    fontSize: 18,
+                    fontWeight: pw.FontWeight.bold,
+                  ),
                 ),
                 pw.SizedBox(height: 10),
-                pw.Text(
-                  'AC Sliding Door Operation: ${serviceFormData.acSlidinDoorOperation}',
-                  style: pw.TextStyle(fontSize: 14),
+                // Generate a list of images
+                pw.SizedBox(height: 10),
+                // Generate a list of images
+                pw.ListView.builder(
+                  itemCount: serviceImages.length,
+                  itemBuilder: (pw.Context context, int index) {
+                    final imagePath = serviceImages[index]['image_path'];
+                    final bytes = File(imagePath).readAsBytesSync();
+                    final image = pw.MemoryImage(bytes);
+                    return pw.Container(
+                      padding: pw.EdgeInsets.all(10),
+                      child: pw.Image(image),
+                    );
+                  },
                 ),
-                // Add more details here for General
-                // pw.SizedBox(height: 10),
-                _buildImageSection(serviceImages),
               ],
             ),
           );
@@ -126,101 +145,47 @@ class PDFGenerator {
       ),
     );
 
-    // Save the PDF to a file
-    final timestamp = DateTime.now().millisecondsSinceEpoch;
-    final fileName = 'service_form_$timestamp.pdf';
+// Add a new page to the document
+    // Add a new page to the document
+    final page = pw.Page(
+      build: (pw.Context context) {
+        final pageWidth = context.page.pageFormat.availableWidth;
+        final pageHeight = context.page.pageFormat.availableHeight;
+        final imageWidth = 400.0; // Adjust the width as desired
+        final imageHeight = 250.0; // Adjust the height as desired
+        final imageX = (pageWidth - imageWidth) / 2;
+        final imageY = 200.0; // Adjust the Y position as desired
+
+        return pw.Container(
+          child: pw.Column(
+            children: [
+              for (var imageInfo in serviceImages)
+                pw.Container(
+                  padding: pw.EdgeInsets.all(10),
+                  child: pw.Image(
+                    pw.MemoryImage(
+                      File(imageInfo['image_path']).readAsBytesSync(),
+                    ),
+                    width: imageWidth,
+                    height: imageHeight,
+                  ),
+                ),
+            ],
+          ),
+        );
+      },
+    );
+
+// Add the page to the document
+    pdf.addPage(page);
+
+// Save the PDF to a file
     final appDocDir = await getApplicationDocumentsDirectory();
-    final downloadDirectory = Directory('${appDocDir.path}/Download');
-    await downloadDirectory.create(recursive: true);
-    final outputFile = File('${downloadDirectory.path}/$fileName');
+    final outputFile = File('${appDocDir.path}/output.pdf');
     await outputFile.writeAsBytes(await pdf.save());
-
-    print('path PDF ::=====${outputFile.path}');
-
     return outputFile.path;
   }
 }
-
-pw.Widget _buildImageSection(List<Map<String, dynamic>> serviceImages) {
-  if (serviceImages.isNotEmpty) {
-    print(
-        'Images not empty in _buildImageSection??????????------------------////////${serviceImages}');
-
-    return pw.Column(
-      crossAxisAlignment: pw.CrossAxisAlignment.start,
-      children: [
-        pw.SizedBox(height: 20),
-        pw.Text(
-          'Images',
-          style: pw.TextStyle(
-            fontSize: 18,
-            fontWeight: pw.FontWeight.bold,
-          ),
-        ),
-        pw.SizedBox(height: 10),
-        pw.Wrap(
-          spacing: 8.0,
-          runSpacing: 8.0,
-          children: serviceImages.map((imageData) {
-            final String imagePath = imageData['image_path'];
-
-            print(
-                'heeeeeeeeeeeeeeeeeeeeeeeeeedsadads========/////${imagePath}');
-            final imageFile = File(imagePath);
-            if (imageFile.existsSync()) {
-              print('image file loadin.....................////');
-              final imageBytes = imageFile.readAsBytesSync();
-              final imageProvider = pw.MemoryImage(imageBytes);
-              return pw.Image(imageProvider);
-            } else {
-              print('no image file loding------');
-              return pw.Container(); // Empty container if file does not exist
-            }
-          }).toList(),
-        ),
-      ],
-    );
-  } else {
-    return pw.Container();
-  }
-}
-
-// pw.Widget _buildImageSection(List<Map<String, dynamic>> serviceImages) {
-//   if (serviceImages.isNotEmpty) {
-//     print(
-//         'Images not empty in _buildImageSection/////////////////////////------');
-//     return pw.Column(
-//       crossAxisAlignment: pw.CrossAxisAlignment.start,
-//       children: [
-//         pwLib.SizedBox(height: 20),
-//         pwLib.Text(
-//           'Images',
-//           style: pwLib.TextStyle(
-//             fontSize: 18,
-//             fontWeight: pwLib.FontWeight.bold,
-//           ),
-//         ),
-//         pwLib.SizedBox(height: 10),
-//         pwLib.Wrap(
-//           spacing: 8.0,
-//           runSpacing: 8.0,
-//           children: serviceImages.map((image) {
-//             if (image != null && image['image_data'] != null) {
-//               final List<int> imageData = List<int>.from(image['image_data']);
-
-//               final imageProvider =
-//                   pwLib.MemoryImage(Uint8List.fromList(imageData));
-//               return pwLib.Image(imageProvider);
-//             }
-//             return pwLib.Container();
-//           }).toList(),
-//         ),
-//       ],
-//     );
-//   } else {
-//     return pwLib.Container();
-//   }
-// }
 
 class _ServiceListScreenState extends State<ServiceListScreen> {
   // List<MergedData> savedServiceFormData = [];
@@ -609,8 +574,8 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
 
     //pass to databese to save path in table
     await DatabaseHelper.instance.savePDFPath(pdfPath);
-    savedPDFs.add(pdfPath);
-    setState(() {});
+    // savedPDFs.add(pdfPath);
+    // setState(() {});
 
     Navigator.push(
       context,
