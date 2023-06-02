@@ -1,110 +1,46 @@
-// import 'package:flutter/material.dart';
-// import 'package:flutter_pdfview/flutter_pdfview.dart';
-
-// class SavedPDFScreen extends StatelessWidget {
-//   final String pdfPath;
-
-//   const SavedPDFScreen({required this.pdfPath});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Saved PDF'),
-//       ),
-//       body: PDFView(
-//         filePath: pdfPath,
-//       ),
-//     );
-//   }
-// }
-
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_pdfview/flutter_pdfview.dart';
+import 'database_helper.dart'; // Import your database helper class
 
-class SavedPDFScreen extends StatefulWidget {
-  final String pdfPath;
-
-  SavedPDFScreen({required this.pdfPath});
-
+class SavedPDFListScreen extends StatefulWidget {
   @override
-  _SavedPDFScreenState createState() => _SavedPDFScreenState();
+  _SavedPDFListScreenState createState() => _SavedPDFListScreenState();
 }
 
-class _SavedPDFScreenState extends State<SavedPDFScreen> {
-  late PDFViewController _pdfViewController;
-  int _currentPage = 0;
-  int _totalPages = 0;
+class _SavedPDFListScreenState extends State<SavedPDFListScreen> {
+  List<String> savedPDFs = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSavedPDFs();
+  }
+
+  void _loadSavedPDFs() async {
+    List<String> pdfPaths = await DatabaseHelper.instance.getSavedPDFs();
+
+    setState(() {
+      savedPDFs = pdfPaths;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Saved PDF'),
+        title: Text('Saved PDFs'),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: PDFView(
-              filePath: widget.pdfPath,
-              onViewCreated: (PDFViewController pdfViewController) {
-                _pdfViewController = pdfViewController;
-                _getTotalPages();
-              },
-              onPageChanged: (int? page, int? total) {
-                setState(() {
-                  _currentPage = page ?? 0;
-                  _totalPages = total ?? 0;
-                });
-              },
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.all(16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ElevatedButton(
-                  onPressed: _previousPage,
-                  child: Icon(Icons.arrow_back),
-                ),
-                Text('Page ${_currentPage + 1} of $_totalPages'),
-                ElevatedButton(
-                  onPressed: _nextPage,
-                  child: Icon(Icons.arrow_forward),
-                ),
-              ],
-            ),
-          ),
-        ],
+      body: ListView.builder(
+        itemCount: savedPDFs.length,
+        itemBuilder: (context, index) {
+          String pdfPath = savedPDFs[index];
+          return ListTile(
+            title: Text(pdfPath),
+            onTap: () {
+              // TODO: Handle onTap action for the PDF item
+            },
+          );
+        },
       ),
     );
-  }
-
-  // void _getTotalPages() async {
-  //   int? totalPages = await _pdfViewController.getPageCount();
-  //   setState(() {
-  //     _totalPages = totalPages!;
-  //   });
-  // }
-  void _getTotalPages() async {
-    int totalPages = await _pdfViewController.getPageCount() ?? 0;
-    setState(() {
-      _totalPages = totalPages;
-    });
-  }
-
-  void _previousPage() {
-    if (_currentPage > 0) {
-      _pdfViewController.setPage(_currentPage - 1);
-    }
-  }
-
-  void _nextPage() {
-    if (_currentPage < _totalPages - 1) {
-      _pdfViewController.setPage(_currentPage + 1);
-    }
   }
 }

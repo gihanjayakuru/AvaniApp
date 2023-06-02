@@ -1,5 +1,5 @@
 import 'package:path/path.dart';
-import 'package:open_file/open_file.dart';
+// import 'package:open_file/open_file.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:io';
 import 'package:path/path.dart' as path;
@@ -301,13 +301,14 @@ class DatabaseHelper {
   }
 
   Future<int> savePDFPath(String pdfPath) async {
+    print('calling save PDF classss....${pdfPath}');
     final db = await instance.database;
     return await db.insert('saved_pdfs', {'pdf_path': pdfPath});
   }
 
-  Future<void> openPDF(String pdfPath) {
-    return OpenFile.open(pdfPath);
-  }
+  // Future<void> openPDF(String pdfPath) {
+  //   return OpenFile.open(pdfPath);
+  // }
 
   Future<void> closeDatabase() async {
     if (_database != null && _database!.isOpen) {

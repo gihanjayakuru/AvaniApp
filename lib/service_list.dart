@@ -27,7 +27,28 @@ class PDFGenerator {
       pw.Page(
         build: (pw.Context context) {
           return pw.Center(
-            child: pw.Text('PDF Content'),
+            child: pw.Column(
+              mainAxisAlignment: pw.MainAxisAlignment.center,
+              crossAxisAlignment: pw.CrossAxisAlignment.center,
+              children: [
+                pw.Text(
+                  'PDF Content',
+                  style: pw.TextStyle(
+                      fontSize: 24, fontWeight: pw.FontWeight.bold),
+                ),
+                pw.SizedBox(height: 20),
+                pw.Text(
+                  'Location: ${serviceFormData.location}',
+                  style: pw.TextStyle(fontSize: 16),
+                ),
+                pw.SizedBox(height: 10),
+                pw.Text(
+                  'Date: ${serviceFormData.createdDate}',
+                  style: pw.TextStyle(fontSize: 16),
+                ),
+                // Add more text or widgets as needed
+              ],
+            ),
           );
         },
       ),
@@ -54,16 +75,42 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
   DateTime? selectedDateFilter; // Initialize to null
 
   List<String> savedPDFs = [];
+  // void _printPDF(MergedData serviceFormData) async {
+  //   // Generate the PDF file
+  //   String pdfPath = await PDFGenerator.generatePDF(serviceFormData);
 
+  //   // Print the PDF
+  //   final File file = File(pdfPath);
+  //   if (await file.exists()) {
+  //     // Assuming you have a printer connected and configured
+  //     await Process.run('lp', [pdfPath]);
+  //     print('PDF printed successfully');
+  //   } else {
+  //     print('PDF file not found');
+  //   }
+
+  //   // Save the PDF path to the list in SavedPDFListScreen
+  //   Navigator.push(
+  //     context,
+  //     MaterialPageRoute(
+  //       builder: (context) => SavedPDFListScreen(),
+  //     ),
+  //   );
+  // }
   void _printPDF(MergedData serviceFormData) async {
     // Generate the PDF file
     String pdfPath = await PDFGenerator.generatePDF(serviceFormData);
 
-    // Navigate to the saved PDF screen
+    // Save the PDF path to the list in SavedPDFListScreen
+    setState(() {
+      savedPDFs.add(pdfPath);
+    });
+
+    // Navigate to the SavedPDFListScreen
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => SavedPDFScreen(pdfPath: pdfPath),
+        builder: (context) => SavedPDFListScreen(),
       ),
     );
   }
@@ -323,19 +370,6 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
     return filteredList; // Add a return statement here
   }
 
-  //   // Filter by date
-  // if (selectedDateFilter != null) {
-  // filteredList = filteredList.where((formData) {
-  //   DateTime? date = DateFormat("yyyy-MM-dd").parse(formData.createdDate);
-  //   return date != null &&
-  //       date.year == selectedDateFilter!.year &&
-  //       date.month == selectedDateFilter!.month &&
-  //       date.day == selectedDateFilter!.day;
-  // }).toList();
-
-  //   return filteredList;
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -420,6 +454,11 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => LocationListScreen()),
+            );
+          } else if (index == 2) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => SavedPDFListScreen()),
             );
           }
         },
