@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:avani_app/additional_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'form_data.dart';
+import 'my_form_screen.dart';
+import 'saved_pdf_screen.dart';
 import 'service_list.dart';
 import 'database_helper.dart';
 
@@ -248,32 +250,77 @@ class _LocationListScreenState extends State<LocationListScreen> {
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 1,
+        currentIndex: 1, // Set the index of the current page
         onTap: (int index) {
           if (index == 0) {
-            Navigator.popUntil(context, (route) => route.isFirst);
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => MyFormScreen()),
+            );
+          } else if (index == 1) {
+            //stay on the current location list screen........
           } else if (index == 2) {
-            Navigator.pushReplacement(
+            Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => ServiceListScreen()),
             );
+          } else if (index == 3) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => SavedPDFListScreen()),
+            );
           }
         },
+        selectedItemColor: Colors.blue, // Color of the selected button
+        unselectedItemColor: Colors.grey, // Color of the unselected buttons
+        backgroundColor:
+            Colors.white, // Background color of the bottom navigation bar
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Add Locations',
+            label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.list),
-            label: 'Location List',
+            icon: Icon(Icons.add_location),
+            label: 'Add Location',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.list),
             label: 'Service List',
           ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.picture_as_pdf),
+            label: 'Saved PDFs',
+          ),
         ],
       ),
+      // bottomNavigationBar: BottomNavigationBar(
+      //   currentIndex: 1,
+      //   onTap: (int index) {
+      //     if (index == 0) {
+      //       Navigator.popUntil(context, (route) => route.isFirst);
+      //     } else if (index == 2) {
+      //       Navigator.pushReplacement(
+      //         context,
+      //         MaterialPageRoute(builder: (context) => ServiceListScreen()),
+      //       );
+      //     }
+      //   },
+      //   items: [
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.home),
+      //       label: 'Add Locations',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.list),
+      //       label: 'Location List',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.list),
+      //       label: 'Service List',
+      //     ),
+      //   ],
+      // ),
     );
   }
 

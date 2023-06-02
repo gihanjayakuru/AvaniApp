@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'database_helper.dart';
 import 'location_list.dart';
+import 'my_form_screen.dart';
 import 'service_data.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -374,109 +375,123 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Service List Screen'),
+        title: Text('Service List'),
       ),
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(16.0),
             child: TextField(
-              decoration: InputDecoration(
-                labelText: 'Search',
-                prefixIcon: Icon(Icons.search),
-              ),
               onChanged: (value) {
                 setState(() {
                   searchQuery = value;
                 });
               },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton(
-              onPressed: () async {
-                final DateTime? picked = await showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime(2010),
-                  lastDate: DateTime(2030),
-                );
-
-                if (picked != null) {
-                  setState(() {
-                    selectedDateFilter = picked;
-                  });
-                }
-              },
-              child: Text('Filter by Date'),
+              decoration: InputDecoration(
+                labelText: 'Search',
+                prefixIcon: Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                ),
+              ),
             ),
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: _filteredServiceFormData().length,
+              itemCount: savedServiceFormData.length,
               itemBuilder: (context, index) {
-                MergedData serviceFormData = _filteredServiceFormData()[index];
-                return Card(
-                  child: ListTile(
-                    onTap: () {
-                      _showServiceDetailsDialog(serviceFormData, context);
-                    },
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Location : ${serviceFormData.location}'),
-                        Text('Date : ${serviceFormData.createdDate}'),
-                        Text(
-                            'Before Temperature : ${serviceFormData.beforeRoomTemperature}'),
-                        Text(
-                            'After Temperature : ${serviceFormData.afterRoomTemperature}'),
-                      ],
+                MergedData serviceFormData = savedServiceFormData[index];
+                if (serviceFormData.location
+                    .toLowerCase()
+                    .contains(searchQuery.toLowerCase())) {
+                  return Card(
+                    child: ListTile(
+                      title: Text(serviceFormData.location),
+                      subtitle: Text(serviceFormData.createdDate),
+                      trailing: Wrap(
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              _showServiceDetailsDialog(
+                                  serviceFormData, context);
+                            },
+                            icon: Icon(Icons.remove_red_eye),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              _deleteServiceFormData(serviceFormData.id);
+                            },
+                            icon: Icon(Icons.delete),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              _generatePDF(serviceFormData);
+                            },
+                            icon: Icon(Icons.picture_as_pdf),
+                          ),
+                        ],
+                      ),
                     ),
-                    trailing: IconButton(
-                      icon: Icon(Icons.delete),
-                      onPressed: () =>
-                          _deleteServiceFormData(serviceFormData.id),
-                    ),
-                  ),
-                );
+                  );
+                } else {
+                  return SizedBox.shrink();
+                }
               },
             ),
           ),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 2,
+        currentIndex: 2, // Set the index of the current page
         onTap: (int index) {
           if (index == 0) {
-            Navigator.popUntil(context, (route) => route.isFirst);
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => MyFormScreen()),
+            );
           } else if (index == 1) {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => LocationListScreen()),
             );
           } else if (index == 2) {
+            // Stay on the service list page
+          } else if (index == 3) {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => SavedPDFListScreen()),
             );
           }
         },
+        selectedItemColor: Colors.blue, // Color of the selected button
+        unselectedItemColor: Colors.grey, // Color of the unselected buttons
+        backgroundColor:
+            Colors.white, // Background color of the bottom navigation bar
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.list),
-            label: 'LocationList',
+            icon: Icon(Icons.add_location),
+            label: 'Add Location',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.list),
-            label: 'ServiceList',
+            label: 'Service List',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.picture_as_pdf),
+            label: 'Saved PDFs',
           ),
         ],
       ),
     );
+  }
+
+  void _generatePDF(MergedData serviceFormData) async {
+    String pdfPath = await PDFGenerator.generatePDF(serviceFormData);
+    savedPDFs.add(pdfPath);
+    setState(() {});
   }
 }
