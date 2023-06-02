@@ -1,13 +1,49 @@
 import 'dart:io';
+import 'package:avani_app/saved_pdf_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
 import 'database_helper.dart';
 import 'location_list.dart';
 import 'service_data.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
 
 class ServiceListScreen extends StatefulWidget {
   @override
   _ServiceListScreenState createState() => _ServiceListScreenState();
+}
+
+class PDFGenerator {
+  static Future<void> savePDFPath(String pdfPath) async {
+    await DatabaseHelper.instance.savePDFPath(pdfPath);
+  }
+
+  static Future<String> generatePDF(MergedData serviceFormData) async {
+    final pdf = pw.Document();
+
+    // Add content to the PDF
+    pdf.addPage(
+      pw.Page(
+        build: (pw.Context context) {
+          return pw.Center(
+            child: pw.Text('PDF Content'),
+          );
+        },
+      ),
+    );
+
+    // Save the PDF to a file
+    final output = await getTemporaryDirectory();
+    final filePath = '${output.path}/service_form.pdf';
+    final file = File(filePath);
+    await file.writeAsBytes(await pdf.save());
+
+    // Save the PDF path to the database table
+    await savePDFPath(filePath);
+
+    return filePath;
+  }
 }
 
 class _ServiceListScreenState extends State<ServiceListScreen> {
@@ -16,6 +52,21 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
   // late DateTime selectedDateFilter;
   List<MergedData> savedServiceFormData = [];
   DateTime? selectedDateFilter; // Initialize to null
+
+  List<String> savedPDFs = [];
+
+  void _printPDF(MergedData serviceFormData) async {
+    // Generate the PDF file
+    String pdfPath = await PDFGenerator.generatePDF(serviceFormData);
+
+    // Navigate to the saved PDF screen
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SavedPDFScreen(pdfPath: pdfPath),
+      ),
+    );
+  }
 
   @override
   void initState() {
@@ -229,6 +280,12 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
             ),
           ),
           actions: [
+            TextButton(
+              child: Text('Print PDF'),
+              onPressed: () {
+                _printPDF(serviceFormData);
+              },
+            ),
             TextButton(
               child: Text('OK'),
               onPressed: () {

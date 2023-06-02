@@ -1,5 +1,5 @@
 import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:open_file/open_file.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:io';
 import 'package:path/path.dart' as path;
@@ -13,7 +13,7 @@ class DatabaseHelper {
 
   Future<Database> get database async {
     if (_database != null && _database!.isOpen) return _database!;
-    _database = await _initDB('databaseNewx.db');
+    _database = await _initDB('databaseNewxc.db');
     return _database!;
   }
 
@@ -107,6 +107,12 @@ class DatabaseHelper {
       image_name TEXT,
       image_data TEXT,
       image_path TEXT
+    )
+  ''');
+    await db.execute('''
+    CREATE TABLE IF NOT EXISTS saved_pdfs (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      pdf_path TEXT
     )
   ''');
   }
@@ -287,6 +293,21 @@ class DatabaseHelper {
   //   }
   //   return images;
   // }
+
+  Future<List<String>> getSavedPDFs() async {
+    final db = await instance.database;
+    final result = await db.query('saved_pdfs');
+    return result.map((row) => row['pdf_path'] as String).toList();
+  }
+
+  Future<int> savePDFPath(String pdfPath) async {
+    final db = await instance.database;
+    return await db.insert('saved_pdfs', {'pdf_path': pdfPath});
+  }
+
+  Future<void> openPDF(String pdfPath) {
+    return OpenFile.open(pdfPath);
+  }
 
   Future<void> closeDatabase() async {
     if (_database != null && _database!.isOpen) {
