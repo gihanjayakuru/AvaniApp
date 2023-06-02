@@ -1,14 +1,16 @@
+import 'package:flutter/material.dart';
+import 'package:pdf/widgets.dart' as pw;
 import 'dart:io';
 import 'package:avani_app/saved_pdf_screen.dart';
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'database_helper.dart';
 import 'location_list.dart';
 import 'my_form_screen.dart';
 import 'service_data.dart';
-import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
+import 'package:pdf/widgets.dart' as pwLib;
+
+// import 'package:pdf/widgets.dart' show PdfPageFormat, PdfImage;
 
 class ServiceListScreen extends StatefulWidget {
   @override
@@ -16,21 +18,20 @@ class ServiceListScreen extends StatefulWidget {
 }
 
 class PDFGenerator {
-  static Future<void> savePDFPath(String pdfPath) async {
-    await DatabaseHelper.instance.savePDFPath(pdfPath);
-  }
-
   static Future<String> generatePDF(MergedData serviceFormData) async {
-    final pdf = pw.Document();
+    List<Map<String, dynamic>> serviceImages = await DatabaseHelper.instance
+        .getServiceImagesForForm(serviceFormData.id);
 
+    final pdf = pwLib.Document();
+    // List<Map<String, dynamic>> serviceImages = await DatabaseHelper.instance
+    //     .getServiceImagesForForm(serviceFormData.id);
     // Add content to the PDF
     pdf.addPage(
       pw.Page(
         build: (pw.Context context) {
           return pw.Center(
             child: pw.Column(
-              mainAxisAlignment: pw.MainAxisAlignment.center,
-              crossAxisAlignment: pw.CrossAxisAlignment.center,
+              crossAxisAlignment: pw.CrossAxisAlignment.start,
               children: [
                 pw.Text(
                   'PDF Content',
@@ -47,7 +48,77 @@ class PDFGenerator {
                   'Date: ${serviceFormData.createdDate}',
                   style: pw.TextStyle(fontSize: 16),
                 ),
-                // Add more text or widgets as needed
+                pw.SizedBox(height: 20),
+                pw.Text(
+                  'Before After Service Details',
+                  style: pw.TextStyle(
+                      fontSize: 18, fontWeight: pw.FontWeight.bold),
+                ),
+                pw.SizedBox(height: 10),
+                pw.Text(
+                  'Room Temperature: ${serviceFormData.beforeRoomTemperature}',
+                  style: pw.TextStyle(fontSize: 14),
+                ),
+                pw.Divider(height: 10),
+                pw.Text(
+                  'Set Point Temperature: ${serviceFormData.beforeSetPointTemperature}',
+                  style: pw.TextStyle(fontSize: 14),
+                ),
+                // Add more details here for Before Service
+
+                pw.SizedBox(height: 20),
+                pw.Text(
+                  'After Service',
+                  style: pw.TextStyle(
+                      fontSize: 18, fontWeight: pw.FontWeight.bold),
+                ),
+                pw.SizedBox(height: 10),
+                pw.Text(
+                  'Room Temperature: ${serviceFormData.afterRoomTemperature}',
+                  style: pw.TextStyle(fontSize: 14),
+                ),
+                // Add more details here for After Service
+
+                pw.SizedBox(height: 20),
+                pw.Text(
+                  'Indoor Unit',
+                  style: pw.TextStyle(
+                      fontSize: 18, fontWeight: pw.FontWeight.bold),
+                ),
+                pw.SizedBox(height: 10),
+                pw.Text(
+                  'Blower Check: ${serviceFormData.blowerCheck}',
+                  style: pw.TextStyle(fontSize: 14),
+                ),
+                // Add more details here for Indoor Unit
+
+                pw.SizedBox(height: 20),
+                pw.Text(
+                  'Outdoor Unit',
+                  style: pw.TextStyle(
+                      fontSize: 18, fontWeight: pw.FontWeight.bold),
+                ),
+                pw.SizedBox(height: 10),
+                pw.Text(
+                  'Compressor Noise: ${serviceFormData.compressorNoise}',
+                  style: pw.TextStyle(fontSize: 14),
+                ),
+                // Add more details here for Outdoor Unit
+
+                pw.SizedBox(height: 20),
+                pw.Text(
+                  'General',
+                  style: pw.TextStyle(
+                      fontSize: 18, fontWeight: pw.FontWeight.bold),
+                ),
+                pw.SizedBox(height: 10),
+                pw.Text(
+                  'AC Sliding Door Operation: ${serviceFormData.acSlidinDoorOperation}',
+                  style: pw.TextStyle(fontSize: 14),
+                ),
+                // Add more details here for General
+                // pw.SizedBox(height: 10),
+                _buildImageSection(serviceImages),
               ],
             ),
           );
@@ -56,17 +127,100 @@ class PDFGenerator {
     );
 
     // Save the PDF to a file
-    final output = await getTemporaryDirectory();
-    final filePath = '${output.path}/service_form.pdf';
-    final file = File(filePath);
-    await file.writeAsBytes(await pdf.save());
+    final timestamp = DateTime.now().millisecondsSinceEpoch;
+    final fileName = 'service_form_$timestamp.pdf';
+    final appDocDir = await getApplicationDocumentsDirectory();
+    final downloadDirectory = Directory('${appDocDir.path}/Download');
+    await downloadDirectory.create(recursive: true);
+    final outputFile = File('${downloadDirectory.path}/$fileName');
+    await outputFile.writeAsBytes(await pdf.save());
 
-    // Save the PDF path to the database table
-    await savePDFPath(filePath);
+    print('path PDF ::=====${outputFile.path}');
 
-    return filePath;
+    return outputFile.path;
   }
 }
+
+pw.Widget _buildImageSection(List<Map<String, dynamic>> serviceImages) {
+  if (serviceImages.isNotEmpty) {
+    print(
+        'Images not empty in _buildImageSection??????????------------------////////${serviceImages}');
+
+    return pw.Column(
+      crossAxisAlignment: pw.CrossAxisAlignment.start,
+      children: [
+        pw.SizedBox(height: 20),
+        pw.Text(
+          'Images',
+          style: pw.TextStyle(
+            fontSize: 18,
+            fontWeight: pw.FontWeight.bold,
+          ),
+        ),
+        pw.SizedBox(height: 10),
+        pw.Wrap(
+          spacing: 8.0,
+          runSpacing: 8.0,
+          children: serviceImages.map((imageData) {
+            final String imagePath = imageData['image_path'];
+
+            print(
+                'heeeeeeeeeeeeeeeeeeeeeeeeeedsadads========/////${imagePath}');
+            final imageFile = File(imagePath);
+            if (imageFile.existsSync()) {
+              print('image file loadin.....................////');
+              final imageBytes = imageFile.readAsBytesSync();
+              final imageProvider = pw.MemoryImage(imageBytes);
+              return pw.Image(imageProvider);
+            } else {
+              print('no image file loding------');
+              return pw.Container(); // Empty container if file does not exist
+            }
+          }).toList(),
+        ),
+      ],
+    );
+  } else {
+    return pw.Container();
+  }
+}
+
+// pw.Widget _buildImageSection(List<Map<String, dynamic>> serviceImages) {
+//   if (serviceImages.isNotEmpty) {
+//     print(
+//         'Images not empty in _buildImageSection/////////////////////////------');
+//     return pw.Column(
+//       crossAxisAlignment: pw.CrossAxisAlignment.start,
+//       children: [
+//         pwLib.SizedBox(height: 20),
+//         pwLib.Text(
+//           'Images',
+//           style: pwLib.TextStyle(
+//             fontSize: 18,
+//             fontWeight: pwLib.FontWeight.bold,
+//           ),
+//         ),
+//         pwLib.SizedBox(height: 10),
+//         pwLib.Wrap(
+//           spacing: 8.0,
+//           runSpacing: 8.0,
+//           children: serviceImages.map((image) {
+//             if (image != null && image['image_data'] != null) {
+//               final List<int> imageData = List<int>.from(image['image_data']);
+
+//               final imageProvider =
+//                   pwLib.MemoryImage(Uint8List.fromList(imageData));
+//               return pwLib.Image(imageProvider);
+//             }
+//             return pwLib.Container();
+//           }).toList(),
+//         ),
+//       ],
+//     );
+//   } else {
+//     return pwLib.Container();
+//   }
+// }
 
 class _ServiceListScreenState extends State<ServiceListScreen> {
   // List<MergedData> savedServiceFormData = [];
@@ -76,45 +230,6 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
   DateTime? selectedDateFilter; // Initialize to null
 
   List<String> savedPDFs = [];
-  // void _printPDF(MergedData serviceFormData) async {
-  //   // Generate the PDF file
-  //   String pdfPath = await PDFGenerator.generatePDF(serviceFormData);
-
-  //   // Print the PDF
-  //   final File file = File(pdfPath);
-  //   if (await file.exists()) {
-  //     // Assuming you have a printer connected and configured
-  //     await Process.run('lp', [pdfPath]);
-  //     print('PDF printed successfully');
-  //   } else {
-  //     print('PDF file not found');
-  //   }
-
-  //   // Save the PDF path to the list in SavedPDFListScreen
-  //   Navigator.push(
-  //     context,
-  //     MaterialPageRoute(
-  //       builder: (context) => SavedPDFListScreen(),
-  //     ),
-  //   );
-  // }
-  void _printPDF(MergedData serviceFormData) async {
-    // Generate the PDF file
-    String pdfPath = await PDFGenerator.generatePDF(serviceFormData);
-
-    // Save the PDF path to the list in SavedPDFListScreen
-    setState(() {
-      savedPDFs.add(pdfPath);
-    });
-
-    // Navigate to the SavedPDFListScreen
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => SavedPDFListScreen(),
-      ),
-    );
-  }
 
   @override
   void initState() {
@@ -329,9 +444,9 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
           ),
           actions: [
             TextButton(
-              child: Text('Print PDF'),
+              child: Text('Save PDF'),
               onPressed: () {
-                _printPDF(serviceFormData);
+                _generatePDF(serviceFormData);
               },
             ),
             TextButton(
@@ -491,7 +606,15 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
 
   void _generatePDF(MergedData serviceFormData) async {
     String pdfPath = await PDFGenerator.generatePDF(serviceFormData);
+
+    //pass to databese to save path in table
+    await DatabaseHelper.instance.savePDFPath(pdfPath);
     savedPDFs.add(pdfPath);
     setState(() {});
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => SavedPDFListScreen()),
+    );
   }
 }

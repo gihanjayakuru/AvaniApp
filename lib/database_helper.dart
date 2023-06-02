@@ -13,7 +13,7 @@ class DatabaseHelper {
 
   Future<Database> get database async {
     if (_database != null && _database!.isOpen) return _database!;
-    _database = await _initDB('databaseNejjc.db');
+    _database = await _initDB('databaseNesssjjc.db');
     return _database!;
   }
 
@@ -297,6 +297,8 @@ class DatabaseHelper {
   Future<List<String>> getSavedPDFs() async {
     final db = await instance.database;
     final result = await db.query('saved_pdfs');
+
+    // print('result in Databas Manager get savedPdf files paths ${result}');
     return result.map((row) => row['pdf_path'] as String).toList();
   }
 

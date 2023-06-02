@@ -1,11 +1,13 @@
 import 'dart:io';
-
-import 'package:avani_app/location_list.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter/material.dart';
 import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
+import 'package:path_provider/path_provider.dart';
+import 'PDFViewer.dart';
 import 'database_helper.dart';
+import 'location_list.dart';
 import 'my_form_screen.dart';
-import 'service_list.dart'; // Import your database helper class
+import 'service_list.dart';
 
 class SavedPDFListScreen extends StatefulWidget {
   @override
@@ -30,19 +32,22 @@ class _SavedPDFListScreenState extends State<SavedPDFListScreen> {
     });
   }
 
-  // Future<void> _openPDF(String path) async {
-  //   PDFDocument doc = await PDFDocument.fromAsset(path);
-  //   setState(() {
-  //     pdfDocument = doc;
-  //   });
-  // }
   Future<void> _openPDF(String path) async {
-    print('Openening .......... this file path ::${path}');
-    File file = File(path);
-    PDFDocument doc = await PDFDocument.fromFile(file);
-    setState(() {
-      pdfDocument = doc;
-    });
+    print('onpress in saved pdf list:pressed path:-${path}');
+    try {
+      File file = File(path);
+      bool exists = await file.exists();
+      if (exists) {
+        final pdf = await PDFDocument.fromFile(file);
+        setState(() {
+          pdfDocument = pdf;
+        });
+      } else {
+        print('PDF file does not exist at path: $path');
+      }
+    } catch (e) {
+      print('Error opening PDF: $e');
+    }
   }
 
   @override
@@ -60,7 +65,7 @@ class _SavedPDFListScreenState extends State<SavedPDFListScreen> {
                 return ListTile(
                   title: Text(pdfPath),
                   onTap: () {
-                    _openPDF(pdfPath);
+                    _openPDFtonewscreen(pdfPath);
                   },
                 );
               },
@@ -112,6 +117,17 @@ class _SavedPDFListScreenState extends State<SavedPDFListScreen> {
             label: 'Saved PDFs',
           ),
         ],
+      ),
+    );
+  }
+
+  void _openPDFtonewscreen(String path) {
+    print(
+        'sending this path value in the_openPDFtonewscreen:::::------ ${path}');
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PDFViewerScreen(filePath: path),
       ),
     );
   }
