@@ -108,11 +108,11 @@ class _SavedPDFListScreenState extends State<SavedPDFListScreen> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Home',
+            label: 'Add Locations',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.add_location),
-            label: 'Add Location',
+            label: 'Select Locationsn',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.list),

@@ -27,11 +27,40 @@ class PDFGenerator {
         .getServiceImagesForForm(serviceFormData.id);
 
     final pdf = pw.Document();
+    // Define custom page size
+    const pageWidth = 800.0;
+    const pageHeight = 1200.0;
+
+    // Define page theme with custom size
+    final pageTheme = pw.PageTheme(
+      pageFormat: PdfPageFormat(pageWidth, pageHeight),
+      buildBackground: (pw.Context context) {
+        return pw.FullPage(
+          ignoreMargins: true,
+          child: pw.Container(color: PdfColors.white),
+        );
+      },
+    );
+
+    // Define page theme with custom size
+
+    // Define page theme with custom size
+    // final pageTheme = pw.PageTheme(
+    //   pageFormat: PdfPageFormat(pageWidth, pageHeight),
+    //   buildBackground: (pw.Context context) {
+    //     return pw.FullPage(
+    //       ignoreMargins: true,
+    //       child: pw.Container(color: PdfColors.white),
+    //     );
+    //   },
+    // );
 
     // Add content to the PDF
     pdf.addPage(
       pw.Page(
         build: (pw.Context context) {
+          final pageWidth = context.page.pageFormat.availableWidth;
+          final pageHeight = context.page.pageFormat.availableHeight;
           return pw.Center(
             child: pw.Column(
               crossAxisAlignment: pw.CrossAxisAlignment.start,
@@ -50,12 +79,18 @@ class PDFGenerator {
                 ),
                 pw.SizedBox(height: 10),
                 pw.Text(
-                  'Date: ${serviceFormData.createdDate}',
+                  'Technician Name : ${serviceFormData.technicianName}',
                   style: pw.TextStyle(fontSize: 16),
                 ),
+                pw.SizedBox(height: 10),
+                pw.Text(
+                  'Date created : ${serviceFormData.createdDate}',
+                  style: pw.TextStyle(fontSize: 16),
+                ),
+                pw.Divider(height: 10),
                 pw.SizedBox(height: 20),
                 pw.Text(
-                  'Before After Service Details',
+                  'Before Service Details',
                   style: pw.TextStyle(
                     fontSize: 18,
                     fontWeight: pw.FontWeight.bold,
@@ -63,18 +98,34 @@ class PDFGenerator {
                 ),
                 pw.SizedBox(height: 10),
                 pw.Text(
-                  'Room Temperature: ${serviceFormData.beforeRoomTemperature}',
+                  'Room Temperature : ${serviceFormData.beforeRoomTemperature}',
                   style: pw.TextStyle(fontSize: 14),
                 ),
                 pw.Divider(height: 10),
                 pw.Text(
-                  'Set Point Temperature: ${serviceFormData.beforeSetPointTemperature}',
+                  'Set Point Temperature : ${serviceFormData.beforeSetPointTemperature}',
                   style: pw.TextStyle(fontSize: 14),
                 ),
-                // Add more details here for Before Service
-                pw.SizedBox(height: 20),
                 pw.Text(
-                  'After Service',
+                  'Supply Grill Temperature : ${serviceFormData.beforeSupplyGrillTemperature}',
+                  style: pw.TextStyle(fontSize: 14),
+                ),
+                pw.Text(
+                  'Return Grill Temperature : ${serviceFormData.beforeReturnGrillTemperature}',
+                  style: pw.TextStyle(fontSize: 14),
+                ),
+                pw.Text(
+                  'Gas Pressure /Low Side : ${serviceFormData.beforeGasPressureLowSide}',
+                  style: pw.TextStyle(fontSize: 14),
+                ),
+                pw.Text(
+                  'Gas Pressure /High Side : ${serviceFormData.beforeGasPressureHighSide}',
+                  style: pw.TextStyle(fontSize: 14),
+                ),
+                pw.SizedBox(height: 20),
+                pw.Divider(height: 10),
+                pw.Text(
+                  'After Service Details',
                   style: pw.TextStyle(
                     fontSize: 18,
                     fontWeight: pw.FontWeight.bold,
@@ -82,62 +133,31 @@ class PDFGenerator {
                 ),
                 pw.SizedBox(height: 10),
                 pw.Text(
-                  'Room Temperature: ${serviceFormData.afterRoomTemperature}',
+                  'Room Temperature : ${serviceFormData.afterRoomTemperature}',
                   style: pw.TextStyle(fontSize: 14),
                 ),
-                // Add more details here for After Service
-                pw.SizedBox(height: 20),
                 pw.Text(
-                  'Indoor Unit',
-                  style: pw.TextStyle(
-                    fontSize: 18,
-                    fontWeight: pw.FontWeight.bold,
-                  ),
-                ),
-                pw.SizedBox(height: 10),
-                pw.Text(
-                  'Blower Check: ${serviceFormData.blowerCheck}',
+                  'Set Point Temperature : ${serviceFormData.afterSetPointTemperature}',
                   style: pw.TextStyle(fontSize: 14),
                 ),
-                // Add more details here for Indoor Unit
-                pw.SizedBox(height: 20),
                 pw.Text(
-                  'Outdoor Unit',
-                  style: pw.TextStyle(
-                    fontSize: 18,
-                    fontWeight: pw.FontWeight.bold,
-                  ),
-                ),
-                pw.SizedBox(height: 10),
-                pw.Text(
-                  'Compressor Noise: ${serviceFormData.compressorNoise}',
+                  'Supply Grill Temperature : ${serviceFormData.afterSupplyGrillTemperature}',
                   style: pw.TextStyle(fontSize: 14),
                 ),
-                // Add more details here for Outdoor Unit
-                pw.SizedBox(height: 20),
                 pw.Text(
-                  'Service Images',
-                  style: pw.TextStyle(
-                    fontSize: 18,
-                    fontWeight: pw.FontWeight.bold,
-                  ),
+                  'Return Grill Temperature : ${serviceFormData.afterReturnGrillTemperature}',
+                  style: pw.TextStyle(fontSize: 14),
                 ),
-                pw.SizedBox(height: 10),
-                // Generate a list of images
-                pw.SizedBox(height: 10),
-                // Generate a list of images
-                pw.ListView.builder(
-                  itemCount: serviceImages.length,
-                  itemBuilder: (pw.Context context, int index) {
-                    final imagePath = serviceImages[index]['image_path'];
-                    final bytes = File(imagePath).readAsBytesSync();
-                    final image = pw.MemoryImage(bytes);
-                    return pw.Container(
-                      padding: pw.EdgeInsets.all(10),
-                      child: pw.Image(image),
-                    );
-                  },
+                pw.Text(
+                  'Gas Pressure /Low Side : ${serviceFormData.afterGasPressureLowSide}',
+                  style: pw.TextStyle(fontSize: 14),
                 ),
+                pw.Text(
+                  'Gas Pressure /High Side : ${serviceFormData.afterGasPressureHighSide}',
+                  style: pw.TextStyle(fontSize: 14),
+                ),
+                pw.SizedBox(height: 20),
+                pw.Divider(height: 10),
               ],
             ),
           );
@@ -145,9 +165,116 @@ class PDFGenerator {
       ),
     );
 
-// Add a new page to the document
+    // final page2 = pw.Page(build: (pw.Context context) {
+    //   return pw.Container();
+    // });
+
+    final page2 = pw.Page(build: (pw.Context context) {
+      return pw.Column(
+          crossAxisAlignment: pw.CrossAxisAlignment.start,
+          children: [
+            pw.Text(
+              'Indoor Unit Details',
+              style: pw.TextStyle(
+                fontSize: 18,
+                fontWeight: pw.FontWeight.bold,
+              ),
+            ),
+            pw.SizedBox(height: 10),
+            pw.Text(
+              'Blower Check : ${serviceFormData.blowerCheck}',
+              style: pw.TextStyle(fontSize: 14),
+            ),
+            pw.Text(
+              'Indoor Inspect Clean IDU Coil Fins : ${serviceFormData.indoorInspectCleanIduCoilFins}',
+              style: pw.TextStyle(fontSize: 14),
+            ),
+            pw.Text(
+              'Check Clean Drain Plate : ${serviceFormData.checkCleanDrainPlate}',
+              style: pw.TextStyle(fontSize: 14),
+            ),
+            pw.Text(
+              'Drain Pump Check : ${serviceFormData.drainPumpCheck}',
+              style: pw.TextStyle(fontSize: 14),
+            ),
+            pw.Text(
+              'Check Piping Duck Insulation : ${serviceFormData.checkPipingDuckInsulation}',
+              style: pw.TextStyle(fontSize: 14),
+            ),
+            pw.Text(
+              'Check Noise : ${serviceFormData.checkNoise}',
+              style: pw.TextStyle(fontSize: 14),
+            ),
+            pw.Text(
+              'Indoor Housing Condition : ${serviceFormData.indoorHousingCondition}',
+              style: pw.TextStyle(fontSize: 14),
+            ),
+            pw.Text(
+              'Indoor PCB Status : ${serviceFormData.indoorPcbStatus}',
+              style: pw.TextStyle(fontSize: 14),
+            ),
+            pw.SizedBox(height: 20),
+            pw.Divider(height: 10),
+            pw.Text(
+              'Outdoor Unit Details',
+              style: pw.TextStyle(
+                fontSize: 18,
+                fontWeight: pw.FontWeight.bold,
+              ),
+            ),
+            pw.SizedBox(height: 10),
+            pw.Text(
+              'Compressor Noise: ${serviceFormData.compressorNoise}',
+              style: pw.TextStyle(fontSize: 14),
+            ),
+            pw.Text(
+              'Fan Noise : ${serviceFormData.fanNoise}',
+              style: pw.TextStyle(fontSize: 14),
+            ),
+            pw.Text(
+              'Outdoor Inspect Clean IDU Coil Fins : ${serviceFormData.outdoorInspectCleanIduCoilFins}',
+              style: pw.TextStyle(fontSize: 14),
+            ),
+            pw.Text(
+              'Outdoor PCB Status : ${serviceFormData.outdoorPcbStatus}',
+              style: pw.TextStyle(fontSize: 14),
+            ),
+            pw.Text(
+              'Outdoor Housing Condition : ${serviceFormData.outdoorHousingCondition}',
+              style: pw.TextStyle(fontSize: 14),
+            ),
+            pw.SizedBox(height: 20),
+            pw.Divider(height: 10),
+            pw.Text(
+              'General',
+              style: pw.TextStyle(
+                fontSize: 18,
+                fontWeight: pw.FontWeight.bold,
+              ),
+            ),
+            pw.SizedBox(height: 10),
+            pw.Text(
+              'AC Sliding Door Operation : ${serviceFormData.acSlidinDoorOperation}',
+              style: pw.TextStyle(fontSize: 14),
+            ),
+            pw.Text(
+              'Thermostat Setting : ${serviceFormData.thermostatSetting}',
+              style: pw.TextStyle(fontSize: 14),
+            ),
+            pw.Text(
+              'Drain Line Clean : ${serviceFormData.drainLineClean}',
+              style: pw.TextStyle(fontSize: 14),
+            ),
+            pw.Text(
+              'Remark : ${serviceFormData.remark}',
+              style: pw.TextStyle(fontSize: 14),
+            ),
+            pw.Divider(height: 10),
+          ]);
+    });
+
     // Add a new page to the document
-    final page = pw.Page(
+    final page3 = pw.Page(
       build: (pw.Context context) {
         final pageWidth = context.page.pageFormat.availableWidth;
         final pageHeight = context.page.pageFormat.availableHeight;
@@ -157,11 +284,12 @@ class PDFGenerator {
         final imageY = 200.0; // Adjust the Y position as desired
 
         return pw.Container(
-          child: pw.Column(
+          child: pw.GridView(
+            crossAxisCount: 2, // Number of columns in the grid
             children: [
               for (var imageInfo in serviceImages)
                 pw.Container(
-                  padding: pw.EdgeInsets.all(10),
+                  padding: pw.EdgeInsets.all(5),
                   child: pw.Image(
                     pw.MemoryImage(
                       File(imageInfo['image_path']).readAsBytesSync(),
@@ -176,14 +304,27 @@ class PDFGenerator {
       },
     );
 
-// Add the page to the document
-    pdf.addPage(page);
+    // Add the page to the document
 
-// Save the PDF to a file
+    pdf.addPage(page2);
+    pdf.addPage(page3);
+
+    // Save the PDF to a file with a name including the current date and time
     final appDocDir = await getApplicationDocumentsDirectory();
-    final outputFile = File('${appDocDir.path}/output.pdf');
+    final now = DateTime.now();
+    final formattedDate =
+        '${now.year}_${now.month.toString().padLeft(2, '0')}_${now.day.toString().padLeft(2, '0')}';
+    final formattedTime =
+        '${now.hour.toString().padLeft(2, '0')}_${now.minute.toString().padLeft(2, '0')}_${now.second.toString().padLeft(2, '0')}';
+    final fileName = 'report_$formattedDate ($formattedTime).pdf';
+    final outputFile = File('${appDocDir.path}/$fileName');
     await outputFile.writeAsBytes(await pdf.save());
     return outputFile.path;
+
+// Function to add leading zero for single-digit values
+    String _addLeadingZero(int value) {
+      return value.toString().padLeft(2, '0');
+    }
   }
 }
 
@@ -313,10 +454,10 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
                     ),
                   ),
                 ),
-                Text('blower Check : ${serviceFormData.blowerCheck}'),
+                Text('Blower Check : ${serviceFormData.blowerCheck}'),
                 Divider(),
                 Text(
-                    'indoor Inspect Clean IDU Coil Fins : ${serviceFormData.indoorInspectCleanIduCoilFins}'),
+                    'Indoor Inspect Clean IDU Coil Fins : ${serviceFormData.indoorInspectCleanIduCoilFins}'),
                 Divider(),
                 Text(
                     'Check Clean Drain Plate : ${serviceFormData.checkCleanDrainPlate}'),
@@ -550,11 +691,11 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Home',
+            label: 'Add Locations',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.add_location),
-            label: 'Add Location',
+            label: 'Select Locations',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.list),

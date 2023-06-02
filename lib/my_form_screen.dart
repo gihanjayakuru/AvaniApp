@@ -4,6 +4,8 @@ import 'location_list.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 
+import 'saved_pdf_screen.dart';
+
 class MyFormScreen extends StatefulWidget {
   @override
   _MyFormScreenState createState() => _MyFormScreenState();
@@ -280,6 +282,18 @@ class _MyFormScreenState extends State<MyFormScreen> {
                         return null;
                       },
                     ),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (_formKey.currentState?.validate() == true) {
+                            // Form is valid, save the data
+                            _saveForm();
+                          }
+                        },
+                        child: Text('Save'),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -287,17 +301,50 @@ class _MyFormScreenState extends State<MyFormScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ElevatedButton(
-          onPressed: () {
-            if (_formKey.currentState?.validate() == true) {
-              // Form is valid, save the data
-              _saveForm();
-            }
-          },
-          child: Text('Save'),
-        ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: 0, // Set the index of the current page
+        onTap: (int index) {
+          if (index == 0) {
+            //   Navigator.push(
+            //     context,
+            //     MaterialPageRoute(builder: (context) => MyFormScreen()),
+            //   );
+          } else if (index == 1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => LocationListScreen()),
+            );
+          } else if (index == 2) {
+            // Stay on the service list page
+          } else if (index == 3) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => SavedPDFListScreen()),
+            );
+          }
+        },
+        selectedItemColor: Colors.blue, // Color of the selected button
+        unselectedItemColor: Colors.grey, // Color of the unselected buttons
+        backgroundColor:
+            Colors.white, // Background color of the bottom navigation bar
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Add Locations',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add_location),
+            label: 'Select Locations',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.list),
+            label: 'Service List',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.picture_as_pdf),
+            label: 'Saved PDFs',
+          ),
+        ],
       ),
     );
   }
