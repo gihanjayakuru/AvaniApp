@@ -1,3 +1,4 @@
+import 'package:avani_app/service_list.dart';
 import 'package:flutter/material.dart';
 import 'database_helper.dart';
 import 'location_list.dart';
@@ -315,7 +316,10 @@ class _MyFormScreenState extends State<MyFormScreen> {
               MaterialPageRoute(builder: (context) => LocationListScreen()),
             );
           } else if (index == 2) {
-            // Stay on the service list page
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ServiceListScreen()),
+            );
           } else if (index == 3) {
             Navigator.push(
               context,

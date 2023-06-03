@@ -100,7 +100,6 @@ class PDFGenerator {
                   'Room Temperature : ${serviceFormData.beforeRoomTemperature}',
                   style: pw.TextStyle(fontSize: 14),
                 ),
-                pw.Divider(height: 10),
                 pw.Text(
                   'Set Point Temperature : ${serviceFormData.beforeSetPointTemperature}',
                   style: pw.TextStyle(fontSize: 14),

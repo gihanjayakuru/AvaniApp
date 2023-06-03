@@ -12,7 +12,7 @@ class DatabaseHelper {
 
   Future<Database> get database async {
     if (_database != null && _database!.isOpen) return _database!;
-    _database = await _initDB('databaseNesssjjc.db');
+    _database = await _initDB('datab.db');
     return _database!;
   }
 
