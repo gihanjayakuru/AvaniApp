@@ -350,6 +350,16 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
     super.dispose();
   }
 
+  // void _loadServiceFormData() async {
+  //   List<Map<String, dynamic>> serviceFormDataList =
+  //       await DatabaseHelper.instance.getServiceFormDataList();
+
+  //   savedServiceFormData = serviceFormDataList
+  //       .map((formData) => MergedData.fromJson(formData))
+  //       .toList();
+
+  //   setState(() {});
+  // }
   void _loadServiceFormData() async {
     List<Map<String, dynamic>> serviceFormDataList =
         await DatabaseHelper.instance.getServiceFormDataList();
@@ -357,6 +367,15 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
     savedServiceFormData = serviceFormDataList
         .map((formData) => MergedData.fromJson(formData))
         .toList();
+
+    if (selectedDateFilter != null) {
+      savedServiceFormData = savedServiceFormData.where((data) {
+        DateTime createdDate = DateTime.parse(data.createdDate);
+        return createdDate.year == selectedDateFilter!.year &&
+            createdDate.month == selectedDateFilter!.month &&
+            createdDate.day == selectedDateFilter!.day;
+      }).toList();
+    }
 
     setState(() {});
   }
@@ -627,7 +646,6 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
               onChanged: (value) {
                 setState(() {
                   searchQuery = value;
-                  
                 });
               },
               decoration: InputDecoration(
@@ -643,20 +661,20 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
               onPressed: () async {
-                final DateTime? picked = await showDatePicker(
+                final selectedDate = await showDatePicker(
                   context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime(2010),
-                  lastDate: DateTime(2030),
+                  initialDate: selectedDateFilter ?? DateTime.now(),
+                  firstDate: DateTime(2021),
+                  lastDate: DateTime.now(),
                 );
-
-                if (picked != null) {
+                if (selectedDate != null) {
                   setState(() {
-                    selectedDateFilter = picked;
+                    selectedDateFilter = selectedDate;
                   });
+                  _loadServiceFormData();
                 }
               },
-              child: Text('Filter by Date'),
+              child: Text('Select Date'),
             ),
           ),
           Expanded(
