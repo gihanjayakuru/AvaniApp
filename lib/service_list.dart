@@ -567,6 +567,26 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
     );
   }
 
+  void filterDataByDate(DateTime selectedDate) {
+    setState(() {
+      selectedDateFilter = selectedDate;
+    });
+  }
+
+  // Function to filter data based on selected date
+  // List<MergedData> filterDataByDate(DateTime selectedDate) {
+  //   List<MergedData> filteredList = savedServiceFormData.where((formData) {
+  //     DateTime? formDataDate =
+  //         DateFormat("yyyy-MM-dd").parse(formData.createdDate);
+  //     return formDataDate != null &&
+  //         formDataDate.year == selectedDate.year &&
+  //         formDataDate.month == selectedDate.month &&
+  //         formDataDate.day == selectedDate.day;
+  //   }).toList();
+
+  //   return filteredList;
+  // }
+
   List<MergedData> _filteredServiceFormData() {
     List<MergedData> filteredList = savedServiceFormData;
 
@@ -579,6 +599,7 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
       }).toList();
     }
     // Filter by date
+    // Apply date filter
     if (selectedDateFilter != null) {
       filteredList = filteredList.where((formData) {
         DateTime? date = DateFormat("yyyy-MM-dd").parse(formData.createdDate);
@@ -606,6 +627,7 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
               onChanged: (value) {
                 setState(() {
                   searchQuery = value;
+                  
                 });
               },
               decoration: InputDecoration(
@@ -615,6 +637,26 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
                   borderRadius: BorderRadius.all(Radius.circular(25.0)),
                 ),
               ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(
+              onPressed: () async {
+                final DateTime? picked = await showDatePicker(
+                  context: context,
+                  initialDate: DateTime.now(),
+                  firstDate: DateTime(2010),
+                  lastDate: DateTime(2030),
+                );
+
+                if (picked != null) {
+                  setState(() {
+                    selectedDateFilter = picked;
+                  });
+                }
+              },
+              child: Text('Filter by Date'),
             ),
           ),
           Expanded(
