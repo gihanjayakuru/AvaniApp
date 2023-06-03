@@ -1,5 +1,4 @@
 import 'package:path/path.dart';
-// import 'package:open_file/open_file.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:io';
 import 'package:path/path.dart' as path;
@@ -279,20 +278,6 @@ class DatabaseHelper {
     );
     return result;
   }
-
-  // Future<List<File>> getSelectedImages() async {
-  //   final db = await database;
-  //   final result = await db.query('selected_images');
-  //   final List<File> images = [];
-  //   for (final row in result) {
-  //     final imagePath = row['image_path'] as String;
-  //     final image = File(imagePath);
-  //     if (await image.exists()) {
-  //       images.add(image);
-  //     }
-  //   }
-  //   return images;
-  // }
 
   Future<List<String>> getSavedPDFs() async {
     final db = await instance.database;

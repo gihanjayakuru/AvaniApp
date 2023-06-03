@@ -39,7 +39,7 @@ dependencies:
   advance_pdf_viewer: ^2.0.0
   flutter_pdfview: ^1.0.1
   printing: ^5.7.3
-  open_file: ^3.3.0
+  # open_file: ^3.3.1
   # open_file: ^3.0.2
   # flutter_pdfview: ^1.2.7
   # image_gallery_saver: ^1.6.7
