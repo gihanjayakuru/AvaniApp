@@ -1,0 +1,6 @@
+<!-- <paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <files-path name="AllPdf" path="AllPdf/" />
+</paths> -->
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <external-path name="pdfs" path="." />
+</paths>

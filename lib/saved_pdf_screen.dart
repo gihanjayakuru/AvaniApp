@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:android_intent/android_intent.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter/material.dart';
@@ -6,6 +7,7 @@ import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
+import 'package:url_launcher/url_launcher.dart';
 import 'PDFViewer.dart';
 import 'database_helper.dart';
 import 'location_list.dart';
@@ -71,9 +73,10 @@ class _SavedPDFListScreenState extends State<SavedPDFListScreen> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       IconButton(
-                        icon: Icon(Icons.download),
+                        icon: Icon(Icons.folder_open),
                         onPressed: () {
-                          moveFileToExternalStorage(pdfPath);
+                          // moveFileToExternalStorage(pdfPath);
+                          openFileLocation(pdfPath);
                           print('pdfPatesfdsf___----====:::::h${pdfPath}');
                         },
                       ),
@@ -174,187 +177,21 @@ class _SavedPDFListScreenState extends State<SavedPDFListScreen> {
   //     print('Error deleting PDF: $e');
   //   }
   // }
-  Future<void> openPDFDirectorys(String filePath) async {
+
+  void openFileLocation(String filePath) async {
     try {
       await OpenFile.open(filePath);
     } catch (e) {
-      print('Error opening PDF file: $e');
+      print('Error opening file: $e');
     }
   }
 
-  // Future<void> moveFileToExternalStorage(String filePath) async {
-  //   try {
-  //     // Get the external storage directory
-  //     final directory = await getExternalStorageDirectory();
-  //     if (directory != null) {
-  //       // Create the destination path in the external storage directory
-  //       final destinationPath = '${directory.path}/report.pdf';
-
-  //       // Move the file to the destination path
-  //       final file = File(filePath);
-  //       await file.rename(destinationPath);
-
-  //       print('File moved to: $destinationPath');
-  //     }
-  //   } catch (e) {
-  //     print('Error moving file: $e');
-  //   }
-  // }
-
-  // import 'package:file_picker/file_picker.dart';
-  // Future<void> openPDFDirectory(String filePath) async {
-  //   try {
-  //     final result = await FilePicker.platform
-  //         .pickFiles(type: FileType.custom, allowedExtensions: ['pdf']);
-  //     if (result != null) {
-  //       final filePath = result.files.single.path;
-  //       if (filePath != null) {
-  //         // Use the filePath to open the PDF file
-  //         // For example, you can use the OpenFile.open method:
-  //         await OpenFile.open(filePath);
-  //       }
-  //     }
-  //   } catch (e) {
-  //     print('Error opening PDF file: $e');
-  //   }
-  // }
-
-  // void _launchFileExplorer(String filePath) async {
-  //   print('calling Launch file explorer: $filePath');
-  //   try {
-  //     final directory = filePath.substring(0, filePath.lastIndexOf('/'));
-  //     final parentDir = await FilePicker.platform.getDirectoryPath(
-  //       initialDirectory: directory,
-  //     );
-  //     if (parentDir != null) {
-  //       await OpenFile.open(parentDir);
-  //     } else {
-  //       Fluttertoast.showToast(
-  //         msg: 'File explorer app is required to open the file location.',
-  //         toastLength: Toast.LENGTH_SHORT,
-  //         gravity: ToastGravity.CENTER,
-  //       );
-  //     }
-  //   } catch (e) {
-  //     print('Error opening file explorer: $e');
-  //     Fluttertoast.showToast(
-  //       msg: 'File explorer app is required to open the file location.',
-  //       toastLength: Toast.LENGTH_SHORT,
-  //       gravity: ToastGravity.CENTER,
-  //     );
-  //   }
-  // }
-  Future<void> moveFileToExternalStorage(String filePath) async {
-    try {
-      final file = File(filePath);
-
-      // Prompt the user to choose a new save location
-      Directory? newSaveLocation = await getExternalStorageDirectory();
-
-      if (newSaveLocation != null) {
-        // Generate a unique file name
-        String newFileName =
-            'report_${DateTime.now().millisecondsSinceEpoch}.pdf';
-
-        // Construct the new save path
-        String newSavePath = path.join(newSaveLocation.path, newFileName);
-
-        // Read the contents of the original file
-        List<int> fileBytes = await file.readAsBytes();
-
-        // Write the contents to the new save path
-        await File(newSavePath).writeAsBytes(fileBytes);
-
-        await OpenFile.open(newSavePath);
-        // openPDFDirectory(newSavePath);
-        // Delete the original file
-        // await file.delete();
-
-        print('File moved to: $newSavePath');
-      } else {
-        print('New save location not found.');
-      }
-    } catch (e) {
-      print('Error moving file: $e');
-    }
-  }
-
-  Future<void> moveFileToExternalStosrage(String filePath) async {
-    try {
-      final file = File(filePath);
-
-      // Extract the suggested file name from the existing file path
-      String suggestedFileName = filePath.split('/').last;
-
-      // Prompt the user to choose a new save location
-      String? newSavePath = await FilePicker.platform.saveFile(
-        fileName: suggestedFileName,
-      );
-
-      if (newSavePath != null) {
-        // Move the file to the new save location
-        final newFile = await file.copy(newSavePath);
-
-        print('File moved to: ${newFile.path}');
-      } else {
-        print('New save location not selected.');
-      }
-    } catch (e) {
-      print('Error moving file: $e');
-    }
-  }
-
-  Future<void> moveFileToExternalStoragse(String filePath) async {
-    try {
-      final file = File(filePath);
-
-      // Get the external storage directory
-      final directory = await getExternalStorageDirectory();
-      if (directory != null) {
-        // Create the destination path in the external storage directory
-        final destinationPath = '${directory.path}/report.pdf';
-
-        // Move the file to the destination path
-        await file.rename(destinationPath);
-
-        print('File moved to: $destinationPath');
-      }
-    } catch (e) {
-      print('Error moving file: $e');
-    }
-  }
-
-  Future<void> openPDFDirectoryss(String filePath) async {
-    print('File Patth to OPen Directory >>>>>>>>>--------${filePath}');
-    try {
-      final directory = File(filePath).parent;
-      await OpenFile.open(directory.path);
-    } catch (e) {
-      print(
-          'Error opening PDF directory FFFFFFFFFFFFFFFFFFFFFFFFFFFFF>>>>>>>>: $e');
-    }
-  }
-
-  // bool isFileExists(String pat) {
-  //   final file = File(pat);
-
-  //   print("File exissssss=====${file.existsSync()}");
-  //   return file.existsSync();
-  // }
-
-  // void _launchFileExplorer(String filePath) async {
-  //   if (await canLaunch(filePath)) {
-  //     await launch(filePath);
+  // void openFileLocation(String filePath) async {
+  //   final url = Uri.file(filePath);
+  //   if (await canLaunch(url.toString())) {
+  //     await launch(url.toString());
   //   } else {
-  //     print('Error opening PDF file');
-  //   }
-  // }
-
-  // Future<void> openPDFDirectory(String filePath) async {
-  //   try {
-  //     await OpenFile.open(filePath);
-  //   } catch (e) {
-  //     print('Error opening PDF file: $e');
+  //     print('Could not open file location');
   //   }
   // }
 

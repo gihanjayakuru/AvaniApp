@@ -12,7 +12,7 @@ class DatabaseHelper {
 
   Future<Database> get database async {
     if (_database != null && _database!.isOpen) return _database!;
-    _database = await _initDB('datab.db');
+    _database = await _initDB('databDD.db');
     return _database!;
   }
 
@@ -91,10 +91,8 @@ class DatabaseHelper {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       form_id INTEGER,
       indoor_image_name TEXT,
-      indoor_image_data BLOB,
       indoor_image_path TEXT,
       outdoor_image_name TEXT,
-      outdoor_image_data BLOB,
       outdoor_image_path TEXT
     )
   ''');
@@ -104,7 +102,6 @@ class DatabaseHelper {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       form_id TEXT,
       image_name TEXT,
-      image_data TEXT,
       image_path TEXT
     )
   ''');
@@ -181,20 +178,20 @@ class DatabaseHelper {
     // Save indoor image
     if (indoorImage != null && outdoorImage != null) {
       final indoorImagePath = indoorImage.path;
-      final indoorBytes = await indoorImage.readAsBytes();
+      // final indoorBytes = await indoorImage.readAsBytes();
       final indoorImageName = path.basename(indoorImagePath);
 
       final outdoorImagePath = outdoorImage.path;
-      final outdoorBytes = await outdoorImage.readAsBytes();
+      // final outdoorBytes = await outdoorImage.readAsBytes();
       final outdoorImageName = path.basename(outdoorImagePath);
 
       final imageMap = {
         'form_id': formId,
         'indoor_image_name': indoorImageName,
-        'indoor_image_data': indoorBytes,
+        // 'indoor_image_data': indoorBytes,
         'indoor_image_path': indoorImagePath,
         'outdoor_image_name': outdoorImageName,
-        'outdoor_image_data': outdoorBytes,
+        // 'outdoor_image_data': outdoorBytes,
         'outdoor_image_path': outdoorImagePath,
       };
 
@@ -254,13 +251,13 @@ class DatabaseHelper {
     final db = await instance.database;
     for (final image in images) {
       final imagePath = image.path;
-      final imageBytes = await image.readAsBytes();
+      // final imageBytes = await image.readAsBytes();
       final imageName = path.basename(imagePath);
       print(imagePath);
       final serviceImagesMap = {
         'form_id': formId,
         'image_name': imageName,
-        'image_data': imageBytes,
+        // 'image_data': imageBytes,
         'image_path': imagePath,
       };
 
