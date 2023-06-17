@@ -3,7 +3,9 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -23,7 +25,7 @@ class ServiceListScreen extends StatefulWidget {
 }
 
 class PDFGenerator {
-  static Future<String> generatePDF(MergedData serviceFormData) async {
+  static Future<String?> generatePDF(MergedData serviceFormData) async {
     List<Map<String, dynamic>> serviceImages = await DatabaseHelper.instance
         .getServiceImagesForForm(serviceFormData.id);
 
@@ -281,14 +283,29 @@ class PDFGenerator {
     );
 
     // Add the page to the document
-
+    // final outputDir = await getExternalStorageDirectory();
+    // final outputDir = await getApplicationDocumentsDirectory();
+    // final appFile = File('${outputDir.path}/example.txt');
     // pdf.addPage(page2);
     pdf.addPage(page3);
 
-    final outputDir = await getExternalStorageDirectory();
-    final pdfDir = Directory('${outputDir!.path}/AllPdf');
+    // Directory outputDir = Directory('/storage/emulated/0/Download');
+    Directory outputDir = await getTemporaryDirectory();
+
+    final pdfDir = Directory(outputDir.path);
     if (!pdfDir.existsSync()) {
-      pdfDir.createSync();
+      try {
+        pdfDir.createSync();
+      } catch (e) {
+        Fluttertoast.showToast(
+          msg: 'Failed to create directory.No permission',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+        );
+        return null; // or any default value to indicate the failure
+      }
     }
     final now = DateTime.now();
     final formattedDate =
@@ -297,9 +314,39 @@ class PDFGenerator {
         '${now.hour.toString().padLeft(2, '0')}_${now.minute.toString().padLeft(2, '0')}_${now.second.toString().padLeft(2, '0')}';
     final fileName = 'report_$formattedDate ($formattedTime)';
     final outputFile = File('${pdfDir.path}/$fileName.pdf');
-    await outputFile.writeAsBytes(await pdf.save());
+
+    try {
+      await outputFile.writeAsBytes(await pdf.save());
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: 'Failed to save the PDF.',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+      return null;
+    }
 
     return outputFile.path;
+//////////////////////////
+    // Directory outputDir = Directory('/storage/emulated/0/Download');
+    // Directory outputDir = await getTemporaryDirectory();
+
+    // final pdfDir = Directory(outputDir.path);
+    // if (!pdfDir.existsSync()) {
+    //   pdfDir.createSync();
+    // }
+    // final now = DateTime.now();
+    // final formattedDate =
+    //     '${now.year}_${now.month.toString().padLeft(2, '0')}_${now.day.toString().padLeft(2, '0')}';
+    // final formattedTime =
+    //     '${now.hour.toString().padLeft(2, '0')}_${now.minute.toString().padLeft(2, '0')}_${now.second.toString().padLeft(2, '0')}';
+    // final fileName = 'report_$formattedDate ($formattedTime)';
+    // final outputFile = File('${pdfDir.path}/$fileName.pdf');
+    // await outputFile.writeAsBytes(await pdf.save());
+
+    // return outputFile.path;
   }
 }
 
@@ -746,16 +793,38 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
   }
 
   void _generatePDF(MergedData serviceFormData) async {
-    String pdfPath = await PDFGenerator.generatePDF(serviceFormData);
+    String? pdfPath = await PDFGenerator.generatePDF(serviceFormData);
 
-    //pass to databese to save path in table
-    await DatabaseHelper.instance.savePDFPath(pdfPath);
-    // savedPDFs.add(pdfPath);
-    // setState(() {});
+    if (pdfPath != null) {
+      // Save the PDF path in the database
+      await DatabaseHelper.instance.savePDFPath(pdfPath);
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => SavedPDFListScreen()),
-    );
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => SavedPDFListScreen()),
+      );
+    } else {
+      Fluttertoast.showToast(
+        msg: 'Failed to generate the PDF.No path rec',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+    }
   }
+  // void _generatePDF(MergedData serviceFormData) async {
+  //   String pdfPath = await PDFGenerator.generatePDF(serviceFormData);
+
+  //   //pass to databese to save path in table
+  //   await DatabaseHelper.instance.savePDFPath(pdfPath);
+
+  //   // savedPDFs.add(pdfPath);
+  //   // setState(() {});
+
+  //   Navigator.push(
+  //     context,
+  //     MaterialPageRoute(builder: (context) => SavedPDFListScreen()),
+  //   );
+  // }
 }

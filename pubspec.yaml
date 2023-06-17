@@ -41,13 +41,16 @@ dependencies:
   permission_handler: ^10.0.0
   url_launcher: ^6.0.3
   android_intent: ^2.0.0
+  document_file_save_plus : ^2.0.0
+  fluttertoast: ^8.0.7
   # permission_handler: ^8.1.6
   # downloads_path_provider: ^3.0.0
   # printing: ^5.7.3
-  file_picker: ^4.1.0
+  file_picker: ^5.3.2
   # file_manager: ^1.0.0
+  open_file: ^3.3.2
   # open_file: ^3.3.1
-  open_file: ^3.0.0
+  # open_file: ^3.0.0
   # flutter_pdfview: ^1.2.7
   # image_gallery_saver: ^1.6.7
   image_picker: ^0.8.4+4

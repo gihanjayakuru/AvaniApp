@@ -5,6 +5,7 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter/material.dart';
 import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 import 'package:open_file/open_file.dart';
+// import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
 import 'package:url_launcher/url_launcher.dart';
@@ -76,7 +77,8 @@ class _SavedPDFListScreenState extends State<SavedPDFListScreen> {
                         icon: Icon(Icons.folder_open),
                         onPressed: () {
                           // moveFileToExternalStorage(pdfPath);
-                          openFileLocation(pdfPath);
+                          // openFileLocation(pdfPath);
+                          OpenFile.open(pdfPath);
                           print('pdfPatesfdsf___----====:::::h${pdfPath}');
                         },
                       ),
@@ -178,13 +180,13 @@ class _SavedPDFListScreenState extends State<SavedPDFListScreen> {
   //   }
   // }
 
-  void openFileLocation(String filePath) async {
-    try {
-      await OpenFile.open(filePath);
-    } catch (e) {
-      print('Error opening file: $e');
-    }
-  }
+  // void openFileLocation(String filePath) async {
+  //   try {
+  //     await OpenFile.open(filePath);
+  //   } catch (e) {
+  //     print('Error opening file: $e');
+  //   }
+  // }
 
   // void openFileLocation(String filePath) async {
   //   final url = Uri.file(filePath);
